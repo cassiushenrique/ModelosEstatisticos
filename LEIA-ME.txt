@@ -1,15 +1,8 @@
-GUIA DE MODELOS ESTATÍSTICOS E CIÊNCIA DE DADOS — GITHUB PAGES
+ESTATÍSTICA E CIÊNCIA DE DADOS — VERSÃO REVISADA
 
-Publicação: crie um repositório público, por exemplo ModelosEstatisticos, envie TODOS os arquivos e pastas deste ZIP diretamente na raiz. Em Settings > Pages selecione main e /(root).
+Esta versão contém 103 fichas, 103 scripts R e filtros por tipo de método (estatística clássica, aprendizado supervisionado e aprendizado não supervisionado). Fórmulas matemáticas estão escritas em LaTeX e renderizadas com MathJax 3 (conexão à internet necessária para carregar o MathJax).
 
-Arquivos:
-- index.html: início, categorias, busca e bibliografia ABNT.
-- metodos/: 103 páginas didáticas separadas.
-- scripts/: 103 scripts de R baixáveis.
-- assets/: CSS, JS e fotografia.
-- catalogo.json: índice para manutenção.
+PUBLICAÇÃO NO GITHUB PAGES
+Substitua os arquivos index.html, catalogo.json e assets/style.css, assets/script.js no repositório. Substitua também todos os arquivos de metodos/ e scripts/ mantendo os mesmos nomes. Envie em lotes menores que 100 arquivos se usar a interface web do GitHub.
 
-Para editar uma página, abra metodos/IDENTIFICADOR.html.
-Para editar o R, altere o trecho de código na página HTML e o respectivo arquivo scripts/IDENTIFICADOR.R (mantenha ambos sincronizados).
-O PDF de James et al. fornecido é 2ª edição de 2021.
-O e-book apresenta ambiguidades e divergências; a redação do site prioriza a formulação estatística usual e distingue alternativas quando não se dispõe de implementação exata.
+IMPORTANTE: troque a versão antiga integralmente; não mantenha a página anterior na raiz. Dados de pacotes R podem requerer conexão para instalá-los. Exemplos avançados de CNN/RNN exigem TensorFlow. Nem todos os scripts puderam ser executados neste ambiente, portanto valide os exemplos em uma instalação R antes de utilizá-los em avaliação formal.
