@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial.">
+<title>Redes neurais convolucionais (CNN) | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>18 · APRENDIZADO SUPERVISIONADO</span></div>
+<div class="detail-intro"><span class="eyebrow">18 · APRENDIZADO SUPERVISIONADO</span><span class="source-pill">James et al. · 2021</span>
+<h1>Redes neurais convolucionais (CNN)</h1><p class="detail-lead">Aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/cnn.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Entradas com vizinhança espacial real, classes anotadas, divisão treino/teste sem vazamento espacial, quantidade de dados e regularização suficientes; exige backend computacional.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>Não há H₀ padrão do treinamento de uma CNN; avaliação exige métrica preditiva, IC por reamostragem quando necessário.</p><h3>Estatística, estimador ou critério</h3><p>Camadas convolucionais, função de perda (p.ex., entropia cruzada) e otimização por gradiente; acurácia em teste, AUC etc.</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>Não se usa automaticamente p&lt;0,05. Interprete a capacidade de classificar amostras espaciais não usadas no treino.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Pacotes adicionais: keras3 + TensorFlow (instalação adicional). Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Classificação de patches 5×5 de um mapa de elevação (volcano, conjunto disponível no R), analogia à detecção de regiões topográficas elevadas.</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-cnn">Copiar código</button></div><pre id="r-cnn"><code># Requer Python/TensorFlow configurados: executar UMA VEZ,
+# antes da primeira utilização: keras3::install_keras()
+if (!requireNamespace(&quot;keras3&quot;, quietly = TRUE)) install.packages(&quot;keras3&quot;)
+library(keras3)
+set.seed(2026)
+mapa &lt;- as.matrix(volcano)
+pos &lt;- expand.grid(i = 3:(nrow(mapa)-2), j = 3:(ncol(mapa)-2))
+pos &lt;- pos[sample.int(nrow(pos), 600), ]
+x &lt;- array(0, dim = c(600, 5, 5, 1))
+y &lt;- numeric(600)
+for (k in seq_len(600)) {
+  i &lt;- pos$i[k]; j &lt;- pos$j[k]
+  x[k,,,1] &lt;- mapa[(i-2):(i+2), (j-2):(j+2)] / 200
+  x[k,3,3,1] &lt;- 0  # mascara altura central (alvo)
+  y[k] &lt;- as.integer(mapa[i,j] &gt; median(mapa))
+}
+i &lt;- sample.int(600, 480)
+modelo &lt;- keras_model_sequential(input_shape = c(5, 5, 1)) |&gt;
+  layer_conv_2d(filters = 8, kernel_size = 3, activation = &quot;relu&quot;) |&gt;
+  layer_flatten() |&gt;
+  layer_dense(units = 1, activation = &quot;sigmoid&quot;)
+modelo |&gt; compile(optimizer = &quot;adam&quot;, loss = &quot;binary_crossentropy&quot;,
+                  metrics = c(&quot;accuracy&quot;))
+modelo |&gt; fit(x[i,,, , drop = FALSE], y[i], epochs = 12,
+              batch_size = 32, verbose = 0)
+print(modelo |&gt; evaluate(x[-i,,, , drop = FALSE], y[-i], verbose = 0))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>A classificação usa apenas a vizinhança do ponto central; o pixel alvo foi ocultado para impedir vazamento trivial. Patches próximos ainda compartilham pixels: em aplicação real, separe regiões espaciais contíguas no treino e no teste.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+<aside class="technical-note"><strong>Nota metodológica</strong><p>A CNN requer backend TensorFlow/Python, não incluído na instalação padrão do R. Os exemplos simples funcionam em R; este exemplo avançado exige instalação adicional e validação espacial apropriada.</p></aside>
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>James et al. (2021), 2ª edição, <em>An Introduction to Statistical Learning</em></p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="mlp.html"><span>← ANTERIOR</span>Rede neural multicamadas (MLP)</a><a href="rnn.html"><span>PRÓXIMO →</span>Redes neurais recorrentes (RNN)</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

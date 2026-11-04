@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência.">
+<title>Regressão logística multinomial | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>03 · MODELOS ESTATÍSTICOS</span></div>
+<div class="detail-intro"><span class="eyebrow">03 · MODELOS ESTATÍSTICOS</span><span class="source-pill">E-book</span>
+<h1>Regressão logística multinomial</h1><p class="detail-lead">Classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/multinomial.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Categorias mutuamente exclusivas; observações independentes; especificação linear dos logits, sem separação, amostra suficiente para parâmetros. A hipótese de independência das alternativas irrelevantes exige justificativa conforme o problema.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀ⱼₖ: βⱼₖ = 0, para preditor j e categoria k contra a referência; teste global por deviance quando adequado.</p><h3>Estatística, estimador ou critério</h3><p>Wald z por coeficiente; G² entre modelos aninhados (χ² assintótico); exp(β) = razão de razões de probabilidade relativas.</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>p &lt; 0,05 indica evidência de efeito no logito relativo; exp(β) não é aumento direto de probabilidade de uma categoria.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Pacotes adicionais: nnet. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Previsão do número de cilindros (4, 6, 8) a partir da massa e potência (mtcars).</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-multinomial">Copiar código</button></div><pre id="r-multinomial"><code>if (!requireNamespace(&quot;nnet&quot;, quietly = TRUE)) install.packages(&quot;nnet&quot;)
+library(nnet)
+d &lt;- transform(mtcars, cyl = factor(cyl))
+ajuste &lt;- multinom(cyl ~ wt + hp, data = d, trace = FALSE)
+print(summary(ajuste))
+print(head(predict(ajuste, type = &quot;probs&quot;)))
+print(table(real = d$cyl, previsto = predict(ajuste)))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>As probabilidades previstas somam 1 para cada veículo. Compare as três categorias e observe que o conjunto é pequeno para inferência estável.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="logistica.html"><span>← ANTERIOR</span>Regressão logística binária</a><a href="ordinal.html"><span>PRÓXIMO →</span>Regressão logística ordinal</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida.">
+<title>Coeficiente de correlação intraclasse (ICC) | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>12 · CONCORDÂNCIA</span></div>
+<div class="detail-intro"><span class="eyebrow">12 · CONCORDÂNCIA</span><span class="source-pill">E-book</span>
+<h1>Coeficiente de correlação intraclasse (ICC)</h1><p class="detail-lead">Quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/icc.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Unidades independentes, medições comparáveis e replicadas; escolha prévia de modelo (um/dois fatores), acordo absoluto/consistência e medida única/média; avaliar outliers.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀: ICC=0 para teste usual (quando definido); para controle de qualidade, preferir IC e limiar mínimo exigido.</p><h3>Estatística, estimador ou critério</h3><p>Razões de componentes de variância da ANOVA específica ao desenho; estatística F depende do modelo ICC adotado.</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>Interprete IC95% e limite inferior em relação ao requisito técnico. p &lt; 0,05 contra zero não prova repetibilidade aceitável.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Pacotes adicionais: irr. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Medições simuladas de potência de motores, centradas nos valores reais de hp da base mtcars.</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-icc">Copiar código</button></div><pre id="r-icc"><code>if (!requireNamespace(&quot;irr&quot;, quietly = TRUE)) install.packages(&quot;irr&quot;)
+library(irr)
+set.seed(2026)
+medicoes &lt;- data.frame(
+  instrumento_1 = mtcars$hp + rnorm(nrow(mtcars), sd = 3),
+  instrumento_2 = mtcars$hp + rnorm(nrow(mtcars), sd = 3))
+print(icc(medicoes, model = &quot;twoway&quot;, type = &quot;agreement&quot;,
+          unit = &quot;single&quot;, conf.level = 0.95))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>Os instrumentos são simulados; ICC alto seria coerente com baixa variabilidade entre instrumentos comparada à variação entre motores. O critério aceitável é metrológico e deve ser predefinido.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+<aside class="technical-note"><strong>Nota metodológica</strong><p>As duas leituras por veículo são simuladas a partir da variável hp e ruído adicional; não são medições instrumentais observadas.</p></aside>
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="fleiss.html"><span>← ANTERIOR</span>Kappa de Fleiss</a><a href="kendall-w.html"><span>PRÓXIMO →</span>Coeficiente de concordância de Kendall (W)</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

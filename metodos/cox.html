@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Modelo semiparamétrico para tempo até evento: λ(t|x)=λ₀(t)exp(xᵀβ).">
+<title>Regressão de Cox | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>03 · MODELOS ESTATÍSTICOS</span></div>
+<div class="detail-intro"><span class="eyebrow">03 · MODELOS ESTATÍSTICOS</span><span class="source-pill">E-book</span>
+<h1>Regressão de Cox</h1><p class="detail-lead">Modelo semiparamétrico para tempo até evento: λ(t|x)=λ₀(t)exp(xᵀβ).</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/cox.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Modelo semiparamétrico para tempo até evento: λ(t|x)=λ₀(t)exp(xᵀβ).</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Censura não informativa condicional, independência entre unidades, proporcionalidade dos riscos, covariáveis adequadamente especificadas; verifique resíduos de Schoenfeld e influência.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀: βⱼ = 0 (HR=1); H₁: ≠ 0; testes global Wald, escore ou razão de verossimilhanças parcial.</p><h3>Estatística, estimador ou critério</h3><p>Teste Wald z=β̂ⱼ/EP(β̂ⱼ); log-verossimilhança parcial; HR=exp(β̂).</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>p &lt; 0,05: evidência de associação com a taxa instantânea de evento. HR não é razão de probabilidades de falha nem diferença de tempo médio.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Pacotes adicionais: survival. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Demonstração metodológica com survival::lung (dados clínicos de tempos censurados), diretamente transferível à análise de tempo até falha em confiabilidade.</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-cox">Copiar código</button></div><pre id="r-cox"><code>if (!requireNamespace(&quot;survival&quot;, quietly = TRUE)) install.packages(&quot;survival&quot;)
+library(survival)
+d &lt;- na.omit(lung[, c(&quot;time&quot;, &quot;status&quot;, &quot;age&quot;, &quot;sex&quot;)])
+ajuste &lt;- coxph(Surv(time, status == 2) ~ age + sex, data = d)
+print(summary(ajuste))
+print(cox.zph(ajuste))
+print(exp(confint(ajuste)))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>A análise é de sobrevivência clínica na base original. Na engenharia, substitua time por tempo até falha e status pelo indicador de falha; examine a proporcionalidade antes de usar HR constante.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+<aside class="technical-note"><strong>Nota metodológica</strong><p>Dados disponíveis no pacote survival, mas são clínicos; não os apresente como falhas de equipamentos.</p></aside>
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="nb.html"><span>← ANTERIOR</span>Regressão binomial negativa</a><a href="quantilica.html"><span>PRÓXIMO →</span>Regressão quantílica</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

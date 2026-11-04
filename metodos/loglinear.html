@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Modela contagens esperadas de tabelas multiway por modelos de Poisson sobre efeitos e interações entre fatores.">
+<title>Análise log-linear | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>07 · DADOS CATEGÓRICOS</span></div>
+<div class="detail-intro"><span class="eyebrow">07 · DADOS CATEGÓRICOS</span><span class="source-pill">E-book</span>
+<h1>Análise log-linear</h1><p class="detail-lead">Modela contagens esperadas de tabelas multiway por modelos de Poisson sobre efeitos e interações entre fatores.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/loglinear.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Modela contagens esperadas de tabelas multiway por modelos de Poisson sobre efeitos e interações entre fatores.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Contagens por células definidas corretamente; independência entre unidades amostrais; adequação de Poisson ou ajuste de sobredispersão.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀: determinado termo de interação é zero, condicional aos demais termos; H₁: é diferente de zero.</p><h3>Estatística, estimador ou critério</h3><p>Diferença de deviance entre modelos aninhados, com aproximação χ² sob regularidade.</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>p &lt; 0,05 favorece o modelo com interação; não confundir associação categórica com causalidade.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Utiliza funções disponíveis na instalação padrão do R. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Dados de sobrevivência de passageiros do Titanic como exemplo metodológico de engenharia de segurança de transportes.</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-loglinear">Copiar código</button></div><pre id="r-loglinear"><code>d &lt;- as.data.frame(Titanic)
+m0 &lt;- glm(Freq ~ Class + Sex + Age + Survived,
+          data = d, family = poisson())
+m1 &lt;- update(m0, . ~ . + Class:Survived)
+print(anova(m0, m1, test = &quot;Chisq&quot;))
+print(summary(m1))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>A interação Class×Survived avalia se a distribuição de sobrevivência varia conforme a classe, dentro da estrutura log-linear simplificada. O conjunto é histórico, não sobre equipamentos.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="cochran-q.html"><span>← ANTERIOR</span>Teste Q de Cochran</a><a href="hcluster.html"><span>PRÓXIMO →</span>Agrupamento hierárquico</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Relaciona a resposta contínua Y a um preditor X: E(Y|X=x)=β₀+β₁x. Os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado.">
+<title>Regressão linear simples | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>03 · MODELOS ESTATÍSTICOS</span></div>
+<div class="detail-intro"><span class="eyebrow">03 · MODELOS ESTATÍSTICOS</span><span class="source-pill">E-book</span>
+<h1>Regressão linear simples</h1><p class="detail-lead">Relaciona a resposta contínua Y a um preditor X: E(Y|X=x)=β₀+β₁x. Os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/linear-simples.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Relaciona a resposta contínua Y a um preditor X: E(Y|X=x)=β₀+β₁x. Os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Independência dos erros, média condicional linear, ausência de pontos excessivamente influentes; homocedasticidade para erros-padrão usuais, normalidade dos erros para inferência exata em amostras pequenas. Verifique resíduos × ajustados, Q–Q e influência.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀: β₁ = 0; H₁: β₁ ≠ 0.</p><h3>Estatística, estimador ou critério</h3><p>t = β̂₁/EP(β̂₁), com n−2 graus de liberdade; F = t² para modelo com um preditor.</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>p &lt; 0,05: evidência de associação linear condicional. IC95% para β₁; IC da média e intervalo de predição são objetos distintos.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Utiliza funções disponíveis na instalação padrão do R. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Distância de frenagem (dist) em função da velocidade (speed) de automóveis (cars).</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-linear-simples">Copiar código</button></div><pre id="r-linear-simples"><code>ajuste &lt;- lm(dist ~ speed, data = cars)
+print(summary(ajuste))
+print(confint(ajuste, level = 0.95))
+print(predict(ajuste, newdata = data.frame(speed = 20),
+              interval = &quot;prediction&quot;, level = 0.95))
+plot(ajuste, which = 1)</code></pre>
+<h3>Como interpretar o exemplo</h3><p>O coeficiente de speed indica a variação média estimada em dist para uma unidade adicional de velocidade. Use o intervalo de predição para uma nova observação; ele é mais largo que o IC da média.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="parcial.html"><span>← ANTERIOR</span>Correlação parcial</a><a href="linear-multipla.html"><span>PRÓXIMO →</span>Regressão linear múltipla</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

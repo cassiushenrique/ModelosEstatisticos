@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.">
+<title>Teste generalizado de Wilcoxon–Gehan | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>10 · SOBREVIVÊNCIA</span></div>
+<div class="detail-intro"><span class="eyebrow">10 · SOBREVIVÊNCIA</span><span class="source-pill">E-book</span>
+<h1>Teste generalizado de Wilcoxon–Gehan</h1><p class="detail-lead">Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/gehan.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Unidades independentes, censura não informativa, tempos e status corretos; ponderação previamente escolhida.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀: distribuições de sobrevivência iguais; H₁: diferentes.</p><h3>Estatística, estimador ou critério</h3><p>U=∑ₜ n(t)[O₁(t)−E₁(t)], V=∑ₜ n(t)²Var[O₁(t)]; χ²=U²/V aproximadamente χ²₁.</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>p &lt; 0,05: evidência de diferença ponderada nas curvas; comparação com log-rank depende do padrão temporal de efeitos.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Pacotes adicionais: survival. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Tempos clínicos censurados survival::lung usados como ilustração metodológica da comparação de lotes de vida útil.</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-gehan">Copiar código</button></div><pre id="r-gehan"><code>if (!requireNamespace(&quot;survival&quot;, quietly = TRUE)) install.packages(&quot;survival&quot;)
+library(survival)
+d &lt;- subset(lung, !is.na(time) &amp; !is.na(status) &amp; !is.na(sex))
+d$evento &lt;- as.integer(d$status == 2)
+d$grupo &lt;- as.integer(d$sex == 2)
+U &lt;- 0; V &lt;- 0
+for (t in sort(unique(d$time[d$evento == 1]))) {
+  risco &lt;- d$time &gt;= t
+  evento &lt;- d$time == t &amp; d$evento == 1
+  n &lt;- sum(risco); n1 &lt;- sum(risco &amp; d$grupo == 1)
+  n0 &lt;- n - n1; dt &lt;- sum(evento)
+  o1 &lt;- sum(evento &amp; d$grupo == 1)
+  if (n &gt; 1) {
+    U &lt;- U + n * (o1 - dt * n1 / n)
+    V &lt;- V + n^2 * (n1 * n0 * dt * (n - dt)) / (n^2 * (n - 1))
+  }
+}
+qui &lt;- U^2 / V
+print(c(qui_quadrado = qui, gl = 1,
+        p_valor = pchisq(qui, df = 1, lower.tail = FALSE)))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>Este código implementa a ponderação Gehan–Breslow n(t), distinta do rho=1 de survdiff, que usa pesos do tipo Peto–Peto. A comparação enfatiza eventos iniciais.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+<aside class="technical-note"><strong>Nota metodológica</strong><p>Implementação didática direta para dois grupos com censura à direita; não utilizar survdiff(rho=1) como sinônimo exato de Gehan–Breslow.</p></aside>
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="logrank.html"><span>← ANTERIOR</span>Teste log-rank</a><a href="mann-whitney.html"><span>PRÓXIMO →</span>Mann–Whitney / Wilcoxon rank-sum</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<meta name="description" content="Ajuste para m testes: p_aj=1−(1−p)^m. Sob independência dos testes, controla a probabilidade de erro familiar.">
+<title>Ajuste de Šidák | Estatística e Ciência de Dados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body><header class="topbar">
+<a class="brand" href="../index.html#inicio" aria-label="Página inicial">
+ <span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+</a>
+<button class="menu-btn" type="button" aria-expanded="false" aria-label="Abrir menu">☰</button>
+<nav class="nav" aria-label="Navegação principal">
+ <a href="../index.html#catalogo">Métodos</a>
+ <a href="../index.html#orientacoes">Como utilizar</a>
+ <a href="../index.html#referencias">Referências</a>
+ <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+</nav>
+</header><main class="detail-main">
+<div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de métodos</a><span>›</span><span>06 · COMPARAÇÕES MÚLTIPLAS</span></div>
+<div class="detail-intro"><span class="eyebrow">06 · COMPARAÇÕES MÚLTIPLAS</span><span class="source-pill">E-book</span>
+<h1>Ajuste de Šidák</h1><p class="detail-lead">Ajuste para m testes: p_aj=1−(1−p)^m. Sob independência dos testes, controla a probabilidade de erro familiar.</p>
+<div class="quick-actions"><a class="btn primary" href="#exemplo">Ver aplicação em R ↓</a><a class="btn secondary" href="../scripts/sidak.R" download>Baixar script .R ↓</a></div></div>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel "><h2>01 · O que é?</h2><p>Ajuste para m testes: p_aj=1−(1−p)^m. Sob independência dos testes, controla a probabilidade de erro familiar.</p></section>
+<section class="detail-panel "><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>P-valores válidos; independência das hipóteses/testes para controle exato simples, ou condições positivas específicas; para controle sem essa suposição prefira Bonferroni/Holm.</p></section>
+<section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses</h3><p>H₀ por contraste: ausência de diferença; H₁: diferença.</p><h3>Estatística, estimador ou critério</h3><p>Estatística base t, F etc.; critério α_individual=1−(1−α)^(1/m).</p></section>
+<section class="detail-panel "><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>p_aj &lt; 0,05 indica rejeição pela correção. Evite chamar o ajuste de independente quando contrastes partilham amostras.</p></section>
+<section class="detail-panel"><h2>05 · Como executar no R?</h2><p>O bloco do exemplo contém todos os comandos necessários. Utiliza funções disponíveis na instalação padrão do R. Quando necessário, o script instala o pacote ausente e carrega a biblioteca com <code>library()</code>.</p><p>É possível copiar os comandos ou baixar o arquivo <code>.R</code> completo. Execute o script inteiro no RStudio, preferencialmente com uma sessão limpa.</p></section>
+<section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><h3>Contexto e dados</h3><p>Comparar médias de quebras em pares de tensões (warpbreaks) com ajustes ilustrativos.</p><div class="code-toolbar"><span>R · script reproduzível</span><button class="copy-code" type="button" data-copy="r-sidak">Copiar código</button></div><pre id="r-sidak"><code>pbrutos &lt;- pairwise.t.test(warpbreaks$breaks, warpbreaks$tension,
+                          pool.sd = FALSE, p.adjust.method = &quot;none&quot;)$p.value
+m &lt;- sum(!is.na(pbrutos))
+p_aj_sidak &lt;- 1 - (1 - pbrutos)^m
+print(p_aj_sidak)
+print(p.adjust(pbrutos[!is.na(pbrutos)], method = &quot;holm&quot;))</code></pre>
+<h3>Como interpretar o exemplo</h3><p>Os p-valores por pares não são, em geral, independentes. A saída de Holm incluída fornece alternativa com controle familiar sob dependência arbitrária.</p>
+<p class="r-fallback">Caso algum pacote não esteja instalado, o primeiro comando <code>install.packages()</code> exige conexão à internet. Os dados usados estão disponíveis no R ou nos pacotes identificados.</p></section>
+<aside class="technical-note"><strong>Nota metodológica</strong><p>A fórmula de Šidák é apresentada com seu requisito de independência; Holm é a opção conservadora mais geral para o mesmo caso.</p></aside>
+</div>
+<aside class="detail-aside"><div class="aside-card"><span class="aside-label">FONTE DE ESTUDO</span><p>E-book <em>Análises bi e multivariadas</em> (72 tópicos cobertos)</p><a href="../index.html#referencias">Bibliografia em ABNT →</a></div><div class="aside-card"><span class="aside-label">INTERPRETAÇÃO RIGOROSA</span><p><strong>p ≥ 0,05</strong> não prova a hipótese nula. Distinga significância estatística, magnitude e precisão. Métodos preditivos sem teste próprio devem ser avaliados fora do treino.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver os 103 métodos →</a></div></aside>
+</div>
+<nav class="method-pager" aria-label="Método anterior e próximo"><a href="regwf.html"><span>← ANTERIOR</span>Ryan–Einot–Gabriel–Welsch (REGW)</a><a href="duncan.html"><span>PRÓXIMO →</span>Duncan</a></nav>
+<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Fotografia do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, modelagem e confiabilidade.</p><b>Conheça minha trajetória e projetos →</b></div></a></section>
+</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><br>Guia acadêmico de consulta e aplicação computacional · ICTIN/UFLA</div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span> · Conteúdo didático</div></footer>
+<script src="../assets/script.js" defer></script>
+</body></html>
