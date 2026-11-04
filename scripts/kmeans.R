@@ -1,6 +1,6 @@
 # K-means
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 set.seed(2026)
 X <- scale(mtcars[, c("mpg", "hp", "wt")])

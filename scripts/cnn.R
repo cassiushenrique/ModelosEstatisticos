@@ -1,6 +1,6 @@
 # Redes neurais convolucionais (CNN)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 # Requer Python/TensorFlow configurados: executar UMA VEZ,
 # antes da primeira utilização: keras3::install_keras()

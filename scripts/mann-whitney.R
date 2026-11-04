@@ -1,6 +1,6 @@
 # Mann–Whitney / Wilcoxon rank-sum
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 resultado <- wilcox.test(mpg ~ am, data = mtcars,
                        exact = FALSE, conf.int = TRUE, conf.level = 0.95)

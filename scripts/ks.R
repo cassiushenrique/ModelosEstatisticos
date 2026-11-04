@@ -1,6 +1,6 @@
 # Kolmogorov–Smirnov (uma amostra)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 x <- cars$dist
 # Distribuição de referência especificada previamente:

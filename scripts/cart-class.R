@@ -1,6 +1,6 @@
 # Árvore de classificação (CART)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 if (!requireNamespace("rpart", quietly = TRUE)) install.packages("rpart")
 library(rpart)

@@ -1,6 +1,6 @@
 # Separação treino–teste (holdout)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 set.seed(2026)
 i <- sample(seq_len(nrow(mtcars)), size = 22)

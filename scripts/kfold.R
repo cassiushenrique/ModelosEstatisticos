@@ -1,6 +1,6 @@
 # Validação cruzada k-fold
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 set.seed(2026)
 n <- nrow(mtcars); k <- 5

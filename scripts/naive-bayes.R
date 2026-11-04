@@ -1,6 +1,6 @@
 # Naive Bayes
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 if (!requireNamespace("e1071", quietly = TRUE)) install.packages("e1071")
 library(e1071)

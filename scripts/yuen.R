@@ -1,6 +1,6 @@
 # Teste de Yuen (grupos independentes)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 if (!requireNamespace("WRS2", quietly = TRUE)) install.packages("WRS2")
 library(WRS2)

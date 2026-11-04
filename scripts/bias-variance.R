@@ -1,6 +1,6 @@
 # Compromisso viés–variância
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 set.seed(2026)
 k <- 5; fold <- sample(rep(1:k, length.out = nrow(cars)))

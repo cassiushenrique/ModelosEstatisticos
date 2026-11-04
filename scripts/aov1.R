@@ -1,6 +1,6 @@
 # ANOVA de um fator
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 ajuste <- aov(breaks ~ tension, data = warpbreaks)
 print(summary(ajuste))

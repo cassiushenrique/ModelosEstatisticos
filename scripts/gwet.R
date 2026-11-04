@@ -1,6 +1,6 @@
 # Coeficiente AC1 de Gwet
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 if (!requireNamespace("irrCAC", quietly = TRUE)) install.packages("irrCAC")
 library(irrCAC)

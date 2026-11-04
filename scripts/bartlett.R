@@ -1,6 +1,6 @@
 # Bartlett
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 by(warpbreaks$breaks, warpbreaks$tension, shapiro.test)
 print(bartlett.test(breaks ~ tension, data = warpbreaks))

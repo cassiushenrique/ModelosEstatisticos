@@ -1,6 +1,6 @@
 # Teste exato de Fisher
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 tab <- table(mtcars$vs, mtcars$am)
 resultado <- fisher.test(tab, conf.level = 0.95)

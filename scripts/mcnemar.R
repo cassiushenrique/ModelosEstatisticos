@@ -1,6 +1,6 @@
 # Teste de McNemar
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 d <- subset(CO2, conc %in% c(95, 175))
 w <- reshape(d[, c("Plant", "conc", "uptake")], idvar = "Plant",

@@ -1,6 +1,6 @@
 # Hochberg GT2
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: e-book Psicometria Online
+# Estatística e Ciência de Dados — ICTIN/UFLA
+# Exemplo reproduzível com dados de R ou dos pacotes indicados.
 
 # Alternativa reproduzível com controle FWER: Holm sobre t de Welch.
 # Isto NÃO implementa exatamente Hochberg GT2.
