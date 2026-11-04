@@ -1,0 +1,3 @@
+Cada arquivo .R é independente e pode ser copiado integralmente para o RStudio.
+Instalações de pacotes exigem internet. Para CNN/RNN, configure também o backend keras/TensorFlow.
+Para modelos preditivos, resultados exemplificativos não substituem avaliação externa.
