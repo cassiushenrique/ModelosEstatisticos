@@ -1,0 +1,15 @@
+GUIA DE MODELOS ESTATÍSTICOS E CIÊNCIA DE DADOS — GITHUB PAGES
+
+Publicação: crie um repositório público, por exemplo ModelosEstatisticos, envie TODOS os arquivos e pastas deste ZIP diretamente na raiz. Em Settings > Pages selecione main e /(root).
+
+Arquivos:
+- index.html: início, categorias, busca e bibliografia ABNT.
+- metodos/: 103 páginas didáticas separadas.
+- scripts/: 103 scripts de R baixáveis.
+- assets/: CSS, JS e fotografia.
+- catalogo.json: índice para manutenção.
+
+Para editar uma página, abra metodos/IDENTIFICADOR.html.
+Para editar o R, altere o trecho de código na página HTML e o respectivo arquivo scripts/IDENTIFICADOR.R (mantenha ambos sincronizados).
+O PDF de James et al. fornecido é 2ª edição de 2021.
+O e-book apresenta ambiguidades e divergências; a redação do site prioriza a formulação estatística usual e distingue alternativas quando não se dispõe de implementação exata.

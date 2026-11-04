@@ -1,0 +1,723 @@
+[
+  {
+    "key": "sw",
+    "title": "Shapiro–Wilk",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "ks",
+    "title": "Kolmogorov–Smirnov (uma amostra)",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "ad",
+    "title": "Anderson–Darling (normalidade)",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": "nortest"
+  },
+  {
+    "key": "levene",
+    "title": "Levene–Brown–Forsythe",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": "car"
+  },
+  {
+    "key": "bartlett",
+    "title": "Bartlett",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "mauchly",
+    "title": "Mauchly (esfericidade)",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": "ez"
+  },
+  {
+    "key": "boxm",
+    "title": "M de Box",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": "biotools"
+  },
+  {
+    "key": "mardia",
+    "title": "Mardia (normalidade multivariada)",
+    "cat": "diagnosticos",
+    "source": "ebook",
+    "packages": "MVN"
+  },
+  {
+    "key": "pearson",
+    "title": "Correlação de Pearson",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "spearman",
+    "title": "Correlação de Spearman",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "kendall",
+    "title": "Correlação tau de Kendall",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "pontobisserial",
+    "title": "Correlação ponto-bisserial",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "tetracorica",
+    "title": "Correlação tetracórica",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": "psych"
+  },
+  {
+    "key": "policorica",
+    "title": "Correlação policórica",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": "psych"
+  },
+  {
+    "key": "parcial",
+    "title": "Correlação parcial",
+    "cat": "correlacoes",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "linear-simples",
+    "title": "Regressão linear simples",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "linear-multipla",
+    "title": "Regressão linear múltipla",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "logistica",
+    "title": "Regressão logística binária",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "multinomial",
+    "title": "Regressão logística multinomial",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": "nnet"
+  },
+  {
+    "key": "ordinal",
+    "title": "Regressão logística ordinal",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": "MASS"
+  },
+  {
+    "key": "poisson",
+    "title": "Regressão de Poisson",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "nb",
+    "title": "Regressão binomial negativa",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": "MASS"
+  },
+  {
+    "key": "cox",
+    "title": "Regressão de Cox",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": "survival"
+  },
+  {
+    "key": "quantilica",
+    "title": "Regressão quantílica",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": "quantreg"
+  },
+  {
+    "key": "wls",
+    "title": "Mínimos quadrados ponderados (WLS)",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "glm",
+    "title": "Modelos lineares generalizados (GLM)",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "gee",
+    "title": "Equações de estimação generalizadas (GEE)",
+    "cat": "regressao",
+    "source": "ebook",
+    "packages": "geepack"
+  },
+  {
+    "key": "t1",
+    "title": "Teste t para uma amostra",
+    "cat": "testes-t",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "t2",
+    "title": "Teste t de Student (dois grupos)",
+    "cat": "testes-t",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "tpareado",
+    "title": "Teste t pareado",
+    "cat": "testes-t",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "twelch",
+    "title": "Teste t de Welch (dois grupos)",
+    "cat": "testes-t",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "yuen",
+    "title": "Teste de Yuen (grupos independentes)",
+    "cat": "testes-t",
+    "source": "ebook",
+    "packages": "WRS2"
+  },
+  {
+    "key": "yuen-pareado",
+    "title": "Teste de Yuen robusto pareado (Yuend)",
+    "cat": "testes-t",
+    "source": "ebook",
+    "packages": "WRS2"
+  },
+  {
+    "key": "aov1",
+    "title": "ANOVA de um fator",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "aovwelch",
+    "title": "ANOVA de Welch",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "aovrepetida",
+    "title": "ANOVA de medidas repetidas",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": "ez"
+  },
+  {
+    "key": "aovfatorial",
+    "title": "ANOVA fatorial",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "aovmista",
+    "title": "ANOVA mista",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": "ez"
+  },
+  {
+    "key": "ancova",
+    "title": "ANCOVA",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "manova",
+    "title": "MANOVA",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "mancova",
+    "title": "MANCOVA",
+    "cat": "anova",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "bonferroni",
+    "title": "Ajuste de Bonferroni",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "tukey",
+    "title": "Tukey HSD / Tukey–Kramer",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "games-howell",
+    "title": "Games–Howell",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": "rstatix"
+  },
+  {
+    "key": "regwf",
+    "title": "Ryan–Einot–Gabriel–Welsch (REGW)",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": "agricolae"
+  },
+  {
+    "key": "sidak",
+    "title": "Ajuste de Šidák",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "duncan",
+    "title": "Duncan",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": "agricolae"
+  },
+  {
+    "key": "hochberg-gt2",
+    "title": "Hochberg GT2",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "dunnett-c",
+    "title": "Dunnett C",
+    "cat": "posthoc",
+    "source": "ebook",
+    "packages": "rstatix"
+  },
+  {
+    "key": "qui-aderencia",
+    "title": "Qui-quadrado de aderência",
+    "cat": "categoricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "qui-independencia",
+    "title": "Qui-quadrado de independência",
+    "cat": "categoricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "fisher",
+    "title": "Teste exato de Fisher",
+    "cat": "categoricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "mcnemar",
+    "title": "Teste de McNemar",
+    "cat": "categoricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "cochran-q",
+    "title": "Teste Q de Cochran",
+    "cat": "categoricos",
+    "source": "ebook",
+    "packages": "DescTools"
+  },
+  {
+    "key": "loglinear",
+    "title": "Análise log-linear",
+    "cat": "categoricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "hcluster",
+    "title": "Agrupamento hierárquico",
+    "cat": "agrupamento",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "kmeans",
+    "title": "K-means",
+    "cat": "agrupamento",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "lda",
+    "title": "Análise discriminante linear (LDA)",
+    "cat": "discriminante",
+    "source": "ebook",
+    "packages": "MASS"
+  },
+  {
+    "key": "qda",
+    "title": "Análise discriminante quadrática (QDA)",
+    "cat": "discriminante",
+    "source": "ebook",
+    "packages": "MASS"
+  },
+  {
+    "key": "kaplan",
+    "title": "Estimador Kaplan–Meier",
+    "cat": "sobrevivencia",
+    "source": "ebook",
+    "packages": "survival"
+  },
+  {
+    "key": "logrank",
+    "title": "Teste log-rank",
+    "cat": "sobrevivencia",
+    "source": "ebook",
+    "packages": "survival"
+  },
+  {
+    "key": "gehan",
+    "title": "Teste generalizado de Wilcoxon–Gehan",
+    "cat": "sobrevivencia",
+    "source": "ebook",
+    "packages": "survival"
+  },
+  {
+    "key": "mann-whitney",
+    "title": "Mann–Whitney / Wilcoxon rank-sum",
+    "cat": "naoparametricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "wilcoxon-assinado",
+    "title": "Wilcoxon signed-rank (pareado)",
+    "cat": "naoparametricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "kruskal",
+    "title": "Kruskal–Wallis",
+    "cat": "naoparametricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "friedman",
+    "title": "Teste de Friedman",
+    "cat": "naoparametricos",
+    "source": "ebook",
+    "packages": ""
+  },
+  {
+    "key": "kappa",
+    "title": "Kappa de Cohen",
+    "cat": "concordancia",
+    "source": "ebook",
+    "packages": "irr"
+  },
+  {
+    "key": "kappa-ponderado",
+    "title": "Kappa ponderado",
+    "cat": "concordancia",
+    "source": "ebook",
+    "packages": "irr"
+  },
+  {
+    "key": "fleiss",
+    "title": "Kappa de Fleiss",
+    "cat": "concordancia",
+    "source": "ebook",
+    "packages": "irr"
+  },
+  {
+    "key": "icc",
+    "title": "Coeficiente de correlação intraclasse (ICC)",
+    "cat": "concordancia",
+    "source": "ebook",
+    "packages": "irr"
+  },
+  {
+    "key": "kendall-w",
+    "title": "Coeficiente de concordância de Kendall (W)",
+    "cat": "concordancia",
+    "source": "ebook",
+    "packages": "irr"
+  },
+  {
+    "key": "gwet",
+    "title": "Coeficiente AC1 de Gwet",
+    "cat": "concordancia",
+    "source": "ebook",
+    "packages": "irrCAC"
+  },
+  {
+    "key": "holdout",
+    "title": "Separação treino–teste (holdout)",
+    "cat": "avaliacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "kfold",
+    "title": "Validação cruzada k-fold",
+    "cat": "avaliacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "loocv",
+    "title": "Leave-one-out cross-validation (LOOCV)",
+    "cat": "avaliacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "bootstrap",
+    "title": "Bootstrap não paramétrico",
+    "cat": "avaliacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "classmetric",
+    "title": "Métricas de classificação e curva ROC",
+    "cat": "avaliacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "bias-variance",
+    "title": "Compromisso viés–variância",
+    "cat": "avaliacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "subset",
+    "title": "Seleção exaustiva de subconjuntos",
+    "cat": "regularizacao",
+    "source": "isl",
+    "packages": "leaps"
+  },
+  {
+    "key": "stepwise",
+    "title": "Seleção stepwise por AIC",
+    "cat": "regularizacao",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "ridge",
+    "title": "Regressão ridge",
+    "cat": "regularizacao",
+    "source": "isl",
+    "packages": "glmnet"
+  },
+  {
+    "key": "lasso",
+    "title": "Regressão lasso",
+    "cat": "regularizacao",
+    "source": "isl",
+    "packages": "glmnet"
+  },
+  {
+    "key": "pcr",
+    "title": "Regressão por componentes principais (PCR)",
+    "cat": "regularizacao",
+    "source": "isl",
+    "packages": "pls"
+  },
+  {
+    "key": "pls",
+    "title": "Regressão por mínimos quadrados parciais (PLS)",
+    "cat": "regularizacao",
+    "source": "isl",
+    "packages": "pls"
+  },
+  {
+    "key": "polinomial",
+    "title": "Regressão polinomial",
+    "cat": "naolinear",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "splines",
+    "title": "Splines de regressão",
+    "cat": "naolinear",
+    "source": "isl",
+    "packages": "splines (incluído no R)"
+  },
+  {
+    "key": "smoothing-spline",
+    "title": "Smoothing splines",
+    "cat": "naolinear",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "loess",
+    "title": "Regressão local (LOESS)",
+    "cat": "naolinear",
+    "source": "isl",
+    "packages": ""
+  },
+  {
+    "key": "gam",
+    "title": "Modelos aditivos generalizados (GAM)",
+    "cat": "naolinear",
+    "source": "isl",
+    "packages": "mgcv"
+  },
+  {
+    "key": "cart-reg",
+    "title": "Árvore de regressão (CART)",
+    "cat": "arvores",
+    "source": "isl",
+    "packages": "rpart"
+  },
+  {
+    "key": "cart-class",
+    "title": "Árvore de classificação (CART)",
+    "cat": "arvores",
+    "source": "isl",
+    "packages": "rpart"
+  },
+  {
+    "key": "bagging",
+    "title": "Bagging (bootstrap aggregation)",
+    "cat": "arvores",
+    "source": "isl",
+    "packages": "randomForest"
+  },
+  {
+    "key": "randomforest",
+    "title": "Random forests",
+    "cat": "arvores",
+    "source": "isl",
+    "packages": "randomForest"
+  },
+  {
+    "key": "boosting",
+    "title": "Gradient boosting de árvores",
+    "cat": "arvores",
+    "source": "isl",
+    "packages": "gbm"
+  },
+  {
+    "key": "bart",
+    "title": "Bayesian additive regression trees (BART)",
+    "cat": "arvores",
+    "source": "isl",
+    "packages": "BART"
+  },
+  {
+    "key": "knn",
+    "title": "K-nearest neighbors (KNN)",
+    "cat": "classificadores",
+    "source": "isl",
+    "packages": "class (incluído no R)"
+  },
+  {
+    "key": "naive-bayes",
+    "title": "Naive Bayes",
+    "cat": "classificadores",
+    "source": "isl",
+    "packages": "e1071"
+  },
+  {
+    "key": "svm-linear",
+    "title": "Máquinas de vetores de suporte lineares",
+    "cat": "classificadores",
+    "source": "isl",
+    "packages": "e1071"
+  },
+  {
+    "key": "svm-rbf",
+    "title": "SVM com kernel radial (RBF)",
+    "cat": "classificadores",
+    "source": "isl",
+    "packages": "e1071"
+  },
+  {
+    "key": "rede-uma-camada",
+    "title": "Rede sem camada oculta (classificador logístico)",
+    "cat": "redes",
+    "source": "isl",
+    "packages": "nnet"
+  },
+  {
+    "key": "mlp",
+    "title": "Rede neural multicamadas (MLP)",
+    "cat": "redes",
+    "source": "isl",
+    "packages": "nnet"
+  },
+  {
+    "key": "cnn",
+    "title": "Redes neurais convolucionais (CNN)",
+    "cat": "redes",
+    "source": "isl",
+    "packages": "keras3 + TensorFlow (instalação adicional)"
+  },
+  {
+    "key": "rnn",
+    "title": "Redes neurais recorrentes (RNN)",
+    "cat": "redes",
+    "source": "isl",
+    "packages": "keras3 + TensorFlow (instalação adicional)"
+  }
+]
