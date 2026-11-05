@@ -69,7 +69,7 @@
         <div class="catalog-title">
           <span class="section-label">CATÁLOGO COMPLETO</span>
           <h2>Explore os modelos.</h2>
-          <p>Pesquise pelo nome do método.</p>
+          <p>Pesquise pelo nome do método ou explore os conteúdos disponíveis nesta página..</p>
         </div>
         <div class="catalog-tools">
           <label for="method-search" class="sr-only">Buscar modelos</label>
@@ -243,13 +243,13 @@
                 <p>Modela categorias ordenadas por logits cumulativos. Na parametrização polr, <span class="math-inline">\(\operatorname{logit}\Pr(Y\leq j\mid x)=\theta_j-\mathbf x^\top\boldsymbol\beta\)</span>.</p>
                 <span class="card-more">Estudar método →</span>
               </a>
-              <a class="method-card" data-group-type="supervised" data-search="regressão de poisson modela contagens condicionais por log e(y|x)=β₀+xᵀβ; com exposição variável, inclua offset(log(exposição)). contagens de quebras em lotes têxteis por tensão e tipo de lã (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/poisson.html">
+              <a class="method-card" data-group-type="supervised" data-search="regressão de poisson modela contagens condicionais por log e(y|x)=β₀+xᵀβ. contagens de quebras em lotes têxteis por tensão e tipo de lã (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/poisson.html">
                 <span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span>
                 <h3>Regressão de Poisson</h3>
                 <p>Modela contagens condicionais por <span class="math-inline">\(\log\mathbb E(Y\mid x)=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>; com exposição variável, inclua offset(log(exposição)).</p>
                 <span class="card-more">Estudar método →</span>
               </a>
-              <a class="method-card" data-group-type="supervised" data-search="regressão binomial negativa alternativa para contagens com superdispersão: na parametrização nb2, var(y|x)=μ+μ²/θ. quebras de fios em manufatura têxtil (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/nb.html">
+              <a class="method-card" data-group-type="supervised" data-search="regressão binomial negativa alternativa para contagens com superdispersão: na parametrização nb2, var(y|x)=μ+μ²/θ. Exemplo: quebras de fios em manufatura têxtil (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/nb.html">
                 <span class="card-index">07 · APRENDIZADO SUPERVISIONADO</span>
                 <h3>Regressão binomial negativa</h3>
                 <p>Alternativa para contagens com superdispersão: na parametrização NB2, <span class="math-inline">\(\operatorname{Var}(Y\mid x)=\mu+\mu^2/\theta\)</span>.</p>
@@ -279,7 +279,8 @@
                 <p>Família de modelos em que <span class="math-inline">\(g[\mathbb E(Y\mid X)]=\mathbf X^\top\boldsymbol\beta\)</span> e a resposta pertence a uma família exponencial especificada (normal, binomial, Poisson, gama etc.).</p>
                 <span class="card-more">Estudar método →</span>
               </a>
-              <a class="method-card" data-group-type="supervised" data-search="equações de estimação generalizadas (gee) estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando correlação de trabalho e usando erros-padrão tipo sanduíche. absorção de co₂ medida repetidamente por planta em diferentes concentrações (co2; bioprocessos). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/gee.html">
+              <a class="method-card" data-group-type="supervised" data-search="equações de estimação generalizadas (gee) estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando 
+                correlação de trabalho. Exemplo: absorção de co₂ medida repetidamente por planta em diferentes concentrações (co2; bioprocessos). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/gee.html">
                 <span class="card-index">12 · APRENDIZADO SUPERVISIONADO</span>
                 <h3>Equações de estimação generalizadas (GEE)</h3>
                 <p>Estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando correlação de trabalho e usando erros-padrão tipo sanduíche.</p>
@@ -536,7 +537,7 @@
           <section class="catalog-group" id="sobrevivencia" data-group>
             <div class="group-head">
               <span class="section-label">10 · SOBREVIVÊNCIA</span>
-              <h2>Curvas e comparação de riscos</h2>
+              <h2>Curvas e comparação de funções taxa de falha</h2>
               <p>3 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
             </div>
             <div class="method-grid">
@@ -885,7 +886,8 @@
         <span class="section-label">CRITÉRIOS METODOLÓGICOS</span>
         <h2>Inferência e desempenho preditivo são objetivos distintos.</h2>
         <p>Um valor-p alto não comprova a hipótese nula. Estimativas pontuais, intervalos de confiança e diagnósticos complementam o teste. Para algoritmos sem hipótese nula intrínseca, devem-se utilizar validação, análise de erro e avaliação da generalização.</p>
-        <p>Os exemplos utilizam, entre outros, os conjuntos <code>mtcars</code>, <code>cars</code>, <code>warpbreaks</code> e <code>CO2</code>. Quando o conjunto não é originalmente da Engenharia, a aplicação é apresentada como analogia e não como dado industrial observado. Redes profundas dependem do backend TensorFlow.</p>
+        <p>Os exemplos utilizam, entre outros, os conjuntos <code>mtcars</code>, <code>cars</code>, <code>warpbreaks</code> e <code>CO2</code>. 
+          Redes profundas dependem do backend TensorFlow.</p>
       </section>
       <section class="bibliography" id="referencias">
         <span class="section-label">REFERÊNCIAS BIBLIOGRÁFICAS</span>
