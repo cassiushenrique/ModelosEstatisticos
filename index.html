@@ -1,16 +1,960 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="103 métodos com hipóteses, pressupostos, fórmulas em LaTeX, exemplos reproduzíveis em R e aplicações de Engenharia."><title>Modelos estatísticos e ciência de dados | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="index.html#catalogo">Modelos</a><a href="index.html#orientacoes">Como utilizar</a><a href="index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main id="inicio">
-<section class="hero"><div><span class="eyebrow">GUIA DE CONSULTA · UFLA · ICTIN</span><h1>Estatística para<br><span>analisar, inferir e prever.</span></h1><p class="lead">Um guia de consulta sobre métodos estatísticos, inferência e ciência de dados, com fórmulas matemáticas, diagnósticos e exemplos reproduzíveis em R, priorizando problemas de Engenharia.</p><div class="btns"><a class="btn primary" href="#catalogo">Explorar modelos ↓</a><a class="btn secondary" href="#referencias">Bibliografia científica ↗</a></div><div class="hero-stats"><div><strong>103</strong><span>Tópicos</span></div><div><strong>56</strong><span>Estatística clássica</span></div><div><strong>45</strong><span>Supervisionados</span></div><div><strong>2</strong><span>Não supervisionados</span></div></div></div><aside class="hero-panel"><span class="panel-kicker">APRENDIZAGEM APLICADA</span><h2>Da hipótese à interpretação.</h2><p>Definição, pressupostos, estatísticas e fórmulas em LaTeX, interpretação a 5%, código e aplicação contextualizada em R. Métodos preditivos são avaliados por medidas adequadas de desempenho, sem impor testes inexistentes.</p><div class="hero-glyph" aria-hidden="true">Σ <span>R</span></div></aside></section>
-<section class="guide" id="orientacoes"><div class="section-head"><span class="section-label">COMO UTILIZAR</span><h2>Uma estrutura consistente para cada método.</h2><p>Escolha o procedimento pelo objetivo da análise e pelo delineamento dos dados. Confira as hipóteses, os pressupostos, a estatística e a interpretação antes de executar o código R.</p></div><div class="guide-grid"><article><span>01 · MODELAGEM</span><h3>O que é e quando aplicar?</h3><p>Definições, tipo de resposta, estrutura dos dados, pressupostos e diagnósticos necessários.</p></article><article><span>02 · INFERÊNCIA</span><h3>Hipóteses e fórmulas</h3><p>Equações renderizadas em LaTeX, hipóteses formais, intervalos de confiança e decisão com significância de 5%, quando aplicáveis.</p></article><article><span>03 · PRÁTICA</span><h3>Aplicação em R</h3><p>Exemplos com dados públicos incluídos na instalação do R ou em seus pacotes, com interpretação e script integral para copiar e baixar.</p></article></div></section>
-<section class="catalog" id="catalogo"><div class="catalog-title"><span class="section-label">CATÁLOGO COMPLETO</span><h2>Explore os modelos.</h2><p>Pesquise pelo nome do método ou contexto de aplicação. Use os filtros por natureza do procedimento.</p></div><div class="catalog-tools"><label for="method-search" class="sr-only">Buscar modelos</label><input id="method-search" type="search" placeholder="Buscar: ANOVA, Cox, random forest, correlação..." autocomplete="off"><div class="filter-buttons" aria-label="Filtrar por tipo de método"><button data-filter="all" type="button" class="active" aria-pressed="true">Todos · 103</button><button data-filter="classical" type="button" aria-pressed="false">Estatística clássica · 56</button><button data-filter="supervised" type="button" aria-pressed="false">Aprendizado supervisionado · 45</button><button data-filter="unsupervised" type="button" aria-pressed="false">Aprendizado não supervisionado · 2</button></div><p class="result-counter" role="status" aria-live="polite">103 métodos encontrados</p></div>
-<nav class="category-jump" aria-label="Ir para tema"><a href="#diagnosticos">Diagnósticos</a><a href="#correlacoes">Associação</a><a href="#regressao">Modelos Estatísticos</a><a href="#testes-t">Comparação De Médias</a><a href="#anova">Análise De Variância</a><a href="#posthoc">Comparações Múltiplas</a><a href="#categoricos">Dados Categóricos</a><a href="#agrupamento">Agrupamento</a><a href="#discriminante">Classificação</a><a href="#sobrevivencia">Sobrevivência</a><a href="#naoparametricos">Não Paramétricos</a><a href="#concordancia">Concordância</a><a href="#avaliacao">Validação e reamostragem</a><a href="#regularizacao">Seleção e regularização</a><a href="#naolinear">Relações não lineares</a><a href="#arvores">Árvores e ensembles</a><a href="#classificadores">Classificadores preditivos</a><a href="#redes">Redes neurais e aprendizado profundo</a></nav><div class="catalog-groups"><section class="catalog-group" id="diagnosticos" data-group><div class="group-head"><span class="section-label">01 · DIAGNÓSTICOS</span><h2>Normalidade, variâncias e pressupostos</h2><p>8 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="shapiro–wilk avalia a compatibilidade de uma amostra com a distribuição normal; é sensível a desvios da forma da distribuição. controle dimensional de veículos: verificar a distribuição da cilindrada em mtcars. 01 · diagnósticos estatística clássica" href="metodos/sw.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Shapiro–Wilk</h3><p>Avalia a compatibilidade de uma amostra com a distribuição normal; é sensível a desvios da forma da distribuição.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="kolmogorov–smirnov (uma amostra) compara a função de distribuição empírica fₙ à distribuição f₀ completamente especificada. inspeção de uma distribuição hipotética para a distância de frenagem (cars), usando parâmetros previamente fixados apenas para demonstrar o teste. 01 · diagnósticos estatística clássica" href="metodos/ks.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Kolmogorov–Smirnov (uma amostra)</h3><p>Compara a função de distribuição empírica <span class="math-inline">\(F_{n}\)</span> à distribuição <span class="math-inline">\(F_{0}\)</span> completamente especificada.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="anderson–darling (normalidade) teste de aderência que pondera fortemente as discrepâncias nas caudas da distribuição. diagnóstico da distância de frenagem de veículos (cars). 01 · diagnósticos estatística clássica" href="metodos/ad.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Anderson–Darling (normalidade)</h3><p>Teste de aderência que pondera fortemente as discrepâncias nas caudas da distribuição.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="levene–brown–forsythe compara dispersões entre grupos; a versão centrada na mediana (brown–forsythe) é menos sensível a assimetria e valores extremos. variabilidade do número de quebras de fios entre diferentes teares (warpbreaks). 01 · diagnósticos estatística clássica" href="metodos/levene.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Levene–Brown–Forsythe</h3><p>Compara dispersões entre grupos; a versão centrada na mediana (Brown–Forsythe) é menos sensível a assimetria e valores extremos.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="bartlett compara as variâncias de k populações sob normalidade. é bastante sensível à não normalidade. avaliar variabilidade das quebras de fios por tensão (warpbreaks). 01 · diagnósticos estatística clássica" href="metodos/bartlett.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>Bartlett</h3><p>Compara as variâncias de k populações sob normalidade. É bastante sensível à não normalidade.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="mauchly (esfericidade) avalia a esfericidade em fatores intraunidade com três ou mais condições: igualdade das variâncias das diferenças entre pares de condições. absorção de co₂ por plantas submetidas a diferentes concentrações (dados co2; engenharia de bioprocessos). 01 · diagnósticos estatística clássica" href="metodos/mauchly.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>Mauchly (esfericidade)</h3><p>Avalia a esfericidade em fatores intraunidade com três ou mais condições: igualdade das variâncias das diferenças entre pares de condições.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="m de box avalia a igualdade de matrizes de covariância entre grupos de uma variável categórica. comparação de covariâncias de quatro medidas físicas entre classes de plantas no conjunto iris, usado como exemplo de controle de qualidade multivariado. 01 · diagnósticos estatística clássica" href="metodos/boxm.html"><span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span><h3>M de Box</h3><p>Avalia a igualdade de matrizes de covariância entre grupos de uma variável categórica.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="mardia (normalidade multivariada) avalia assimetria e curtose multivariadas, componentes distintos da adequação à normalidade conjunta. quatro medidas físicas simultâneas de amostras (iris), ilustrando inspeção multivariada. 01 · diagnósticos estatística clássica" href="metodos/mardia.html"><span class="card-index">08 · ESTATÍSTICA CLÁSSICA</span><h3>Mardia (normalidade multivariada)</h3><p>Avalia assimetria e curtose multivariadas, componentes distintos da adequação à normalidade conjunta.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="correlacoes" data-group><div class="group-head"><span class="section-label">02 · ASSOCIAÇÃO</span><h2>Correlação e dependência</h2><p>7 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="correlação de pearson mensura intensidade e direção da associação linear entre duas variáveis quantitativas. automóveis: consumo (mpg) e massa do veículo (wt) em mtcars. 02 · associação estatística clássica" href="metodos/pearson.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação de Pearson</h3><p>Mensura intensidade e direção da associação linear entre duas variáveis quantitativas.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="correlação de spearman mensura a associação monotônica por correlação de postos, sem exigir uma relação linear. relação entre massa e potência de veículos (mtcars). 02 · associação estatística clássica" href="metodos/spearman.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação de Spearman</h3><p>Mensura a associação monotônica por correlação de postos, sem exigir uma relação linear.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="correlação tau de kendall mede predominância de pares concordantes sobre discordantes na ordenação de duas variáveis. relacionamento entre peso e consumo de veículos (mtcars). 02 · associação estatística clássica" href="metodos/kendall.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação tau de Kendall</h3><p>Mede predominância de pares concordantes sobre discordantes na ordenação de duas variáveis.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="correlação ponto-bisserial é a correlação de pearson quando um dos atributos é binário (codificação 0/1) e o outro é quantitativo. transmissão manual (am = 1) versus automática (am = 0), associada à autonomia dos veículos em mtcars. 02 · associação estatística clássica" href="metodos/pontobisserial.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação ponto-bisserial</h3><p>É a correlação de Pearson quando um dos atributos é binário (codificação 0/1) e o outro é quantitativo.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="correlação tetracórica estima a correlação de duas variáveis latentes normais subjacentes a respostas binárias definidas por limiares. duas classificações binárias derivadas de medidas de potência e massa de veículos (mtcars); limiares geram categorias. 02 · associação estatística clássica" href="metodos/tetracorica.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação tetracórica</h3><p>Estima a correlação de duas variáveis latentes normais subjacentes a respostas binárias definidas por limiares.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="correlação policórica estima a correlação entre latentes normais bivariadas representadas por categorias ordinais. categorias de potência e consumo de veículos (mtcars), tomadas como indicadores ordinais. 02 · associação estatística clássica" href="metodos/policorica.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação policórica</h3><p>Estima a correlação entre latentes normais bivariadas representadas por categorias ordinais.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="correlação parcial mensura a associação linear de x e y depois de remover componentes lineares atribuídos a covariáveis z. associação entre potência e consumo em mtcars, controlando a massa do veículo. 02 · associação estatística clássica" href="metodos/parcial.html"><span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span><h3>Correlação parcial</h3><p>Mensura a associação linear de X e Y depois de remover componentes lineares atribuídos a covariáveis Z.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="regressao" data-group><div class="group-head"><span class="section-label">03 · MODELOS ESTATÍSTICOS</span><h2>Regressões e modelos marginais</h2><p>12 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="regressão linear simples relaciona a resposta contínua y a um preditor x: e(y|x=x)=β₀+β₁x. os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado. distância de frenagem (dist) em função da velocidade (speed) de automóveis (cars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/linear-simples.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão linear simples</h3><p>Relaciona a resposta contínua Y a um preditor X: <span class="math-inline">\(\mathbb E(Y\mid X=x)=\beta_0+\beta_1x\)</span>. Os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão linear múltipla estima efeitos condicionais de vários preditores sobre uma resposta quantitativa sob um modelo linear na média. autonomia (mpg) explicada por peso e potência dos veículos (mtcars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/linear-multipla.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão linear múltipla</h3><p>Estima efeitos condicionais de vários preditores sobre uma resposta quantitativa sob um modelo linear na média.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão logística binária modela a probabilidade π(x)=p(y=1|x) por logit[π(x)]=β₀+xᵀβ. classificação do tipo de transmissão (manual/automática) com peso e potência em mtcars. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/logistica.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão logística binária</h3><p>Modela a probabilidade <span class="math-inline">\(\pi(x)=\Pr(Y=1\mid x)\)</span> por <span class="math-inline">\(\operatorname{logit}[\pi(x)]=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão logística multinomial classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência. previsão do número de cilindros (4, 6, 8) a partir da massa e potência (mtcars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/multinomial.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão logística multinomial</h3><p>Classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão logística ordinal modela categorias ordenadas por logits cumulativos. na parametrização polr, logit p(y≤j|x)=θⱼ−xᵀβ. número de marchas (3, 4, 5) ordenado por complexidade do câmbio em mtcars. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/ordinal.html"><span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão logística ordinal</h3><p>Modela categorias ordenadas por logits cumulativos. Na parametrização polr, <span class="math-inline">\(\operatorname{logit}\Pr(Y\leq j\mid x)=\theta_j-\mathbf x^\top\boldsymbol\beta\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão de poisson modela contagens condicionais por log e(y|x)=β₀+xᵀβ; com exposição variável, inclua offset(log(exposição)). contagens de quebras em lotes têxteis por tensão e tipo de lã (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/poisson.html"><span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão de Poisson</h3><p>Modela contagens condicionais por <span class="math-inline">\(\log\mathbb E(Y\mid x)=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>; com exposição variável, inclua offset(log(exposição)).</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão binomial negativa alternativa para contagens com superdispersão: na parametrização nb2, var(y|x)=μ+μ²/θ. quebras de fios em manufatura têxtil (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/nb.html"><span class="card-index">07 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão binomial negativa</h3><p>Alternativa para contagens com superdispersão: na parametrização NB2, <span class="math-inline">\(\operatorname{Var}(Y\mid x)=\mu+\mu^2/\theta\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão de cox modelo semiparamétrico para tempo até evento: λ(t|x)=λ₀(t)exp(xᵀβ). demonstração metodológica com survival::lung (dados clínicos de tempos censurados), diretamente transferível à análise de tempo até falha em confiabilidade. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/cox.html"><span class="card-index">08 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão de Cox</h3><p>Modelo semiparamétrico para tempo até evento: <span class="math-inline">\(\lambda(t\mid x)=\lambda_0(t)e^{\mathbf x^\top\boldsymbol\beta}\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão quantílica modela quantis condicionais q_τ(y|x)=xᵀβ(τ), como a mediana τ=0,5. distância mediana de frenagem por velocidade de veículo (cars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/quantilica.html"><span class="card-index">09 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão quantílica</h3><p>Modela quantis condicionais <span class="math-inline">\(Q_\tau(Y\mid X)=\mathbf X^\top\boldsymbol\beta(\tau)\)</span>, como a mediana <span class="math-inline">\(\tau=0\)</span>,5.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="mínimos quadrados ponderados (wls) ajusta regressão linear minimizando ∑wᵢ(yᵢ−xᵢᵀβ)²; pesos idealmente proporcionais a 1/var(εᵢ). distância de frenagem segundo velocidade (cars), usando ponderação demonstrativa inversa ao quadrado da velocidade. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/wls.html"><span class="card-index">10 · APRENDIZADO SUPERVISIONADO</span><h3>Mínimos quadrados ponderados (WLS)</h3><p>Ajusta regressão linear minimizando <span class="math-inline">\(\sum_iw_i(y_i-\mathbf x_i^\top\boldsymbol\beta)^2\)</span>; pesos idealmente proporcionais a <span class="math-inline">\(1/\operatorname{Var}(\varepsilon_i)\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="modelos lineares generalizados (glm) família de modelos em que g[e(y|x)] = xᵀβ e a resposta pertence a uma família exponencial especificada (normal, binomial, poisson, gama etc.). volume de árvores (proxy de biomassa/estoque de material florestal) por diâmetro e altura, usando glm gama de resposta positiva (trees). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/glm.html"><span class="card-index">11 · APRENDIZADO SUPERVISIONADO</span><h3>Modelos lineares generalizados (GLM)</h3><p>Família de modelos em que <span class="math-inline">\(g[\mathbb E(Y\mid X)]=\mathbf X^\top\boldsymbol\beta\)</span> e a resposta pertence a uma família exponencial especificada (normal, binomial, Poisson, gama etc.).</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="equações de estimação generalizadas (gee) estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando correlação de trabalho e usando erros-padrão tipo sanduíche. absorção de co₂ medida repetidamente por planta em diferentes concentrações (co2; bioprocessos). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/gee.html"><span class="card-index">12 · APRENDIZADO SUPERVISIONADO</span><h3>Equações de estimação generalizadas (GEE)</h3><p>Estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando correlação de trabalho e usando erros-padrão tipo sanduíche.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="testes-t" data-group><div class="group-head"><span class="section-label">04 · COMPARAÇÃO DE MÉDIAS</span><h2>Testes t clássicos e robustos</h2><p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="teste t para uma amostra compara uma média populacional com um padrão de referência μ₀. verificar se a média do consumo em mpg de automóveis corresponde a 20 mpg (mtcars). 04 · comparação de médias estatística clássica" href="metodos/t1.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Teste t para uma amostra</h3><p>Compara uma média populacional com um padrão de referência <span class="math-inline">\(\mu_{0}\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste t de student (dois grupos) compara médias de duas populações independentes assumindo variâncias populacionais iguais. autonomia de automóveis com transmissões manual e automática (mtcars). 04 · comparação de médias estatística clássica" href="metodos/t2.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Teste t de Student (dois grupos)</h3><p>Compara médias de duas populações independentes assumindo variâncias populacionais iguais.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste t pareado compara a média das diferenças dᵢ=yᵢ,depois−yᵢ,antes em pares correspondentes. comparar a absorção de co₂ da mesma planta em duas concentrações (dados co2; bioprocessos). 04 · comparação de médias estatística clássica" href="metodos/tpareado.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Teste t pareado</h3><p>Compara a média das diferenças <span class="math-inline">\(D_i=Y_{i,\mathrm{depois}}-Y_{i,\mathrm{antes}}\)</span> em pares correspondentes.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste t de welch (dois grupos) compara médias independentes sem pressupor variâncias populacionais iguais. média de quebras de fios em dois grupos de tensão (warpbreaks). 04 · comparação de médias estatística clássica" href="metodos/twelch.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Teste t de Welch (dois grupos)</h3><p>Compara médias independentes sem pressupor variâncias populacionais iguais.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste de yuen (grupos independentes) compara médias aparadas entre dois grupos independentes, com variâncias winsorizadas, reduzindo influência de outliers. quebras por tensões baixa/alta no processo têxtil (warpbreaks). 04 · comparação de médias estatística clássica" href="metodos/yuen.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>Teste de Yuen (grupos independentes)</h3><p>Compara médias aparadas entre dois grupos independentes, com variâncias winsorizadas, reduzindo influência de outliers.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste de yuen robusto pareado (yuend) teste robusto para pares relacionados, baseado em estimadores aparados de diferenças ou médias marginais conforme a implementação. medidas de absorção de co₂ na mesma planta a 95 e 175 unidades de concentração. 04 · comparação de médias estatística clássica" href="metodos/yuen-pareado.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>Teste de Yuen robusto pareado (Yuend)</h3><p>Teste robusto para pares relacionados, baseado em estimadores aparados de diferenças ou médias marginais conforme a implementação.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="anova" data-group><div class="group-head"><span class="section-label">05 · ANÁLISE DE VARIÂNCIA</span><h2>ANOVA e modelos multivariados</h2><p>8 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="anova de um fator compara médias de k grupos independentes pela decomposição da variabilidade entre e dentro dos grupos. contagem de quebras por tensão de fiação (warpbreaks). 05 · análise de variância estatística clássica" href="metodos/aov1.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>ANOVA de um fator</h3><p>Compara médias de k grupos independentes pela decomposição da variabilidade entre e dentro dos grupos.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="anova de welch compara médias de k grupos com variâncias possivelmente diferentes, usando ponderação e graus de liberdade aproximados. quebras de fios segundo três condições de tensão (warpbreaks). 05 · análise de variância estatística clássica" href="metodos/aovwelch.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>ANOVA de Welch</h3><p>Compara médias de k grupos com variâncias possivelmente diferentes, usando ponderação e graus de liberdade aproximados.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="anova de medidas repetidas compara médias em condições observadas nas mesmas unidades experimentais, explicitando a dependência intraunidade. absorção de co₂ nas mesmas plantas em sete concentrações. 05 · análise de variância estatística clássica" href="metodos/aovrepetida.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>ANOVA de medidas repetidas</h3><p>Compara médias em condições observadas nas mesmas unidades experimentais, explicitando a dependência intraunidade.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="anova fatorial investiga efeitos principais e interação de dois ou mais fatores sobre uma resposta quantitativa. quebras de fios segundo tipo de lã e tensão (warpbreaks). 05 · análise de variância estatística clássica" href="metodos/aovfatorial.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>ANOVA fatorial</h3><p>Investiga efeitos principais e interação de dois ou mais fatores sobre uma resposta quantitativa.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="anova mista combina pelo menos um fator entre unidades e um fator intraunidade com medidas repetidas. absorção em plantas de quebec/mississippi (type) ao longo de concentrações de co₂ (conc), com medidas repetidas por plant. 05 · análise de variância estatística clássica" href="metodos/aovmista.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>ANOVA mista</h3><p>Combina pelo menos um fator entre unidades e um fator intraunidade com medidas repetidas.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="ancova compara médias condicionais de grupos ajustando covariáveis quantitativas (modelo linear com fatores e covariáveis). comprimento de sépalas por espécie, ajustando a largura da sépala (iris; aplicação metodológica em medidas dimensionais). 05 · análise de variância estatística clássica" href="metodos/ancova.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>ANCOVA</h3><p>Compara médias condicionais de grupos ajustando covariáveis quantitativas (modelo linear com fatores e covariáveis).</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="manova testa simultaneamente diferenças entre vetores de médias de várias respostas quantitativas correlacionadas. comparar conjuntamente comprimento de sépala e pétala entre espécies (iris), analogia a várias especificações dimensionais. 05 · análise de variância estatística clássica" href="metodos/manova.html"><span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span><h3>MANOVA</h3><p>Testa simultaneamente diferenças entre vetores de médias de várias respostas quantitativas correlacionadas.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="mancova extende manova ao ajuste de covariáveis sobre um vetor de respostas. medições de sépala e pétala por espécie, ajustando largura da sépala (iris). 05 · análise de variância estatística clássica" href="metodos/mancova.html"><span class="card-index">08 · ESTATÍSTICA CLÁSSICA</span><h3>MANCOVA</h3><p>Extende MANOVA ao ajuste de covariáveis sobre um vetor de respostas.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="posthoc" data-group><div class="group-head"><span class="section-label">06 · COMPARAÇÕES MÚLTIPLAS</span><h2>Procedimentos de ajuste e pós-testes</h2><p>8 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="ajuste de bonferroni controla a probabilidade de ao menos uma rejeição falsa em uma família de m hipóteses mediante limiar α/m ou p_aj=min(mp,1). comparar pares de tensões de fiação para contagem média de quebras (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/bonferroni.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Ajuste de Bonferroni</h3><p>Controla a probabilidade de ao menos uma rejeição falsa em uma família de m hipóteses mediante limiar <span class="math-inline">\(\alpha\)</span>/m ou <span class="math-inline">\(p_{\mathrm{aj}}=\min(mp,1)\)</span>.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="tukey hsd / tukey–kramer compara todos os pares de médias sob modelo anova, controlando fwer via amplitude studentizada. comparar tensões de fiação no processo têxtil (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/tukey.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Tukey HSD / Tukey–Kramer</h3><p>Compara todos os pares de médias sob modelo ANOVA, controlando FWER via amplitude studentizada.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="games–howell comparações de médias par a par com variâncias e tamanhos amostrais possivelmente desiguais. comparação das médias de quebras nos três níveis de tensão (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/games-howell.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Games–Howell</h3><p>Comparações de médias par a par com variâncias e tamanhos amostrais possivelmente desiguais.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="ryan–einot–gabriel–welsch (regw) procedimento de comparações múltiplas por amplitudes ordenadas para médias de k grupos, geralmente após anova. comparação de tensões de fiação por número médio de quebras (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/regwf.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Ryan–Einot–Gabriel–Welsch (REGW)</h3><p>Procedimento de comparações múltiplas por amplitudes ordenadas para médias de k grupos, geralmente após ANOVA.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="ajuste de šidák ajuste para m testes: p_aj=1−(1−p)^m. sob independência dos testes, controla a probabilidade de erro familiar. comparar médias de quebras em pares de tensões (warpbreaks) com ajustes ilustrativos. 06 · comparações múltiplas estatística clássica" href="metodos/sidak.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>Ajuste de Šidák</h3><p>Ajuste para m testes: <span class="math-inline">\(p_{\mathrm{aj}}=1-(1-p)^m\)</span>. Sob independência dos testes, controla a probabilidade de erro familiar.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="duncan procedimento de amplitudes múltiplas stepwise, relativamente liberal, para grupos após anova. comparações de tensões de fiação para quebras médias (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/duncan.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>Duncan</h3><p>Procedimento de amplitudes múltiplas stepwise, relativamente liberal, para grupos após ANOVA.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="hochberg gt2 procedimento de comparações múltiplas para tamanhos amostrais desiguais sob homocedasticidade; baseado na distribuição do módulo máximo studentizado. tensões de fiação em warpbreaks. é mostrado um método substituto implementado diretamente, não o gt2 exato. 06 · comparações múltiplas estatística clássica" href="metodos/hochberg-gt2.html"><span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span><h3>Hochberg GT2</h3><p>Procedimento de comparações múltiplas para tamanhos amostrais desiguais sob homocedasticidade; baseado na distribuição do módulo máximo studentizado.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="dunnett c procedimento heterocedástico de comparações múltiplas, baseado em contraste de médias e valores críticos do módulo máximo studentizado. não é o dunnett clássico contra controle. quebras de fios por tensão (warpbreaks); o código utiliza games–howell como alternativa heterocedástica identificada. 06 · comparações múltiplas estatística clássica" href="metodos/dunnett-c.html"><span class="card-index">08 · ESTATÍSTICA CLÁSSICA</span><h3>Dunnett C</h3><p>Procedimento heterocedástico de comparações múltiplas, baseado em contraste de médias e valores críticos do módulo máximo studentizado. Não é o Dunnett clássico contra controle.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="categoricos" data-group><div class="group-head"><span class="section-label">07 · DADOS CATEGÓRICOS</span><h2>Contingência e frequências</h2><p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="qui-quadrado de aderência compara frequências observadas em categorias a proporções teóricas especificadas. verificar a proporção de três arquiteturas de transmissão (3, 4, 5 marchas) em mtcars, contra referência uniforme hipotética. 07 · dados categóricos estatística clássica" href="metodos/qui-aderencia.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Qui-quadrado de aderência</h3><p>Compara frequências observadas em categorias a proporções teóricas especificadas.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="qui-quadrado de independência avalia associação entre duas variáveis categóricas em tabela de contingência. associação entre número de cilindros e tipo de transmissão em mtcars. 07 · dados categóricos estatística clássica" href="metodos/qui-independencia.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Qui-quadrado de independência</h3><p>Avalia associação entre duas variáveis categóricas em tabela de contingência.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste exato de fisher avalia associação em tabela 2×2 condicionada às margens, útil com contagens pequenas. associação entre configuração de motor (vs) e transmissão (am) em mtcars. 07 · dados categóricos estatística clássica" href="metodos/fisher.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Teste exato de Fisher</h3><p>Avalia associação em tabela <span class="math-inline">\(2\times2\)</span> condicionada às margens, útil com contagens pequenas.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste de mcnemar compara proporções de resposta binária antes/depois nas mesmas unidades; utiliza somente pares discordantes. classificar cada planta como absorção acima de 15 unidades em duas concentrações de co₂. 07 · dados categóricos estatística clássica" href="metodos/mcnemar.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Teste de McNemar</h3><p>Compara proporções de resposta binária antes/depois nas mesmas unidades; utiliza somente pares discordantes.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste q de cochran generaliza mcnemar a três ou mais respostas binárias repetidas nas mesmas unidades. indicar absorção de co₂ acima de 20 em sete concentrações, repetidas por planta. 07 · dados categóricos estatística clássica" href="metodos/cochran-q.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>Teste Q de Cochran</h3><p>Generaliza McNemar a três ou mais respostas binárias repetidas nas mesmas unidades.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="análise log-linear modela contagens esperadas de tabelas multiway por modelos de poisson sobre efeitos e interações entre fatores. dados de sobrevivência de passageiros do titanic como exemplo metodológico de engenharia de segurança de transportes. 07 · dados categóricos estatística clássica" href="metodos/loglinear.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>Análise log-linear</h3><p>Modela contagens esperadas de tabelas multiway por modelos de Poisson sobre efeitos e interações entre fatores.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="agrupamento" data-group><div class="group-head"><span class="section-label">08 · AGRUPAMENTO</span><h2>Clustering não supervisionado</h2><p>2 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="unsupervised" data-search="agrupamento hierárquico constrói grupos por fusão sucessiva de observações segundo distância e critério de ligação, representados em dendrograma. agrupar automóveis pelo desempenho: consumo, massa, potência e aceleração (mtcars). 08 · agrupamento aprendizado não supervisionado" href="metodos/hcluster.html"><span class="card-index">01 · APRENDIZADO NÃO SUPERVISIONADO</span><h3>Agrupamento hierárquico</h3><p>Constrói grupos por fusão sucessiva de observações segundo distância e critério de ligação, representados em dendrograma.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="unsupervised" data-search="k-means particiona observações em k grupos minimizando a soma de quadrados dentro dos grupos em relação aos centros. segmentar veículos por massa, potência e consumo (mtcars). 08 · agrupamento aprendizado não supervisionado" href="metodos/kmeans.html"><span class="card-index">02 · APRENDIZADO NÃO SUPERVISIONADO</span><h3>K-means</h3><p>Particiona observações em k grupos minimizando a soma de quadrados dentro dos grupos em relação aos centros.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="discriminante" data-group><div class="group-head"><span class="section-label">09 · CLASSIFICAÇÃO</span><h2>Análise discriminante</h2><p>2 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="análise discriminante linear (lda) classificador generativo que assume distribuições normais multivariadas por classe com matriz de covariância comum. classificar veículos por quantidade de cilindros usando potência e massa em mtcars. 09 · classificação aprendizado supervisionado" href="metodos/lda.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Análise discriminante linear (LDA)</h3><p>Classificador generativo que assume distribuições normais multivariadas por classe com matriz de covariância comum.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="análise discriminante quadrática (qda) classificador generativo que permite uma matriz de covariância distinta por classe, produzindo fronteiras quadráticas. classificar veículos por cilindrada (4/6/8) usando massa e potência em mtcars. 09 · classificação aprendizado supervisionado" href="metodos/qda.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Análise discriminante quadrática (QDA)</h3><p>Classificador generativo que permite uma matriz de covariância distinta por classe, produzindo fronteiras quadráticas.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="sobrevivencia" data-group><div class="group-head"><span class="section-label">10 · SOBREVIVÊNCIA</span><h2>Curvas e comparação de riscos</h2><p>3 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="estimador kaplan–meier estima a função de sobrevivência s(t)=p(t&gt;t) com observações censuradas à direita. tempos censurados do pacote survival::lung, demonstrando o procedimento transferível a vida útil de equipamentos. 10 · sobrevivência estatística clássica" href="metodos/kaplan.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Estimador Kaplan–Meier</h3><p>Estima a função de sobrevivência S(t)=P(T&gt;t) com observações censuradas à direita.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste log-rank compara funções de risco/sobrevivência entre grupos usando eventos observados e esperados ao longo dos tempos. comparação de curvas de tempo até evento por sexo em survival::lung (analogia à comparação de grupos de equipamentos). 10 · sobrevivência estatística clássica" href="metodos/logrank.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Teste log-rank</h3><p>Compara funções de risco/sobrevivência entre grupos usando eventos observados e esperados ao longo dos tempos.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste generalizado de wilcoxon–gehan compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais. tempos clínicos censurados survival::lung usados como ilustração metodológica da comparação de lotes de vida útil. 10 · sobrevivência estatística clássica" href="metodos/gehan.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Teste generalizado de Wilcoxon–Gehan</h3><p>Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="naoparametricos" data-group><div class="group-head"><span class="section-label">11 · NÃO PARAMÉTRICOS</span><h2>Alternativas por postos</h2><p>4 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="mann–whitney / wilcoxon rank-sum compara duas distribuições independentes por postos; sob hipóteses adicionais pode ser interpretado como mudança de localização. comparação de consumo entre tipos de transmissão de veículos (mtcars). 11 · não paramétricos estatística clássica" href="metodos/mann-whitney.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Mann–Whitney / Wilcoxon rank-sum</h3><p>Compara duas distribuições independentes por postos; sob hipóteses adicionais pode ser interpretado como mudança de localização.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="wilcoxon signed-rank (pareado) avalia o centro de uma distribuição aproximadamente simétrica de diferenças pareadas sem pressupor normalidade. diferença de absorção por planta entre duas concentrações de co₂. 11 · não paramétricos estatística clássica" href="metodos/wilcoxon-assinado.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Wilcoxon signed-rank (pareado)</h3><p>Avalia o centro de uma distribuição aproximadamente simétrica de diferenças pareadas sem pressupor normalidade.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="kruskal–wallis compara distribuições de k grupos independentes por postos, generalizando mann–whitney. quebras de fios entre três tensões (warpbreaks). 11 · não paramétricos estatística clássica" href="metodos/kruskal.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Kruskal–Wallis</h3><p>Compara distribuições de k grupos independentes por postos, generalizando Mann–Whitney.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="teste de friedman compara k condições observadas nos mesmos blocos/unidades, usando postos dentro de cada unidade. absorção de co₂ de cada planta medida em sete concentrações. 11 · não paramétricos estatística clássica" href="metodos/friedman.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Teste de Friedman</h3><p>Compara k condições observadas nos mesmos blocos/unidades, usando postos dentro de cada unidade.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="concordancia" data-group><div class="group-head"><span class="section-label">12 · CONCORDÂNCIA</span><h2>Concordância e confiabilidade entre avaliadores</h2><p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="classical" data-search="kappa de cohen mensura concordância de dois avaliadores em classes nominais, além da concordância esperada sob margens independentes. dois sistemas didáticos de classificação binária de veículos como maior/menor desempenho (mtcars). 12 · concordância estatística clássica" href="metodos/kappa.html"><span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span><h3>Kappa de Cohen</h3><p>Mensura concordância de dois avaliadores em classes nominais, além da concordância esperada sob margens independentes.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="kappa ponderado estende cohen κ a categorias ordinais atribuindo pesos menores às discordâncias mais graves. dois sistemas didáticos de classificação de potência e massa de veículos em baixo/médio/alto. 12 · concordância estatística clássica" href="metodos/kappa-ponderado.html"><span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span><h3>Kappa ponderado</h3><p>Estende Cohen <span class="math-inline">\(\kappa\)</span> a categorias ordinais atribuindo pesos menores às discordâncias mais graves.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="kappa de fleiss mede acordo nominal além do acaso entre três ou mais avaliadores que classificam as mesmas unidades. três sistemas de classificação de veículos em alto/baixo desempenho, construídos de mpg, hp e wt (mtcars). 12 · concordância estatística clássica" href="metodos/fleiss.html"><span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span><h3>Kappa de Fleiss</h3><p>Mede acordo nominal além do acaso entre três ou mais avaliadores que classificam as mesmas unidades.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="coeficiente de correlação intraclasse (icc) quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida. medições simuladas de potência de motores, centradas nos valores reais de hp da base mtcars. 12 · concordância estatística clássica" href="metodos/icc.html"><span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span><h3>Coeficiente de correlação intraclasse (ICC)</h3><p>Quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="coeficiente de concordância de kendall (w) resume a concordância global entre três ou mais conjuntos de rankings dos mesmos objetos. três critérios simulados de avaliação de potência dos mesmos 32 automóveis (mtcars). 12 · concordância estatística clássica" href="metodos/kendall-w.html"><span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span><h3>Coeficiente de concordância de Kendall (W)</h3><p>Resume a concordância global entre três ou mais conjuntos de rankings dos mesmos objetos.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="classical" data-search="coeficiente ac1 de gwet medida de concordância nominal que usa correção para acordo casual distinta da empregada no kappa, menos sujeita a alguns paradoxos de prevalência. sistemas de triagem de veículos em alto/baixo consumo obtidos de mpg e potência (mtcars), apenas para cálculo didático. 12 · concordância estatística clássica" href="metodos/gwet.html"><span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span><h3>Coeficiente AC1 de Gwet</h3><p>Medida de concordância nominal que usa correção para acordo casual distinta da empregada no Kappa, menos sujeita a alguns paradoxos de prevalência.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="avaliacao" data-group><div class="group-head"><span class="section-label">13 · APRENDIZADO SUPERVISIONADO</span><h2>Validação e reamostragem</h2><p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="separação treino–teste (holdout) estima desempenho fora da amostra reservando dados não usados para ajuste ou escolha de hiperparâmetros. predição de autonomia de veículos (mtcars) a partir de massa e potência. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/holdout.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Separação treino–teste (holdout)</h3><p>Estima desempenho fora da amostra reservando dados não usados para ajuste ou escolha de hiperparâmetros.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="validação cruzada k-fold divide o conjunto em k partes; cada parte é predita por um modelo ajustado nas outras k−1 partes. validação de regressão da autonomia de veículos em mtcars. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/kfold.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Validação cruzada k-fold</h3><p>Divide o conjunto em k partes; cada parte é predita por um modelo ajustado nas outras <span class="math-inline">\(k-1\)</span> partes.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="leave-one-out cross-validation (loocv) validação cruzada em que cada modelo é ajustado com n−1 observações e testa a restante; para ols existe forma computacional fechada. ajustar distância de frenagem por velocidade usando cada observação de cars como caso de validação. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/loocv.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Leave-one-out cross-validation (LOOCV)</h3><p>Validação cruzada em que cada modelo é ajustado com <span class="math-inline">\(n-1\)</span> observações e testa a restante; para OLS existe forma computacional fechada.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="bootstrap não paramétrico aproxima a variabilidade amostral de um estimador reamostrando unidades independentes com reposição. incerteza do coeficiente de massa na regressão de autonomia de veículos (mtcars). 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bootstrap.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>Bootstrap não paramétrico</h3><p>Aproxima a variabilidade amostral de um estimador reamostrando unidades independentes com reposição.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="métricas de classificação e curva roc quantifica desempenho preditivo de classes/probabilidades com acurácia, sensibilidade, especificidade, precisão e auc. classificar transmissão manual (am=1) com massa e potência (mtcars). 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/classmetric.html"><span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span><h3>Métricas de classificação e curva ROC</h3><p>Quantifica desempenho preditivo de classes/probabilidades com acurácia, sensibilidade, especificidade, precisão e AUC.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="compromisso viés–variância modelos muito rígidos podem ter alto viés; modelos muito flexíveis, alta variância preditiva. regularização e validação controlam o compromisso. predição da distância de frenagem com polinômios de diferentes graus sobre cars, usando 5-fold cv. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bias-variance.html"><span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span><h3>Compromisso viés–variância</h3><p>Modelos muito rígidos podem ter alto viés; modelos muito flexíveis, alta variância preditiva. Regularização e validação controlam o compromisso.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="regularizacao" data-group><div class="group-head"><span class="section-label">14 · APRENDIZADO SUPERVISIONADO</span><h2>Seleção e regularização</h2><p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="seleção exaustiva de subconjuntos compara combinações de preditores candidatos e seleciona modelos por critério predefinido, como bic ou erro validado. selecionar atributos de veículo relacionados à autonomia (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/subset.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Seleção exaustiva de subconjuntos</h3><p>Compara combinações de preditores candidatos e seleciona modelos por critério predefinido, como BIC ou erro validado.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="seleção stepwise por aic adiciona/retira preditores em sequência buscando reduzir aic, sem examinar necessariamente todos os subconjuntos. selecionar atributos de automóveis para explicar mpg (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/stepwise.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Seleção stepwise por AIC</h3><p>Adiciona/retira preditores em sequência buscando reduzir AIC, sem examinar necessariamente todos os subconjuntos.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão ridge encolhe coeficientes de regressão via penalidade quadrática; reduz variância em presença de preditores correlacionados, sem tipicamente zerar coeficientes. predição de autonomia por massa, potência, cilindrada e aceleração (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/ridge.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão ridge</h3><p>Encolhe coeficientes de regressão via penalidade quadrática; reduz variância em presença de preditores correlacionados, sem tipicamente zerar coeficientes.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão lasso regularização l1 que pode zerar coeficientes e simultaneamente selecionar variáveis. predição de consumo de veículos a partir de várias medidas (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/lasso.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão lasso</h3><p>Regularização L1 que pode zerar coeficientes e simultaneamente selecionar variáveis.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão por componentes principais (pcr) constrói componentes de x sem usar y e ajusta a resposta por um subconjunto dessas direções. previsão da autonomia por atributos colineares de automóveis (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/pcr.html"><span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão por componentes principais (PCR)</h3><p>Constrói componentes de X sem usar Y e ajusta a resposta por um subconjunto dessas direções.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão por mínimos quadrados parciais (pls) constrói direções latentes de x levando em conta a associação com y, diferentemente da pcr. previsão da autonomia com atributos de veículos (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/pls.html"><span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão por mínimos quadrados parciais (PLS)</h3><p>Constrói direções latentes de X levando em conta a associação com Y, diferentemente da PCR.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="naolinear" data-group><div class="group-head"><span class="section-label">15 · APRENDIZADO SUPERVISIONADO</span><h2>Relações não lineares</h2><p>5 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="regressão polinomial estende regressão linear nos coeficientes com potências de preditores para capturar curvatura na média condicional. distância de frenagem em função da velocidade (cars). 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/polinomial.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão polinomial</h3><p>Estende regressão linear nos coeficientes com potências de preditores para capturar curvatura na média condicional.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="splines de regressão representam relações não lineares por funções base polinomiais por trechos, conectadas suavemente em nós. ajustar distância de frenagem a velocidade com b-splines (cars). 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/splines.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Splines de regressão</h3><p>Representam relações não lineares por funções base polinomiais por trechos, conectadas suavemente em nós.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="smoothing splines estima uma curva suave penalizando o excesso de curvatura, em vez de selecionar manualmente todos os nós. relação velocidade–distância de frenagem em cars. 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/smoothing-spline.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Smoothing splines</h3><p>Estima uma curva suave penalizando o excesso de curvatura, em vez de selecionar manualmente todos os nós.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="regressão local (loess) ajusta regressões em vizinhanças locais ponderadas, permitindo curvas suaves sem modelo global paramétrico. distância de frenagem versus velocidade no conjunto cars. 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/loess.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>Regressão local (LOESS)</h3><p>Ajusta regressões em vizinhanças locais ponderadas, permitindo curvas suaves sem modelo global paramétrico.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="modelos aditivos generalizados (gam) estendem glm usando funções suaves de preditores: g[e(y|x)] = β₀ + ∑fⱼ(xⱼ). predição não linear da autonomia por massa e potência (mtcars). 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/gam.html"><span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span><h3>Modelos aditivos generalizados (GAM)</h3><p>Estendem GLM usando funções suaves de preditores: <span class="math-inline">\(g[\mathbb E(Y\mid X)]=\beta_0+\sum_jf_j(X_j)\)</span>.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="arvores" data-group><div class="group-head"><span class="section-label">16 · APRENDIZADO SUPERVISIONADO</span><h2>Árvores e conjuntos de modelos</h2><p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="árvore de regressão (cart) divide recursivamente o espaço dos preditores em regiões e prevê a média da resposta em cada folha. predição de autonomia por peso, potência e aceleração (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/cart-reg.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Árvore de regressão (CART)</h3><p>Divide recursivamente o espaço dos preditores em regiões e prevê a média da resposta em cada folha.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="árvore de classificação (cart) divide recursivamente as covariáveis para classificar respostas categóricas em regiões homogêneas. classificar transmissão (manual/automática) conforme massa e potência (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/cart-class.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Árvore de classificação (CART)</h3><p>Divide recursivamente as covariáveis para classificar respostas categóricas em regiões homogêneas.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="bagging (bootstrap aggregation) combina muitas árvores ajustadas sobre amostras bootstrap, reduzindo variabilidade de uma única árvore. predição de consumo em veículos com wt, hp e disp (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bagging.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Bagging (bootstrap aggregation)</h3><p>Combina muitas árvores ajustadas sobre amostras bootstrap, reduzindo variabilidade de uma única árvore.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="random forests ensemble de árvores bootstrap com seleção aleatória de preditores candidatos em cada divisão, reduzindo correlação entre árvores. prever mpg a partir de massa, potência, cilindrada e aceleração (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/randomforest.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>Random forests</h3><p>Ensemble de árvores bootstrap com seleção aleatória de preditores candidatos em cada divisão, reduzindo correlação entre árvores.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="gradient boosting de árvores ajusta sequencialmente árvores que aproximam o gradiente da perda, construindo um preditor aditivo de alta flexibilidade. predição da autonomia veicular com massa, potência e cilindrada (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/boosting.html"><span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span><h3>Gradient boosting de árvores</h3><p>Ajusta sequencialmente árvores que aproximam o gradiente da perda, construindo um preditor aditivo de alta flexibilidade.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="bayesian additive regression trees (bart) combina árvores regularizadas num modelo bayesiano aditivo, produzindo amostras a posteriori de predições e, conforme formulação, da variância de erro. predição da autonomia por massa e potência de automóveis (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bart.html"><span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span><h3>Bayesian additive regression trees (BART)</h3><p>Combina árvores regularizadas num modelo Bayesiano aditivo, produzindo amostras a posteriori de predições e, conforme formulação, da variância de erro.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="classificadores" data-group><div class="group-head"><span class="section-label">17 · APRENDIZADO SUPERVISIONADO</span><h2>Classificadores preditivos</h2><p>4 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="k-nearest neighbors (knn) prevê classe por votação das k observações de treino mais próximas no espaço de covariáveis. classificar cilindros de veículos a partir de massa e potência (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/knn.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>K-nearest neighbors (KNN)</h3><p>Prevê classe por votação das k observações de treino mais próximas no espaço de covariáveis.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="naive bayes classificador probabilístico que combina prioris de classe e densidades condicionais, supondo independência condicional dos preditores dentro de cada classe. classificação do número de cilindros segundo massa e potência de veículos (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/naive-bayes.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Naive Bayes</h3><p>Classificador probabilístico que combina prioris de classe e densidades condicionais, supondo independência condicional dos preditores dentro de cada classe.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="máquinas de vetores de suporte lineares classifica por hiperplano que equilibra margem grande e penalidade de violações (soft margin). classificar transmissão de veículos a partir de massa e potência (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/svm-linear.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Máquinas de vetores de suporte lineares</h3><p>Classifica por hiperplano que equilibra margem grande e penalidade de violações (soft margin).</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="svm com kernel radial (rbf) obtém fronteiras não lineares por produtos internos em espaço de características implícito. classificar veículos por cilindros a partir de massa e potência (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/svm-rbf.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>SVM com kernel radial (RBF)</h3><p>Obtém fronteiras não lineares por produtos internos em espaço de características implícito.</p><span class="card-more">Estudar método →</span></a></div></section><section class="catalog-group" id="redes" data-group><div class="group-head"><span class="section-label">18 · APRENDIZADO SUPERVISIONADO</span><h2>Redes neurais e aprendizado profundo</h2><p>4 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p></div><div class="method-grid"><a class="method-card" data-group-type="supervised" data-search="rede sem camada oculta (classificador logístico) rede com entradas conectadas diretamente à saída sigmoide. sem camadas ocultas, é equivalente à regressão logística para resposta binária e perda logarítmica. classificar transmissão manual de veículos (mtcars) usando atributos normalizados. 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/rede-uma-camada.html"><span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span><h3>Rede sem camada oculta (classificador logístico)</h3><p>Rede com entradas conectadas diretamente à saída sigmoide. Sem camadas ocultas, é equivalente à regressão logística para resposta binária e perda logarítmica.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="rede neural multicamadas (mlp) modelo supervisionado que combina transformações lineares e ativações não lineares em camadas ocultas para regressão ou classificação. predição da autonomia por massa, potência e cilindrada (mtcars). 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/mlp.html"><span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span><h3>Rede neural multicamadas (MLP)</h3><p>Modelo supervisionado que combina transformações lineares e ativações não lineares em camadas ocultas para regressão ou classificação.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="redes neurais convolucionais (cnn) aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial. classificação de patches 5×5 de um mapa de elevação (volcano, conjunto disponível no r), analogia à detecção de regiões topográficas elevadas. 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/cnn.html"><span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span><h3>Redes neurais convolucionais (CNN)</h3><p>Aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial.</p><span class="card-more">Estudar método →</span></a><a class="method-card" data-group-type="supervised" data-search="redes neurais recorrentes (rnn) processam sequências preservando dependências temporais por estados ocultos que combinam entrada atual e informação anterior. previsão de passageiros mensais (airpassengers, r base) como análogo de demanda de sistemas de transporte. 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/rnn.html"><span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span><h3>Redes neurais recorrentes (RNN)</h3><p>Processam sequências preservando dependências temporais por estados ocultos que combinam entrada atual e informação anterior.</p><span class="card-more">Estudar método →</span></a></div></section></div><p id="empty-search" class="empty-search" hidden>Nenhum método corresponde à busca.</p></section>
-<section class="notes" id="criterios"><span class="section-label">CRITÉRIOS METODOLÓGICOS</span><h2>Inferência e desempenho preditivo são objetivos distintos.</h2><p>Um valor-p alto não comprova a hipótese nula. Estimativas pontuais, intervalos de confiança e diagnósticos complementam o teste. Para algoritmos sem hipótese nula intrínseca, devem-se utilizar validação, análise de erro e avaliação da generalização.</p><p>Os exemplos utilizam, entre outros, os conjuntos <code>mtcars</code>, <code>cars</code>, <code>warpbreaks</code> e <code>CO2</code>. Quando o conjunto não é originalmente da Engenharia, a aplicação é apresentada como analogia e não como dado industrial observado. Redes profundas dependem do backend TensorFlow.</p></section>
-<section class="bibliography" id="referencias"><span class="section-label">REFERÊNCIAS BIBLIOGRÁFICAS</span><h2>Referências bibliográficas</h2><ol><li>JAMES, Gareth; WITTEN, Daniela; HASTIE, Trevor; TIBSHIRANI, Robert. <em>An introduction to statistical learning: with applications in R.</em> 2. ed. New York: Springer, 2021. DOI: 10.1007/978-1-0716-1418-1. <a href="https://doi.org/10.1007/978-1-0716-1418-1" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li><li>MORETTIN, Pedro Alberto; BUSSAB, Wilton de Oliveira. <em>Estatística básica.</em> 9. ed. São Paulo: Saraiva, 2017. <a href="https://repositorio.usp.br/item/003121595" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li><li>CASELLA, George; BERGER, Roger L. <em>Statistical inference.</em> 2. ed. Pacific Grove: Duxbury, 2002. <a href="https://books.google.com/books/about/Statistical_Inference.html?id=0x_vAAAAMAAJ" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li><li>AGRESTI, Alan. <em>Categorical data analysis.</em> 3. ed. Hoboken: Wiley, 2013.</li><li>HASTIE, Trevor; TIBSHIRANI, Robert; FRIEDMAN, Jerome. <em>The elements of statistical learning: data mining, inference, and prediction.</em> 2. ed. New York: Springer, 2009. <a href="https://hastie.su.domains/ElemStatLearn/" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li><li>FOX, John; WEISBERG, Sanford. <em>An R companion to applied regression.</em> 3. ed. Thousand Oaks: SAGE, 2019.</li><li>MONTGOMERY, Douglas C.; PECK, Elizabeth A.; VINING, G. Geoffrey. <em>Introduction to linear regression analysis.</em> 6. ed. Hoboken: Wiley, 2021.</li><li>KUHN, Max; JOHNSON, Kjell. <em>Applied predictive modeling.</em> New York: Springer, 2013.</li><li>THERNEAU, Terry M.; GRAMBSCH, Patricia M. <em>Modeling survival data: extending the Cox model.</em> New York: Springer, 2000.</li><li>BREIMAN, Leo. Random forests. <em>Machine Learning</em>, v. 45, p. 5-32, 2001. DOI: 10.1023/A:1010933404324. <a href="https://doi.org/10.1023/A:1010933404324" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li><li>BENJAMINI, Yoav; HOCHBERG, Yosef. Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B</em>, v. 57, n. 1, p. 289-300, 1995.</li><li>GWET, Kilem L. <em>Handbook of inter-rater reliability.</em> 4. ed. Gaithersburg: Advanced Analytics, 2014.</li><li>R CORE TEAM. <em>R: a language and environment for statistical computing.</em> Vienna: R Foundation for Statistical Computing, 2026. Disponível em: https://www.r-project.org/. <a href="https://www.r-project.org/" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li><li>MONTGOMERY, Douglas C. <em>Design and analysis of experiments.</em> 10. ed. Hoboken: Wiley, 2019.</li><li>HOLLANDER, Myles; WOLFE, Douglas A.; CHICKEN, Eric. <em>Nonparametric statistical methods.</em> 3. ed. Hoboken: Wiley, 2014.</li><li>HARRELL, Frank E. <em>Regression modeling strategies: with applications to linear models, logistic and ordinal regression, and survival analysis.</em> 2. ed. Cham: Springer, 2015. <a href="https://doi.org/10.1007/978-3-319-19425-7" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li></ol></section>
-<section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="assets/img/cassius.jpg" alt="Prof. Dr. Cássius Henrique Xavier Oliveira"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · Instituto de Ciência, Tecnologia e Inovação (ICTIN/UFLA). Estatística, Análise de Sobrevivência, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória, pesquisa e projetos →</b></div></a></section>
-</main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="assets/script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#12372A">
+    <meta name="description" content="103 métodos com hipóteses, pressupostos, fórmulas em LaTeX, exemplos reproduzíveis em R e aplicações de Engenharia.">
+    <title>Modelos estatísticos e ciência de dados | Estatística e Ciência de Dados</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html#inicio" aria-label="Página inicial">
+        <span class="brand-mark">Σ</span>
+        <span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span>
+      </a>
+      <button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="index.html#catalogo">Modelos</a>
+        <a href="index.html#orientacoes">Como utilizar</a>
+        <a href="index.html#referencias">Referências</a>
+        <a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a>
+      </nav>
+    </header>
+    <main id="inicio">
+      <section class="hero">
+        <div>
+          <span class="eyebrow">GUIA DE CONSULTA · UFLA · ICTIN</span>
+          <h1>Estatística para<br><span>analisar, inferir e prever.</span></h1>
+          <p class="lead">Um guia de consulta sobre métodos estatísticos, inferência e ciência de dados, com fórmulas matemáticas, diagnósticos e exemplos reproduzíveis em R, priorizando problemas de Engenharia.</p>
+          <div class="btns">
+            <a class="btn primary" href="#catalogo">Explorar modelos ↓</a>
+            <a class="btn secondary" href="#referencias">Bibliografia científica ↗</a>
+          </div>
+          <div class="hero-stats">
+            <div>
+              <strong>103</strong>
+              <span>Tópicos</span>
+            </div>
+            <div>
+              <strong>56</strong>
+              <span>Estatística clássica</span>
+            </div>
+            <div>
+              <strong>45</strong>
+              <span>Supervisionados</span>
+            </div>
+            <div>
+              <strong>2</strong>
+              <span>Não supervisionados</span>
+            </div>
+          </div>
+        </div>
+        <aside class="hero-panel">
+          <span class="panel-kicker">APRENDIZAGEM APLICADA</span>
+          <h2>Da hipótese à interpretação.</h2>
+          <p>Definição, pressupostos, estatísticas e fórmulas em LaTeX, interpretação a 5%, código e aplicação contextualizada em R. Métodos preditivos são avaliados por medidas adequadas de desempenho, sem impor testes inexistentes.</p>
+          <div class="hero-glyph" aria-hidden="true">Σ <span>R</span></div>
+        </aside>
+      </section>
+      <section class="guide" id="orientacoes">
+        <div class="section-head">
+          <span class="section-label">COMO UTILIZAR</span>
+          <h2>Uma estrutura consistente para cada método.</h2>
+          <p>Escolha o procedimento pelo objetivo da análise e pelo delineamento dos dados. Confira as hipóteses, os pressupostos, a estatística e a interpretação antes de executar o código R.</p>
+        </div>
+        <div class="guide-grid">
+          <article>
+            <span>01 · MODELAGEM</span>
+            <h3>O que é e quando aplicar?</h3>
+            <p>Definições, tipo de resposta, estrutura dos dados, pressupostos e diagnósticos necessários.</p>
+          </article>
+          <article>
+            <span>02 · INFERÊNCIA</span>
+            <h3>Hipóteses e fórmulas</h3>
+            <p>Equações renderizadas em LaTeX, hipóteses formais, intervalos de confiança e decisão com significância de 5%, quando aplicáveis.</p>
+          </article>
+          <article>
+            <span>03 · PRÁTICA</span>
+            <h3>Aplicação em R</h3>
+            <p>Exemplos com dados públicos incluídos na instalação do R ou em seus pacotes, com interpretação e script integral para copiar e baixar.</p>
+          </article>
+        </div>
+      </section>
+      <section class="catalog" id="catalogo">
+        <div class="catalog-title">
+          <span class="section-label">CATÁLOGO COMPLETO</span>
+          <h2>Explore os modelos.</h2>
+          <p>Pesquise pelo nome do método ou contexto de aplicação. Use os filtros por natureza do procedimento.</p>
+        </div>
+        <div class="catalog-tools">
+          <label for="method-search" class="sr-only">Buscar modelos</label>
+          <input id="method-search" type="search" placeholder="Buscar: ANOVA, Cox, random forest, correlação..." autocomplete="off">
+          <div class="filter-buttons" aria-label="Filtrar por tipo de método">
+            <button data-filter="all" type="button" class="active" aria-pressed="true">Todos · 103</button>
+            <button data-filter="classical" type="button" aria-pressed="false">Estatística clássica · 56</button>
+            <button data-filter="supervised" type="button" aria-pressed="false">Aprendizado supervisionado · 45</button>
+            <button data-filter="unsupervised" type="button" aria-pressed="false">Aprendizado não supervisionado · 2</button>
+          </div>
+          <p class="result-counter" role="status" aria-live="polite">103 métodos encontrados</p>
+        </div>
+        <nav class="category-jump" aria-label="Ir para tema">
+          <a href="#diagnosticos">Diagnósticos</a>
+          <a href="#correlacoes">Associação</a>
+          <a href="#regressao">Modelos Estatísticos</a>
+          <a href="#testes-t">Comparação De Médias</a>
+          <a href="#anova">Análise De Variância</a>
+          <a href="#posthoc">Comparações Múltiplas</a>
+          <a href="#categoricos">Dados Categóricos</a>
+          <a href="#agrupamento">Agrupamento</a>
+          <a href="#discriminante">Classificação</a>
+          <a href="#sobrevivencia">Sobrevivência</a>
+          <a href="#naoparametricos">Não Paramétricos</a>
+          <a href="#concordancia">Concordância</a>
+          <a href="#avaliacao">Validação e reamostragem</a>
+          <a href="#regularizacao">Seleção e regularização</a>
+          <a href="#naolinear">Relações não lineares</a>
+          <a href="#arvores">Árvores e ensembles</a>
+          <a href="#classificadores">Classificadores preditivos</a>
+          <a href="#redes">Redes neurais e aprendizado profundo</a>
+        </nav>
+        <div class="catalog-groups">
+          <section class="catalog-group" id="diagnosticos" data-group>
+            <div class="group-head">
+              <span class="section-label">01 · DIAGNÓSTICOS</span>
+              <h2>Normalidade, variâncias e pressupostos</h2>
+              <p>8 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="shapiro–wilk avalia a compatibilidade de uma amostra com a distribuição normal; é sensível a desvios da forma da distribuição. controle dimensional de veículos: verificar a distribuição da cilindrada em mtcars. 01 · diagnósticos estatística clássica" href="metodos/sw.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Shapiro–Wilk</h3>
+                <p>Avalia a compatibilidade de uma amostra com a distribuição normal; é sensível a desvios da forma da distribuição.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="kolmogorov–smirnov (uma amostra) compara a função de distribuição empírica fₙ à distribuição f₀ completamente especificada. inspeção de uma distribuição hipotética para a distância de frenagem (cars), usando parâmetros previamente fixados apenas para demonstrar o teste. 01 · diagnósticos estatística clássica" href="metodos/ks.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Kolmogorov–Smirnov (uma amostra)</h3>
+                <p>Compara a função de distribuição empírica <span class="math-inline">\(F_{n}\)</span> à distribuição <span class="math-inline">\(F_{0}\)</span> completamente especificada.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="anderson–darling (normalidade) teste de aderência que pondera fortemente as discrepâncias nas caudas da distribuição. diagnóstico da distância de frenagem de veículos (cars). 01 · diagnósticos estatística clássica" href="metodos/ad.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Anderson–Darling (normalidade)</h3>
+                <p>Teste de aderência que pondera fortemente as discrepâncias nas caudas da distribuição.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="levene–brown–forsythe compara dispersões entre grupos; a versão centrada na mediana (brown–forsythe) é menos sensível a assimetria e valores extremos. variabilidade do número de quebras de fios entre diferentes teares (warpbreaks). 01 · diagnósticos estatística clássica" href="metodos/levene.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Levene–Brown–Forsythe</h3>
+                <p>Compara dispersões entre grupos; a versão centrada na mediana (Brown–Forsythe) é menos sensível a assimetria e valores extremos.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="bartlett compara as variâncias de k populações sob normalidade. é bastante sensível à não normalidade. avaliar variabilidade das quebras de fios por tensão (warpbreaks). 01 · diagnósticos estatística clássica" href="metodos/bartlett.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Bartlett</h3>
+                <p>Compara as variâncias de k populações sob normalidade. É bastante sensível à não normalidade.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="mauchly (esfericidade) avalia a esfericidade em fatores intraunidade com três ou mais condições: igualdade das variâncias das diferenças entre pares de condições. absorção de co₂ por plantas submetidas a diferentes concentrações (dados co2; engenharia de bioprocessos). 01 · diagnósticos estatística clássica" href="metodos/mauchly.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Mauchly (esfericidade)</h3>
+                <p>Avalia a esfericidade em fatores intraunidade com três ou mais condições: igualdade das variâncias das diferenças entre pares de condições.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="m de box avalia a igualdade de matrizes de covariância entre grupos de uma variável categórica. comparação de covariâncias de quatro medidas físicas entre classes de plantas no conjunto iris, usado como exemplo de controle de qualidade multivariado. 01 · diagnósticos estatística clássica" href="metodos/boxm.html">
+                <span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>M de Box</h3>
+                <p>Avalia a igualdade de matrizes de covariância entre grupos de uma variável categórica.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="mardia (normalidade multivariada) avalia assimetria e curtose multivariadas, componentes distintos da adequação à normalidade conjunta. quatro medidas físicas simultâneas de amostras (iris), ilustrando inspeção multivariada. 01 · diagnósticos estatística clássica" href="metodos/mardia.html">
+                <span class="card-index">08 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Mardia (normalidade multivariada)</h3>
+                <p>Avalia assimetria e curtose multivariadas, componentes distintos da adequação à normalidade conjunta.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="correlacoes" data-group>
+            <div class="group-head">
+              <span class="section-label">02 · ASSOCIAÇÃO</span>
+              <h2>Correlação e dependência</h2>
+              <p>7 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="correlação de pearson mensura intensidade e direção da associação linear entre duas variáveis quantitativas. automóveis: consumo (mpg) e massa do veículo (wt) em mtcars. 02 · associação estatística clássica" href="metodos/pearson.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação de Pearson</h3>
+                <p>Mensura intensidade e direção da associação linear entre duas variáveis quantitativas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="correlação de spearman mensura a associação monotônica por correlação de postos, sem exigir uma relação linear. relação entre massa e potência de veículos (mtcars). 02 · associação estatística clássica" href="metodos/spearman.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação de Spearman</h3>
+                <p>Mensura a associação monotônica por correlação de postos, sem exigir uma relação linear.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="correlação tau de kendall mede predominância de pares concordantes sobre discordantes na ordenação de duas variáveis. relacionamento entre peso e consumo de veículos (mtcars). 02 · associação estatística clássica" href="metodos/kendall.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação tau de Kendall</h3>
+                <p>Mede predominância de pares concordantes sobre discordantes na ordenação de duas variáveis.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="correlação ponto-bisserial é a correlação de pearson quando um dos atributos é binário (codificação 0/1) e o outro é quantitativo. transmissão manual (am = 1) versus automática (am = 0), associada à autonomia dos veículos em mtcars. 02 · associação estatística clássica" href="metodos/pontobisserial.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação ponto-bisserial</h3>
+                <p>É a correlação de Pearson quando um dos atributos é binário (codificação 0/1) e o outro é quantitativo.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="correlação tetracórica estima a correlação de duas variáveis latentes normais subjacentes a respostas binárias definidas por limiares. duas classificações binárias derivadas de medidas de potência e massa de veículos (mtcars); limiares geram categorias. 02 · associação estatística clássica" href="metodos/tetracorica.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação tetracórica</h3>
+                <p>Estima a correlação de duas variáveis latentes normais subjacentes a respostas binárias definidas por limiares.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="correlação policórica estima a correlação entre latentes normais bivariadas representadas por categorias ordinais. categorias de potência e consumo de veículos (mtcars), tomadas como indicadores ordinais. 02 · associação estatística clássica" href="metodos/policorica.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação policórica</h3>
+                <p>Estima a correlação entre latentes normais bivariadas representadas por categorias ordinais.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="correlação parcial mensura a associação linear de x e y depois de remover componentes lineares atribuídos a covariáveis z. associação entre potência e consumo em mtcars, controlando a massa do veículo. 02 · associação estatística clássica" href="metodos/parcial.html">
+                <span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Correlação parcial</h3>
+                <p>Mensura a associação linear de X e Y depois de remover componentes lineares atribuídos a covariáveis Z.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="regressao" data-group>
+            <div class="group-head">
+              <span class="section-label">03 · MODELOS ESTATÍSTICOS</span>
+              <h2>Regressões e modelos marginais</h2>
+              <p>12 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="regressão linear simples relaciona a resposta contínua y a um preditor x: e(y|x=x)=β₀+β₁x. os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado. distância de frenagem (dist) em função da velocidade (speed) de automóveis (cars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/linear-simples.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão linear simples</h3>
+                <p>Relaciona a resposta contínua Y a um preditor X: <span class="math-inline">\(\mathbb E(Y\mid X=x)=\beta_0+\beta_1x\)</span>. Os coeficientes de mínimos quadrados minimizam a soma dos resíduos ao quadrado.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão linear múltipla estima efeitos condicionais de vários preditores sobre uma resposta quantitativa sob um modelo linear na média. autonomia (mpg) explicada por peso e potência dos veículos (mtcars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/linear-multipla.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão linear múltipla</h3>
+                <p>Estima efeitos condicionais de vários preditores sobre uma resposta quantitativa sob um modelo linear na média.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão logística binária modela a probabilidade π(x)=p(y=1|x) por logit[π(x)]=β₀+xᵀβ. classificação do tipo de transmissão (manual/automática) com peso e potência em mtcars. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/logistica.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão logística binária</h3>
+                <p>Modela a probabilidade <span class="math-inline">\(\pi(x)=\Pr(Y=1\mid x)\)</span> por <span class="math-inline">\(\operatorname{logit}[\pi(x)]=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão logística multinomial classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência. previsão do número de cilindros (4, 6, 8) a partir da massa e potência (mtcars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/multinomial.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão logística multinomial</h3>
+                <p>Classifica respostas com três ou mais categorias nominais, modelando logits relativos a uma categoria de referência.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão logística ordinal modela categorias ordenadas por logits cumulativos. na parametrização polr, logit p(y≤j|x)=θⱼ−xᵀβ. número de marchas (3, 4, 5) ordenado por complexidade do câmbio em mtcars. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/ordinal.html">
+                <span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão logística ordinal</h3>
+                <p>Modela categorias ordenadas por logits cumulativos. Na parametrização polr, <span class="math-inline">\(\operatorname{logit}\Pr(Y\leq j\mid x)=\theta_j-\mathbf x^\top\boldsymbol\beta\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão de poisson modela contagens condicionais por log e(y|x)=β₀+xᵀβ; com exposição variável, inclua offset(log(exposição)). contagens de quebras em lotes têxteis por tensão e tipo de lã (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/poisson.html">
+                <span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão de Poisson</h3>
+                <p>Modela contagens condicionais por <span class="math-inline">\(\log\mathbb E(Y\mid x)=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>; com exposição variável, inclua offset(log(exposição)).</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão binomial negativa alternativa para contagens com superdispersão: na parametrização nb2, var(y|x)=μ+μ²/θ. quebras de fios em manufatura têxtil (warpbreaks). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/nb.html">
+                <span class="card-index">07 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão binomial negativa</h3>
+                <p>Alternativa para contagens com superdispersão: na parametrização NB2, <span class="math-inline">\(\operatorname{Var}(Y\mid x)=\mu+\mu^2/\theta\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão de cox modelo semiparamétrico para tempo até evento: λ(t|x)=λ₀(t)exp(xᵀβ). demonstração metodológica com survival::lung (dados clínicos de tempos censurados), diretamente transferível à análise de tempo até falha em confiabilidade. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/cox.html">
+                <span class="card-index">08 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão de Cox</h3>
+                <p>Modelo semiparamétrico para tempo até evento: <span class="math-inline">\(\lambda(t\mid x)=\lambda_0(t)e^{\mathbf x^\top\boldsymbol\beta}\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão quantílica modela quantis condicionais q_τ(y|x)=xᵀβ(τ), como a mediana τ=0,5. distância mediana de frenagem por velocidade de veículo (cars). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/quantilica.html">
+                <span class="card-index">09 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão quantílica</h3>
+                <p>Modela quantis condicionais <span class="math-inline">\(Q_\tau(Y\mid X)=\mathbf X^\top\boldsymbol\beta(\tau)\)</span>, como a mediana <span class="math-inline">\(\tau=0\)</span>,5.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="mínimos quadrados ponderados (wls) ajusta regressão linear minimizando ∑wᵢ(yᵢ−xᵢᵀβ)²; pesos idealmente proporcionais a 1/var(εᵢ). distância de frenagem segundo velocidade (cars), usando ponderação demonstrativa inversa ao quadrado da velocidade. 03 · modelos estatísticos aprendizado supervisionado" href="metodos/wls.html">
+                <span class="card-index">10 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Mínimos quadrados ponderados (WLS)</h3>
+                <p>Ajusta regressão linear minimizando <span class="math-inline">\(\sum_iw_i(y_i-\mathbf x_i^\top\boldsymbol\beta)^2\)</span>; pesos idealmente proporcionais a <span class="math-inline">\(1/\operatorname{Var}(\varepsilon_i)\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="modelos lineares generalizados (glm) família de modelos em que g[e(y|x)] = xᵀβ e a resposta pertence a uma família exponencial especificada (normal, binomial, poisson, gama etc.). volume de árvores (proxy de biomassa/estoque de material florestal) por diâmetro e altura, usando glm gama de resposta positiva (trees). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/glm.html">
+                <span class="card-index">11 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Modelos lineares generalizados (GLM)</h3>
+                <p>Família de modelos em que <span class="math-inline">\(g[\mathbb E(Y\mid X)]=\mathbf X^\top\boldsymbol\beta\)</span> e a resposta pertence a uma família exponencial especificada (normal, binomial, Poisson, gama etc.).</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="equações de estimação generalizadas (gee) estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando correlação de trabalho e usando erros-padrão tipo sanduíche. absorção de co₂ medida repetidamente por planta em diferentes concentrações (co2; bioprocessos). 03 · modelos estatísticos aprendizado supervisionado" href="metodos/gee.html">
+                <span class="card-index">12 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Equações de estimação generalizadas (GEE)</h3>
+                <p>Estimam efeitos médios populacionais em respostas repetidas ou agrupadas, especificando correlação de trabalho e usando erros-padrão tipo sanduíche.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="testes-t" data-group>
+            <div class="group-head">
+              <span class="section-label">04 · COMPARAÇÃO DE MÉDIAS</span>
+              <h2>Testes t clássicos e robustos</h2>
+              <p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="teste t para uma amostra compara uma média populacional com um padrão de referência μ₀. verificar se a média do consumo em mpg de automóveis corresponde a 20 mpg (mtcars). 04 · comparação de médias estatística clássica" href="metodos/t1.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste t para uma amostra</h3>
+                <p>Compara uma média populacional com um padrão de referência <span class="math-inline">\(\mu_{0}\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste t de student (dois grupos) compara médias de duas populações independentes assumindo variâncias populacionais iguais. autonomia de automóveis com transmissões manual e automática (mtcars). 04 · comparação de médias estatística clássica" href="metodos/t2.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste t de Student (dois grupos)</h3>
+                <p>Compara médias de duas populações independentes assumindo variâncias populacionais iguais.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste t pareado compara a média das diferenças dᵢ=yᵢ,depois−yᵢ,antes em pares correspondentes. comparar a absorção de co₂ da mesma planta em duas concentrações (dados co2; bioprocessos). 04 · comparação de médias estatística clássica" href="metodos/tpareado.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste t pareado</h3>
+                <p>Compara a média das diferenças <span class="math-inline">\(D_i=Y_{i,\mathrm{depois}}-Y_{i,\mathrm{antes}}\)</span> em pares correspondentes.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste t de welch (dois grupos) compara médias independentes sem pressupor variâncias populacionais iguais. média de quebras de fios em dois grupos de tensão (warpbreaks). 04 · comparação de médias estatística clássica" href="metodos/twelch.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste t de Welch (dois grupos)</h3>
+                <p>Compara médias independentes sem pressupor variâncias populacionais iguais.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste de yuen (grupos independentes) compara médias aparadas entre dois grupos independentes, com variâncias winsorizadas, reduzindo influência de outliers. quebras por tensões baixa/alta no processo têxtil (warpbreaks). 04 · comparação de médias estatística clássica" href="metodos/yuen.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste de Yuen (grupos independentes)</h3>
+                <p>Compara médias aparadas entre dois grupos independentes, com variâncias winsorizadas, reduzindo influência de outliers.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste de yuen robusto pareado (yuend) teste robusto para pares relacionados, baseado em estimadores aparados de diferenças ou médias marginais conforme a implementação. medidas de absorção de co₂ na mesma planta a 95 e 175 unidades de concentração. 04 · comparação de médias estatística clássica" href="metodos/yuen-pareado.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste de Yuen robusto pareado (Yuend)</h3>
+                <p>Teste robusto para pares relacionados, baseado em estimadores aparados de diferenças ou médias marginais conforme a implementação.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="anova" data-group>
+            <div class="group-head">
+              <span class="section-label">05 · ANÁLISE DE VARIÂNCIA</span>
+              <h2>ANOVA e modelos multivariados</h2>
+              <p>8 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="anova de um fator compara médias de k grupos independentes pela decomposição da variabilidade entre e dentro dos grupos. contagem de quebras por tensão de fiação (warpbreaks). 05 · análise de variância estatística clássica" href="metodos/aov1.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>ANOVA de um fator</h3>
+                <p>Compara médias de k grupos independentes pela decomposição da variabilidade entre e dentro dos grupos.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="anova de welch compara médias de k grupos com variâncias possivelmente diferentes, usando ponderação e graus de liberdade aproximados. quebras de fios segundo três condições de tensão (warpbreaks). 05 · análise de variância estatística clássica" href="metodos/aovwelch.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>ANOVA de Welch</h3>
+                <p>Compara médias de k grupos com variâncias possivelmente diferentes, usando ponderação e graus de liberdade aproximados.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="anova de medidas repetidas compara médias em condições observadas nas mesmas unidades experimentais, explicitando a dependência intraunidade. absorção de co₂ nas mesmas plantas em sete concentrações. 05 · análise de variância estatística clássica" href="metodos/aovrepetida.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>ANOVA de medidas repetidas</h3>
+                <p>Compara médias em condições observadas nas mesmas unidades experimentais, explicitando a dependência intraunidade.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="anova fatorial investiga efeitos principais e interação de dois ou mais fatores sobre uma resposta quantitativa. quebras de fios segundo tipo de lã e tensão (warpbreaks). 05 · análise de variância estatística clássica" href="metodos/aovfatorial.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>ANOVA fatorial</h3>
+                <p>Investiga efeitos principais e interação de dois ou mais fatores sobre uma resposta quantitativa.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="anova mista combina pelo menos um fator entre unidades e um fator intraunidade com medidas repetidas. absorção em plantas de quebec/mississippi (type) ao longo de concentrações de co₂ (conc), com medidas repetidas por plant. 05 · análise de variância estatística clássica" href="metodos/aovmista.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>ANOVA mista</h3>
+                <p>Combina pelo menos um fator entre unidades e um fator intraunidade com medidas repetidas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="ancova compara médias condicionais de grupos ajustando covariáveis quantitativas (modelo linear com fatores e covariáveis). comprimento de sépalas por espécie, ajustando a largura da sépala (iris; aplicação metodológica em medidas dimensionais). 05 · análise de variância estatística clássica" href="metodos/ancova.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>ANCOVA</h3>
+                <p>Compara médias condicionais de grupos ajustando covariáveis quantitativas (modelo linear com fatores e covariáveis).</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="manova testa simultaneamente diferenças entre vetores de médias de várias respostas quantitativas correlacionadas. comparar conjuntamente comprimento de sépala e pétala entre espécies (iris), analogia a várias especificações dimensionais. 05 · análise de variância estatística clássica" href="metodos/manova.html">
+                <span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>MANOVA</h3>
+                <p>Testa simultaneamente diferenças entre vetores de médias de várias respostas quantitativas correlacionadas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="mancova extende manova ao ajuste de covariáveis sobre um vetor de respostas. medições de sépala e pétala por espécie, ajustando largura da sépala (iris). 05 · análise de variância estatística clássica" href="metodos/mancova.html">
+                <span class="card-index">08 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>MANCOVA</h3>
+                <p>Extende MANOVA ao ajuste de covariáveis sobre um vetor de respostas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="posthoc" data-group>
+            <div class="group-head">
+              <span class="section-label">06 · COMPARAÇÕES MÚLTIPLAS</span>
+              <h2>Procedimentos de ajuste e pós-testes</h2>
+              <p>8 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="ajuste de bonferroni controla a probabilidade de ao menos uma rejeição falsa em uma família de m hipóteses mediante limiar α/m ou p_aj=min(mp,1). comparar pares de tensões de fiação para contagem média de quebras (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/bonferroni.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Ajuste de Bonferroni</h3>
+                <p>Controla a probabilidade de ao menos uma rejeição falsa em uma família de m hipóteses mediante limiar <span class="math-inline">\(\alpha\)</span>/m ou <span class="math-inline">\(p_{\mathrm{aj}}=\min(mp,1)\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="tukey hsd / tukey–kramer compara todos os pares de médias sob modelo anova, controlando fwer via amplitude studentizada. comparar tensões de fiação no processo têxtil (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/tukey.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Tukey HSD / Tukey–Kramer</h3>
+                <p>Compara todos os pares de médias sob modelo ANOVA, controlando FWER via amplitude studentizada.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="games–howell comparações de médias par a par com variâncias e tamanhos amostrais possivelmente desiguais. comparação das médias de quebras nos três níveis de tensão (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/games-howell.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Games–Howell</h3>
+                <p>Comparações de médias par a par com variâncias e tamanhos amostrais possivelmente desiguais.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="ryan–einot–gabriel–welsch (regw) procedimento de comparações múltiplas por amplitudes ordenadas para médias de k grupos, geralmente após anova. comparação de tensões de fiação por número médio de quebras (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/regwf.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Ryan–Einot–Gabriel–Welsch (REGW)</h3>
+                <p>Procedimento de comparações múltiplas por amplitudes ordenadas para médias de k grupos, geralmente após ANOVA.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="ajuste de šidák ajuste para m testes: p_aj=1−(1−p)^m. sob independência dos testes, controla a probabilidade de erro familiar. comparar médias de quebras em pares de tensões (warpbreaks) com ajustes ilustrativos. 06 · comparações múltiplas estatística clássica" href="metodos/sidak.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Ajuste de Šidák</h3>
+                <p>Ajuste para m testes: <span class="math-inline">\(p_{\mathrm{aj}}=1-(1-p)^m\)</span>. Sob independência dos testes, controla a probabilidade de erro familiar.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="duncan procedimento de amplitudes múltiplas stepwise, relativamente liberal, para grupos após anova. comparações de tensões de fiação para quebras médias (warpbreaks). 06 · comparações múltiplas estatística clássica" href="metodos/duncan.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Duncan</h3>
+                <p>Procedimento de amplitudes múltiplas stepwise, relativamente liberal, para grupos após ANOVA.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="hochberg gt2 procedimento de comparações múltiplas para tamanhos amostrais desiguais sob homocedasticidade; baseado na distribuição do módulo máximo studentizado. tensões de fiação em warpbreaks. é mostrado um método substituto implementado diretamente, não o gt2 exato. 06 · comparações múltiplas estatística clássica" href="metodos/hochberg-gt2.html">
+                <span class="card-index">07 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Hochberg GT2</h3>
+                <p>Procedimento de comparações múltiplas para tamanhos amostrais desiguais sob homocedasticidade; baseado na distribuição do módulo máximo studentizado.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="dunnett c procedimento heterocedástico de comparações múltiplas, baseado em contraste de médias e valores críticos do módulo máximo studentizado. não é o dunnett clássico contra controle. quebras de fios por tensão (warpbreaks); o código utiliza games–howell como alternativa heterocedástica identificada. 06 · comparações múltiplas estatística clássica" href="metodos/dunnett-c.html">
+                <span class="card-index">08 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Dunnett C</h3>
+                <p>Procedimento heterocedástico de comparações múltiplas, baseado em contraste de médias e valores críticos do módulo máximo studentizado. Não é o Dunnett clássico contra controle.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="categoricos" data-group>
+            <div class="group-head">
+              <span class="section-label">07 · DADOS CATEGÓRICOS</span>
+              <h2>Contingência e frequências</h2>
+              <p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="qui-quadrado de aderência compara frequências observadas em categorias a proporções teóricas especificadas. verificar a proporção de três arquiteturas de transmissão (3, 4, 5 marchas) em mtcars, contra referência uniforme hipotética. 07 · dados categóricos estatística clássica" href="metodos/qui-aderencia.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Qui-quadrado de aderência</h3>
+                <p>Compara frequências observadas em categorias a proporções teóricas especificadas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="qui-quadrado de independência avalia associação entre duas variáveis categóricas em tabela de contingência. associação entre número de cilindros e tipo de transmissão em mtcars. 07 · dados categóricos estatística clássica" href="metodos/qui-independencia.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Qui-quadrado de independência</h3>
+                <p>Avalia associação entre duas variáveis categóricas em tabela de contingência.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste exato de fisher avalia associação em tabela 2×2 condicionada às margens, útil com contagens pequenas. associação entre configuração de motor (vs) e transmissão (am) em mtcars. 07 · dados categóricos estatística clássica" href="metodos/fisher.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste exato de Fisher</h3>
+                <p>Avalia associação em tabela <span class="math-inline">\(2\times2\)</span> condicionada às margens, útil com contagens pequenas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste de mcnemar compara proporções de resposta binária antes/depois nas mesmas unidades; utiliza somente pares discordantes. classificar cada planta como absorção acima de 15 unidades em duas concentrações de co₂. 07 · dados categóricos estatística clássica" href="metodos/mcnemar.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste de McNemar</h3>
+                <p>Compara proporções de resposta binária antes/depois nas mesmas unidades; utiliza somente pares discordantes.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste q de cochran generaliza mcnemar a três ou mais respostas binárias repetidas nas mesmas unidades. indicar absorção de co₂ acima de 20 em sete concentrações, repetidas por planta. 07 · dados categóricos estatística clássica" href="metodos/cochran-q.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste Q de Cochran</h3>
+                <p>Generaliza McNemar a três ou mais respostas binárias repetidas nas mesmas unidades.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="análise log-linear modela contagens esperadas de tabelas multiway por modelos de poisson sobre efeitos e interações entre fatores. dados de sobrevivência de passageiros do titanic como exemplo metodológico de engenharia de segurança de transportes. 07 · dados categóricos estatística clássica" href="metodos/loglinear.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Análise log-linear</h3>
+                <p>Modela contagens esperadas de tabelas multiway por modelos de Poisson sobre efeitos e interações entre fatores.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="agrupamento" data-group>
+            <div class="group-head">
+              <span class="section-label">08 · AGRUPAMENTO</span>
+              <h2>Clustering não supervisionado</h2>
+              <p>2 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="unsupervised" data-search="agrupamento hierárquico constrói grupos por fusão sucessiva de observações segundo distância e critério de ligação, representados em dendrograma. agrupar automóveis pelo desempenho: consumo, massa, potência e aceleração (mtcars). 08 · agrupamento aprendizado não supervisionado" href="metodos/hcluster.html">
+                <span class="card-index">01 · APRENDIZADO NÃO SUPERVISIONADO</span>
+                <h3>Agrupamento hierárquico</h3>
+                <p>Constrói grupos por fusão sucessiva de observações segundo distância e critério de ligação, representados em dendrograma.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="unsupervised" data-search="k-means particiona observações em k grupos minimizando a soma de quadrados dentro dos grupos em relação aos centros. segmentar veículos por massa, potência e consumo (mtcars). 08 · agrupamento aprendizado não supervisionado" href="metodos/kmeans.html">
+                <span class="card-index">02 · APRENDIZADO NÃO SUPERVISIONADO</span>
+                <h3>K-means</h3>
+                <p>Particiona observações em k grupos minimizando a soma de quadrados dentro dos grupos em relação aos centros.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="discriminante" data-group>
+            <div class="group-head">
+              <span class="section-label">09 · CLASSIFICAÇÃO</span>
+              <h2>Análise discriminante</h2>
+              <p>2 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="análise discriminante linear (lda) classificador generativo que assume distribuições normais multivariadas por classe com matriz de covariância comum. classificar veículos por quantidade de cilindros usando potência e massa em mtcars. 09 · classificação aprendizado supervisionado" href="metodos/lda.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Análise discriminante linear (LDA)</h3>
+                <p>Classificador generativo que assume distribuições normais multivariadas por classe com matriz de covariância comum.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="análise discriminante quadrática (qda) classificador generativo que permite uma matriz de covariância distinta por classe, produzindo fronteiras quadráticas. classificar veículos por cilindrada (4/6/8) usando massa e potência em mtcars. 09 · classificação aprendizado supervisionado" href="metodos/qda.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Análise discriminante quadrática (QDA)</h3>
+                <p>Classificador generativo que permite uma matriz de covariância distinta por classe, produzindo fronteiras quadráticas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="sobrevivencia" data-group>
+            <div class="group-head">
+              <span class="section-label">10 · SOBREVIVÊNCIA</span>
+              <h2>Curvas e comparação de riscos</h2>
+              <p>3 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="estimador kaplan–meier estima a função de sobrevivência s(t)=p(t&gt;t) com observações censuradas à direita. tempos censurados do pacote survival::lung, demonstrando o procedimento transferível a vida útil de equipamentos. 10 · sobrevivência estatística clássica" href="metodos/kaplan.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Estimador Kaplan–Meier</h3>
+                <p>Estima a função de sobrevivência S(t)=P(T&gt;t) com observações censuradas à direita.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste log-rank compara funções de risco/sobrevivência entre grupos usando eventos observados e esperados ao longo dos tempos. comparação de curvas de tempo até evento por sexo em survival::lung (analogia à comparação de grupos de equipamentos). 10 · sobrevivência estatística clássica" href="metodos/logrank.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste log-rank</h3>
+                <p>Compara funções de risco/sobrevivência entre grupos usando eventos observados e esperados ao longo dos tempos.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste generalizado de wilcoxon–gehan compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais. tempos clínicos censurados survival::lung usados como ilustração metodológica da comparação de lotes de vida útil. 10 · sobrevivência estatística clássica" href="metodos/gehan.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste generalizado de Wilcoxon–Gehan</h3>
+                <p>Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="naoparametricos" data-group>
+            <div class="group-head">
+              <span class="section-label">11 · NÃO PARAMÉTRICOS</span>
+              <h2>Alternativas por postos</h2>
+              <p>4 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="mann–whitney / wilcoxon rank-sum compara duas distribuições independentes por postos; sob hipóteses adicionais pode ser interpretado como mudança de localização. comparação de consumo entre tipos de transmissão de veículos (mtcars). 11 · não paramétricos estatística clássica" href="metodos/mann-whitney.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Mann–Whitney / Wilcoxon rank-sum</h3>
+                <p>Compara duas distribuições independentes por postos; sob hipóteses adicionais pode ser interpretado como mudança de localização.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="wilcoxon signed-rank (pareado) avalia o centro de uma distribuição aproximadamente simétrica de diferenças pareadas sem pressupor normalidade. diferença de absorção por planta entre duas concentrações de co₂. 11 · não paramétricos estatística clássica" href="metodos/wilcoxon-assinado.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Wilcoxon signed-rank (pareado)</h3>
+                <p>Avalia o centro de uma distribuição aproximadamente simétrica de diferenças pareadas sem pressupor normalidade.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="kruskal–wallis compara distribuições de k grupos independentes por postos, generalizando mann–whitney. quebras de fios entre três tensões (warpbreaks). 11 · não paramétricos estatística clássica" href="metodos/kruskal.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Kruskal–Wallis</h3>
+                <p>Compara distribuições de k grupos independentes por postos, generalizando Mann–Whitney.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="teste de friedman compara k condições observadas nos mesmos blocos/unidades, usando postos dentro de cada unidade. absorção de co₂ de cada planta medida em sete concentrações. 11 · não paramétricos estatística clássica" href="metodos/friedman.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Teste de Friedman</h3>
+                <p>Compara k condições observadas nos mesmos blocos/unidades, usando postos dentro de cada unidade.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="concordancia" data-group>
+            <div class="group-head">
+              <span class="section-label">12 · CONCORDÂNCIA</span>
+              <h2>Concordância e confiabilidade entre avaliadores</h2>
+              <p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="classical" data-search="kappa de cohen mensura concordância de dois avaliadores em classes nominais, além da concordância esperada sob margens independentes. dois sistemas didáticos de classificação binária de veículos como maior/menor desempenho (mtcars). 12 · concordância estatística clássica" href="metodos/kappa.html">
+                <span class="card-index">01 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Kappa de Cohen</h3>
+                <p>Mensura concordância de dois avaliadores em classes nominais, além da concordância esperada sob margens independentes.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="kappa ponderado estende cohen κ a categorias ordinais atribuindo pesos menores às discordâncias mais graves. dois sistemas didáticos de classificação de potência e massa de veículos em baixo/médio/alto. 12 · concordância estatística clássica" href="metodos/kappa-ponderado.html">
+                <span class="card-index">02 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Kappa ponderado</h3>
+                <p>Estende Cohen <span class="math-inline">\(\kappa\)</span> a categorias ordinais atribuindo pesos menores às discordâncias mais graves.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="kappa de fleiss mede acordo nominal além do acaso entre três ou mais avaliadores que classificam as mesmas unidades. três sistemas de classificação de veículos em alto/baixo desempenho, construídos de mpg, hp e wt (mtcars). 12 · concordância estatística clássica" href="metodos/fleiss.html">
+                <span class="card-index">03 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Kappa de Fleiss</h3>
+                <p>Mede acordo nominal além do acaso entre três ou mais avaliadores que classificam as mesmas unidades.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="coeficiente de correlação intraclasse (icc) quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida. medições simuladas de potência de motores, centradas nos valores reais de hp da base mtcars. 12 · concordância estatística clássica" href="metodos/icc.html">
+                <span class="card-index">04 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Coeficiente de correlação intraclasse (ICC)</h3>
+                <p>Quantifica consistência ou concordância de medições contínuas entre avaliadores/repetições, dependendo do modelo de efeitos e da definição escolhida.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="coeficiente de concordância de kendall (w) resume a concordância global entre três ou mais conjuntos de rankings dos mesmos objetos. três critérios simulados de avaliação de potência dos mesmos 32 automóveis (mtcars). 12 · concordância estatística clássica" href="metodos/kendall-w.html">
+                <span class="card-index">05 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Coeficiente de concordância de Kendall (W)</h3>
+                <p>Resume a concordância global entre três ou mais conjuntos de rankings dos mesmos objetos.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="classical" data-search="coeficiente ac1 de gwet medida de concordância nominal que usa correção para acordo casual distinta da empregada no kappa, menos sujeita a alguns paradoxos de prevalência. sistemas de triagem de veículos em alto/baixo consumo obtidos de mpg e potência (mtcars), apenas para cálculo didático. 12 · concordância estatística clássica" href="metodos/gwet.html">
+                <span class="card-index">06 · ESTATÍSTICA CLÁSSICA</span>
+                <h3>Coeficiente AC1 de Gwet</h3>
+                <p>Medida de concordância nominal que usa correção para acordo casual distinta da empregada no Kappa, menos sujeita a alguns paradoxos de prevalência.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="avaliacao" data-group>
+            <div class="group-head">
+              <span class="section-label">13 · APRENDIZADO SUPERVISIONADO</span>
+              <h2>Validação e reamostragem</h2>
+              <p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="separação treino–teste (holdout) estima desempenho fora da amostra reservando dados não usados para ajuste ou escolha de hiperparâmetros. predição de autonomia de veículos (mtcars) a partir de massa e potência. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/holdout.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Separação treino–teste (holdout)</h3>
+                <p>Estima desempenho fora da amostra reservando dados não usados para ajuste ou escolha de hiperparâmetros.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="validação cruzada k-fold divide o conjunto em k partes; cada parte é predita por um modelo ajustado nas outras k−1 partes. validação de regressão da autonomia de veículos em mtcars. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/kfold.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Validação cruzada k-fold</h3>
+                <p>Divide o conjunto em k partes; cada parte é predita por um modelo ajustado nas outras <span class="math-inline">\(k-1\)</span> partes.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="leave-one-out cross-validation (loocv) validação cruzada em que cada modelo é ajustado com n−1 observações e testa a restante; para ols existe forma computacional fechada. ajustar distância de frenagem por velocidade usando cada observação de cars como caso de validação. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/loocv.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Leave-one-out cross-validation (LOOCV)</h3>
+                <p>Validação cruzada em que cada modelo é ajustado com <span class="math-inline">\(n-1\)</span> observações e testa a restante; para OLS existe forma computacional fechada.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="bootstrap não paramétrico aproxima a variabilidade amostral de um estimador reamostrando unidades independentes com reposição. incerteza do coeficiente de massa na regressão de autonomia de veículos (mtcars). 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bootstrap.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Bootstrap não paramétrico</h3>
+                <p>Aproxima a variabilidade amostral de um estimador reamostrando unidades independentes com reposição.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="métricas de classificação e curva roc quantifica desempenho preditivo de classes/probabilidades com acurácia, sensibilidade, especificidade, precisão e auc. classificar transmissão manual (am=1) com massa e potência (mtcars). 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/classmetric.html">
+                <span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Métricas de classificação e curva ROC</h3>
+                <p>Quantifica desempenho preditivo de classes/probabilidades com acurácia, sensibilidade, especificidade, precisão e AUC.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="compromisso viés–variância modelos muito rígidos podem ter alto viés; modelos muito flexíveis, alta variância preditiva. regularização e validação controlam o compromisso. predição da distância de frenagem com polinômios de diferentes graus sobre cars, usando 5-fold cv. 13 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bias-variance.html">
+                <span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Compromisso viés–variância</h3>
+                <p>Modelos muito rígidos podem ter alto viés; modelos muito flexíveis, alta variância preditiva. Regularização e validação controlam o compromisso.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="regularizacao" data-group>
+            <div class="group-head">
+              <span class="section-label">14 · APRENDIZADO SUPERVISIONADO</span>
+              <h2>Seleção e regularização</h2>
+              <p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="seleção exaustiva de subconjuntos compara combinações de preditores candidatos e seleciona modelos por critério predefinido, como bic ou erro validado. selecionar atributos de veículo relacionados à autonomia (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/subset.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Seleção exaustiva de subconjuntos</h3>
+                <p>Compara combinações de preditores candidatos e seleciona modelos por critério predefinido, como BIC ou erro validado.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="seleção stepwise por aic adiciona/retira preditores em sequência buscando reduzir aic, sem examinar necessariamente todos os subconjuntos. selecionar atributos de automóveis para explicar mpg (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/stepwise.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Seleção stepwise por AIC</h3>
+                <p>Adiciona/retira preditores em sequência buscando reduzir AIC, sem examinar necessariamente todos os subconjuntos.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão ridge encolhe coeficientes de regressão via penalidade quadrática; reduz variância em presença de preditores correlacionados, sem tipicamente zerar coeficientes. predição de autonomia por massa, potência, cilindrada e aceleração (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/ridge.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão ridge</h3>
+                <p>Encolhe coeficientes de regressão via penalidade quadrática; reduz variância em presença de preditores correlacionados, sem tipicamente zerar coeficientes.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão lasso regularização l1 que pode zerar coeficientes e simultaneamente selecionar variáveis. predição de consumo de veículos a partir de várias medidas (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/lasso.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão lasso</h3>
+                <p>Regularização L1 que pode zerar coeficientes e simultaneamente selecionar variáveis.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão por componentes principais (pcr) constrói componentes de x sem usar y e ajusta a resposta por um subconjunto dessas direções. previsão da autonomia por atributos colineares de automóveis (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/pcr.html">
+                <span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão por componentes principais (PCR)</h3>
+                <p>Constrói componentes de X sem usar Y e ajusta a resposta por um subconjunto dessas direções.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão por mínimos quadrados parciais (pls) constrói direções latentes de x levando em conta a associação com y, diferentemente da pcr. previsão da autonomia com atributos de veículos (mtcars). 14 · aprendizado supervisionado aprendizado supervisionado" href="metodos/pls.html">
+                <span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão por mínimos quadrados parciais (PLS)</h3>
+                <p>Constrói direções latentes de X levando em conta a associação com Y, diferentemente da PCR.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="naolinear" data-group>
+            <div class="group-head">
+              <span class="section-label">15 · APRENDIZADO SUPERVISIONADO</span>
+              <h2>Relações não lineares</h2>
+              <p>5 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="regressão polinomial estende regressão linear nos coeficientes com potências de preditores para capturar curvatura na média condicional. distância de frenagem em função da velocidade (cars). 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/polinomial.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão polinomial</h3>
+                <p>Estende regressão linear nos coeficientes com potências de preditores para capturar curvatura na média condicional.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="splines de regressão representam relações não lineares por funções base polinomiais por trechos, conectadas suavemente em nós. ajustar distância de frenagem a velocidade com b-splines (cars). 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/splines.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Splines de regressão</h3>
+                <p>Representam relações não lineares por funções base polinomiais por trechos, conectadas suavemente em nós.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="smoothing splines estima uma curva suave penalizando o excesso de curvatura, em vez de selecionar manualmente todos os nós. relação velocidade–distância de frenagem em cars. 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/smoothing-spline.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Smoothing splines</h3>
+                <p>Estima uma curva suave penalizando o excesso de curvatura, em vez de selecionar manualmente todos os nós.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="regressão local (loess) ajusta regressões em vizinhanças locais ponderadas, permitindo curvas suaves sem modelo global paramétrico. distância de frenagem versus velocidade no conjunto cars. 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/loess.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Regressão local (LOESS)</h3>
+                <p>Ajusta regressões em vizinhanças locais ponderadas, permitindo curvas suaves sem modelo global paramétrico.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="modelos aditivos generalizados (gam) estendem glm usando funções suaves de preditores: g[e(y|x)] = β₀ + ∑fⱼ(xⱼ). predição não linear da autonomia por massa e potência (mtcars). 15 · aprendizado supervisionado aprendizado supervisionado" href="metodos/gam.html">
+                <span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Modelos aditivos generalizados (GAM)</h3>
+                <p>Estendem GLM usando funções suaves de preditores: <span class="math-inline">\(g[\mathbb E(Y\mid X)]=\beta_0+\sum_jf_j(X_j)\)</span>.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="arvores" data-group>
+            <div class="group-head">
+              <span class="section-label">16 · APRENDIZADO SUPERVISIONADO</span>
+              <h2>Árvores e conjuntos de modelos</h2>
+              <p>6 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="árvore de regressão (cart) divide recursivamente o espaço dos preditores em regiões e prevê a média da resposta em cada folha. predição de autonomia por peso, potência e aceleração (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/cart-reg.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Árvore de regressão (CART)</h3>
+                <p>Divide recursivamente o espaço dos preditores em regiões e prevê a média da resposta em cada folha.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="árvore de classificação (cart) divide recursivamente as covariáveis para classificar respostas categóricas em regiões homogêneas. classificar transmissão (manual/automática) conforme massa e potência (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/cart-class.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Árvore de classificação (CART)</h3>
+                <p>Divide recursivamente as covariáveis para classificar respostas categóricas em regiões homogêneas.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="bagging (bootstrap aggregation) combina muitas árvores ajustadas sobre amostras bootstrap, reduzindo variabilidade de uma única árvore. predição de consumo em veículos com wt, hp e disp (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bagging.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Bagging (bootstrap aggregation)</h3>
+                <p>Combina muitas árvores ajustadas sobre amostras bootstrap, reduzindo variabilidade de uma única árvore.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="random forests ensemble de árvores bootstrap com seleção aleatória de preditores candidatos em cada divisão, reduzindo correlação entre árvores. prever mpg a partir de massa, potência, cilindrada e aceleração (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/randomforest.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Random forests</h3>
+                <p>Ensemble de árvores bootstrap com seleção aleatória de preditores candidatos em cada divisão, reduzindo correlação entre árvores.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="gradient boosting de árvores ajusta sequencialmente árvores que aproximam o gradiente da perda, construindo um preditor aditivo de alta flexibilidade. predição da autonomia veicular com massa, potência e cilindrada (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/boosting.html">
+                <span class="card-index">05 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Gradient boosting de árvores</h3>
+                <p>Ajusta sequencialmente árvores que aproximam o gradiente da perda, construindo um preditor aditivo de alta flexibilidade.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="bayesian additive regression trees (bart) combina árvores regularizadas num modelo bayesiano aditivo, produzindo amostras a posteriori de predições e, conforme formulação, da variância de erro. predição da autonomia por massa e potência de automóveis (mtcars). 16 · aprendizado supervisionado aprendizado supervisionado" href="metodos/bart.html">
+                <span class="card-index">06 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Bayesian additive regression trees (BART)</h3>
+                <p>Combina árvores regularizadas num modelo Bayesiano aditivo, produzindo amostras a posteriori de predições e, conforme formulação, da variância de erro.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="classificadores" data-group>
+            <div class="group-head">
+              <span class="section-label">17 · APRENDIZADO SUPERVISIONADO</span>
+              <h2>Classificadores preditivos</h2>
+              <p>4 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="k-nearest neighbors (knn) prevê classe por votação das k observações de treino mais próximas no espaço de covariáveis. classificar cilindros de veículos a partir de massa e potência (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/knn.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>K-nearest neighbors (KNN)</h3>
+                <p>Prevê classe por votação das k observações de treino mais próximas no espaço de covariáveis.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="naive bayes classificador probabilístico que combina prioris de classe e densidades condicionais, supondo independência condicional dos preditores dentro de cada classe. classificação do número de cilindros segundo massa e potência de veículos (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/naive-bayes.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Naive Bayes</h3>
+                <p>Classificador probabilístico que combina prioris de classe e densidades condicionais, supondo independência condicional dos preditores dentro de cada classe.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="máquinas de vetores de suporte lineares classifica por hiperplano que equilibra margem grande e penalidade de violações (soft margin). classificar transmissão de veículos a partir de massa e potência (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/svm-linear.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Máquinas de vetores de suporte lineares</h3>
+                <p>Classifica por hiperplano que equilibra margem grande e penalidade de violações (soft margin).</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="svm com kernel radial (rbf) obtém fronteiras não lineares por produtos internos em espaço de características implícito. classificar veículos por cilindros a partir de massa e potência (mtcars). 17 · aprendizado supervisionado aprendizado supervisionado" href="metodos/svm-rbf.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>SVM com kernel radial (RBF)</h3>
+                <p>Obtém fronteiras não lineares por produtos internos em espaço de características implícito.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+          <section class="catalog-group" id="redes" data-group>
+            <div class="group-head">
+              <span class="section-label">18 · APRENDIZADO SUPERVISIONADO</span>
+              <h2>Redes neurais e aprendizado profundo</h2>
+              <p>4 métodos · pressupostos, fórmulas, exemplos em R e interpretação estatística.</p>
+            </div>
+            <div class="method-grid">
+              <a class="method-card" data-group-type="supervised" data-search="rede sem camada oculta (classificador logístico) rede com entradas conectadas diretamente à saída sigmoide. sem camadas ocultas, é equivalente à regressão logística para resposta binária e perda logarítmica. classificar transmissão manual de veículos (mtcars) usando atributos normalizados. 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/rede-uma-camada.html">
+                <span class="card-index">01 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Rede sem camada oculta (classificador logístico)</h3>
+                <p>Rede com entradas conectadas diretamente à saída sigmoide. Sem camadas ocultas, é equivalente à regressão logística para resposta binária e perda logarítmica.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="rede neural multicamadas (mlp) modelo supervisionado que combina transformações lineares e ativações não lineares em camadas ocultas para regressão ou classificação. predição da autonomia por massa, potência e cilindrada (mtcars). 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/mlp.html">
+                <span class="card-index">02 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Rede neural multicamadas (MLP)</h3>
+                <p>Modelo supervisionado que combina transformações lineares e ativações não lineares em camadas ocultas para regressão ou classificação.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="redes neurais convolucionais (cnn) aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial. classificação de patches 5×5 de um mapa de elevação (volcano, conjunto disponível no r), analogia à detecção de regiões topográficas elevadas. 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/cnn.html">
+                <span class="card-index">03 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Redes neurais convolucionais (CNN)</h3>
+                <p>Aprendem filtros locais compartilhados adequados a imagens, sinais e arranjos espaciais; usualmente não se justificam para tabelas sem estrutura espacial.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+              <a class="method-card" data-group-type="supervised" data-search="redes neurais recorrentes (rnn) processam sequências preservando dependências temporais por estados ocultos que combinam entrada atual e informação anterior. previsão de passageiros mensais (airpassengers, r base) como análogo de demanda de sistemas de transporte. 18 · aprendizado supervisionado aprendizado supervisionado" href="metodos/rnn.html">
+                <span class="card-index">04 · APRENDIZADO SUPERVISIONADO</span>
+                <h3>Redes neurais recorrentes (RNN)</h3>
+                <p>Processam sequências preservando dependências temporais por estados ocultos que combinam entrada atual e informação anterior.</p>
+                <span class="card-more">Estudar método →</span>
+              </a>
+            </div>
+          </section>
+        </div>
+        <p id="empty-search" class="empty-search" hidden>Nenhum método corresponde à busca.</p>
+      </section>
+      <section class="notes" id="criterios">
+        <span class="section-label">CRITÉRIOS METODOLÓGICOS</span>
+        <h2>Inferência e desempenho preditivo são objetivos distintos.</h2>
+        <p>Um valor-p alto não comprova a hipótese nula. Estimativas pontuais, intervalos de confiança e diagnósticos complementam o teste. Para algoritmos sem hipótese nula intrínseca, devem-se utilizar validação, análise de erro e avaliação da generalização.</p>
+        <p>Os exemplos utilizam, entre outros, os conjuntos <code>mtcars</code>, <code>cars</code>, <code>warpbreaks</code> e <code>CO2</code>. Quando o conjunto não é originalmente da Engenharia, a aplicação é apresentada como analogia e não como dado industrial observado. Redes profundas dependem do backend TensorFlow.</p>
+      </section>
+      <section class="bibliography" id="referencias">
+        <span class="section-label">REFERÊNCIAS BIBLIOGRÁFICAS</span>
+        <h2>Referências bibliográficas</h2>
+        <ol>
+          <li>JAMES, Gareth; WITTEN, Daniela; HASTIE, Trevor; TIBSHIRANI, Robert. <em>An introduction to statistical learning: with applications in R.</em> 2. ed. New York: Springer, 2021. DOI: 10.1007/978-1-0716-1418-1. <a href="https://doi.org/10.1007/978-1-0716-1418-1" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+          <li>MORETTIN, Pedro Alberto; BUSSAB, Wilton de Oliveira. <em>Estatística básica.</em> 9. ed. São Paulo: Saraiva, 2017. <a href="https://repositorio.usp.br/item/003121595" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+          <li>CASELLA, George; BERGER, Roger L. <em>Statistical inference.</em> 2. ed. Pacific Grove: Duxbury, 2002. <a href="https://books.google.com/books/about/Statistical_Inference.html?id=0x_vAAAAMAAJ" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+          <li>AGRESTI, Alan. <em>Categorical data analysis.</em> 3. ed. Hoboken: Wiley, 2013.</li>
+          <li>HASTIE, Trevor; TIBSHIRANI, Robert; FRIEDMAN, Jerome. <em>The elements of statistical learning: data mining, inference, and prediction.</em> 2. ed. New York: Springer, 2009. <a href="https://hastie.su.domains/ElemStatLearn/" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+          <li>FOX, John; WEISBERG, Sanford. <em>An R companion to applied regression.</em> 3. ed. Thousand Oaks: SAGE, 2019.</li>
+          <li>MONTGOMERY, Douglas C.; PECK, Elizabeth A.; VINING, G. Geoffrey. <em>Introduction to linear regression analysis.</em> 6. ed. Hoboken: Wiley, 2021.</li>
+          <li>KUHN, Max; JOHNSON, Kjell. <em>Applied predictive modeling.</em> New York: Springer, 2013.</li>
+          <li>THERNEAU, Terry M.; GRAMBSCH, Patricia M. <em>Modeling survival data: extending the Cox model.</em> New York: Springer, 2000.</li>
+          <li>BREIMAN, Leo. Random forests. <em>Machine Learning</em>, v. 45, p. 5-32, 2001. DOI: 10.1023/A:1010933404324. <a href="https://doi.org/10.1023/A:1010933404324" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+          <li>BENJAMINI, Yoav; HOCHBERG, Yosef. Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B</em>, v. 57, n. 1, p. 289-300, 1995.</li>
+          <li>GWET, Kilem L. <em>Handbook of inter-rater reliability.</em> 4. ed. Gaithersburg: Advanced Analytics, 2014.</li>
+          <li>R CORE TEAM. <em>R: a language and environment for statistical computing.</em> Vienna: R Foundation for Statistical Computing, 2026. Disponível em: https://www.r-project.org/. <a href="https://www.r-project.org/" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+          <li>MONTGOMERY, Douglas C. <em>Design and analysis of experiments.</em> 10. ed. Hoboken: Wiley, 2019.</li>
+          <li>HOLLANDER, Myles; WOLFE, Douglas A.; CHICKEN, Eric. <em>Nonparametric statistical methods.</em> 3. ed. Hoboken: Wiley, 2014.</li>
+          <li>HARRELL, Frank E. <em>Regression modeling strategies: with applications to linear models, logistic and ordinal regression, and survival analysis.</em> 2. ed. Cham: Springer, 2015. <a href="https://doi.org/10.1007/978-3-319-19425-7" target="_blank" rel="noopener noreferrer">Acessar referência ↗</a></li>
+        </ol>
+      </section>
+      <section class="profile-section">
+        <a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">
+          <img src="assets/img/cassius.jpg" alt="Prof. Dr. Cássius Henrique Xavier Oliveira">
+          <div>
+            <span>SOBRE O PROFESSOR</span>
+            <h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2>
+            <p>Professor · Instituto de Ciência, Tecnologia e Inovação (ICTIN/UFLA). Estatística, Análise de Sobrevivência, Confiabilidade e Ciência de Dados.</p>
+            <b>Conheça minha trajetória, pesquisa e projetos →</b>
+          </div>
+        </a>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div>
+        <strong>Estatística &amp; Ciência de Dados</strong>
+        <div>Material acadêmico de consulta · ICTIN/UFLA</div>
+      </div>
+      <div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div>
+    </footer>
+    <script defer src="assets/script.js"></script>
+  </body>
+</html>
