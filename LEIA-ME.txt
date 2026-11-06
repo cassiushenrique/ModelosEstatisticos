@@ -1,8 +1,6 @@
-ESTATÍSTICA E CIÊNCIA DE DADOS — VERSÃO REVISADA
+Estatística e Ciência de Dados — guia prático.
+97 métodos disponíveis no índice.
+Abra index.html para navegar, ou publique a pasta no GitHub Pages.
+Cada página em metodos/ tem um script correspondente em scripts/.
 
-Esta versão contém 103 fichas, 103 scripts R e filtros por tipo de método (estatística clássica, aprendizado supervisionado e aprendizado não supervisionado). Fórmulas matemáticas estão escritas em LaTeX e renderizadas com MathJax 3 (conexão à internet necessária para carregar o MathJax).
-
-PUBLICAÇÃO NO GITHUB PAGES
-Substitua os arquivos index.html, catalogo.json e assets/style.css, assets/script.js no repositório. Substitua também todos os arquivos de metodos/ e scripts/ mantendo os mesmos nomes. Envie em lotes menores que 100 arquivos se usar a interface web do GitHub.
-
-IMPORTANTE: troque a versão antiga integralmente; não mantenha a página anterior na raiz. Dados de pacotes R podem requerer conexão para instalá-los. Exemplos avançados de CNN/RNN exigem TensorFlow. Nem todos os scripts puderam ser executados neste ambiente, portanto valide os exemplos em uma instalação R antes de utilizá-los em avaliação formal.
+REVISAO DE RESULTADOS: foram calculadas conferências independentes com dados mtcars para 10 exemplos; não foram executados scripts R neste ambiente. Para gerar o console do R e os gráficos em todas as páginas, abra a pasta raiz no RStudio e execute source("gerar-saidas-R.R"). Verifique os exemplos e dependências antes de publicar.
