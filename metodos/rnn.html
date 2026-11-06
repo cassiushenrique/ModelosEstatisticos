@@ -1,16 +1,219 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Redes neurais recorrentes (RNN): definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Redes neurais recorrentes (RNN) | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Aprendizado supervisionado</span><span>›</span><span>Redes neurais recorrentes (RNN)</span></div>
-<section class="detail-intro"><span class="eyebrow">Aprendizado supervisionado · 18 · APRENDIZADO SUPERVISIONADO</span><h1>Redes neurais recorrentes (RNN)</h1>
-<p class="detail-lead">Processam sequências preservando dependências temporais por estados ocultos que combinam entrada atual e informação anterior.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/rnn.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Processam sequências preservando dependências temporais por estados ocultos que combinam entrada atual e informação anterior.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Ordem temporal real, treino anterior ao teste, escalonamento apenas com treino, janelas que não vazem informação futura e validação temporal.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p>Sem <span class="math-inline">\(H_0\)</span> de significância intrínseco ao treinamento; desempenho por RMSE/MAE fora da amostra temporal.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[\mathbf h_t=\phi(\mathbf W_x\mathbf x_t+\mathbf W_h\mathbf h_{t-1}+\mathbf b)\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>Avalie erro em períodos futuros não usados no treino; <span class="math-inline">\(p&lt;0{,}05\)</span> não representa qualidade da previsão.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Pacotes adicionais: <strong>keras3 + TensorFlow (instalação adicional)</strong>. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Previsão de passageiros mensais (AirPassengers, R base) como análogo de demanda de sistemas de transporte.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-rnn">Copiar código</button></div><pre id="code-rnn"><code># Requer Python/TensorFlow configurados: uma vez,
-# antes da primeira utilização: keras3::install_keras()
-if (!requireNamespace(&quot;keras3&quot;, quietly = TRUE)) install.packages(&quot;keras3&quot;)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Redes neurais recorrentes (RNN): conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Redes neurais recorrentes (RNN) | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Aprendizado supervisionado
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Redes neurais recorrentes (RNN)
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Aprendizado supervisionado · 18 · APRENDIZADO SUPERVISIONADO
+    </span>
+<h1>
+     Redes neurais recorrentes (RNN)
+    </h1>
+<p class="detail-lead">
+     Analisa sequências temporais para prever comportamentos ou eventos futuros.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/rnn.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Analisa sequências temporais para prever comportamentos ou eventos futuros.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Ordem temporal real.</li><li>treino anterior ao teste.</li><li>escalonamento apenas com treino.</li><li>janelas que não vazem informação futura e validação temporal.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<p>
+       Não há teste de hipótese nula intrínseco a este procedimento. A avaliação deve considerar o objetivo de estimação, a incerteza apropriada ou o desempenho em dados não utilizados no ajuste.
+      </p>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[\mathbf h_t=\phi(\mathbf W_x\mathbf x_t+\mathbf W_h\mathbf h_{t-1}+\mathbf b)\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(\mathbf x\)
+        </dt>
+<dd>
+         vetor de entradas
+        </dd>
+</div>
+<div>
+<dt>
+         \(\mathbf W\)
+        </dt>
+<dd>
+         matriz de pesos ajustáveis
+        </dd>
+</div>
+<div>
+<dt>
+         \(\phi\)
+        </dt>
+<dd>
+         função de ativação
+        </dd>
+</div>
+<div>
+<dt>
+         \(\widehat y\)
+        </dt>
+<dd>
+         saída predita pela rede
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       Avalie erro em períodos futuros não usados no treino; \(p&lt;0{,}05\) não representa qualidade da previsão.
+      </p>
+<p>
+       Priorize o desempenho preditivo ou a estabilidade do ajuste. Quando não houver teste intrínseco, não interprete a métrica como valor-p nem aplique automaticamente o nível de 5%.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        A série AirPassengers representa passageiros mensais de companhias aéreas e contém tendência e sazonalidade.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Previsão de passageiros mensais (AirPassengers, R base) como análogo de demanda de sistemas de transporte.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-rnn" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-rnn"><code># Redes neurais recorrentes (RNN) ----
+
+# Ajuste e resultados ----
+if (!requireNamespace("keras3", quietly = TRUE)) install.packages("keras3")
 library(keras3)
 set.seed(2026)
 s &lt;- as.numeric(log(AirPassengers))
@@ -25,12 +228,117 @@ for (i in seq_along(Y)) {
 }
 tr &lt;- 1:100; te &lt;- 101:length(Y)
 modelo &lt;- keras_model_sequential(input_shape = c(janela, 1)) |&gt;
-  layer_simple_rnn(units = 12, activation = &quot;tanh&quot;) |&gt;
+  layer_simple_rnn(units = 12, activation = "tanh") |&gt;
   layer_dense(units = 1)
-modelo |&gt; compile(optimizer = &quot;adam&quot;, loss = &quot;mse&quot;)
+modelo |&gt; compile(optimizer = "adam", loss = "mse")
 modelo |&gt; fit(X[tr,,,drop=FALSE], Y[tr], epochs = 25,
               batch_size = 16, verbose = 0)
 pred &lt;- as.numeric(modelo |&gt; predict(X[te,,,drop=FALSE], verbose = 0))
-print(c(RMSE_log_padronizado = sqrt(mean((Y[te] - pred)^2))))</code></pre>
-<h3>Interpretação do exemplo</h3><p>A divisão é temporal; apenas meses futuros são usados em teste. A previsão utiliza sazonalidade de 12 meses, mas a RNN simples deve ser comparada com referências sazonais clássicas.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section><aside class="technical-note"><strong>Nota metodológica</strong><p>Exige backend TensorFlow/Python e treinamento computacional. Dependência temporal obriga avaliar janelas e evitar partição aleatória.</p></aside><aside class="technical-note"><strong>Nota metodológica</strong><p>Na predição temporal, a avaliação precisa respeitar a ordem cronológica. O exemplo exige instalação e configuração do backend TensorFlow.</p></aside></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Aprendizado supervisionado</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="cnn.html"><span>← ANTERIOR</span>Redes neurais convolucionais (CNN)</a><span></span></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+print(c(RMSE_log_padronizado = sqrt(mean((Y[te] - pred)^2))))
+
+# Visualização e diagnóstico ----
+plot(AirPassengers, xlab = "Ano", ylab = "Passageiros", main = "Série mensal")
+</code></pre><p class="pending-execution">A saída numérica e os gráficos deste exemplo devem ser conferidos na execução do script R; não foram reproduzidos neste ambiente.</p>
+<h3>Resultados e interpretação</h3>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+<aside class="technical-note">
+<strong>
+       Nota metodológica
+      </strong>
+<p>
+       Exige backend TensorFlow/Python e treinamento computacional. Dependência temporal obriga avaliar janelas e evitar partição aleatória.
+      </p>
+</aside>
+<aside class="technical-note">
+<strong>
+       Nota metodológica
+      </strong>
+<p>
+       Na predição temporal, a avaliação precisa respeitar a ordem cronológica. O exemplo exige instalação e configuração do backend TensorFlow.
+      </p>
+</aside>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Aprendizado supervisionado
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="cnn.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Redes neurais convolucionais (CNN)
+    </a>
+<span>
+</span>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

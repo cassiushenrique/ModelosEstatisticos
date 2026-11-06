@@ -1,17 +1,339 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Regressão logística binária: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Regressão logística binária | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Aprendizado supervisionado</span><span>›</span><span>Regressão logística binária</span></div>
-<section class="detail-intro"><span class="eyebrow">Aprendizado supervisionado · 03 · MODELOS ESTATÍSTICOS</span><h1>Regressão logística binária</h1>
-<p class="detail-lead">Modela a probabilidade <span class="math-inline">\(\pi(x)=\Pr(Y=1\mid x)\)</span> por <span class="math-inline">\(\operatorname{logit}[\pi(x)]=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/logistica.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Modela a probabilidade <span class="math-inline">\(\pi(x)=\Pr(Y=1\mid x)\)</span> por <span class="math-inline">\(\operatorname{logit}[\pi(x)]=\beta_0+\mathbf x^\top\boldsymbol\beta\)</span>.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Respostas 0/1; observações independentes, relação funcional adequada no logito, ausência de separação completa, amostra suficiente e validação de probabilidades.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span>: <span class="math-inline">\(\beta_{j}=0\)</span> (odds ratio = 1); <span class="math-inline">\(H_1\)</span>: <span class="math-inline">\(\beta_{j}\neq0\)</span>; comparação global por razão de verossimilhanças.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[\log\frac{\pi(\mathbf x)}{1-\pi(\mathbf x)}=\beta_0+\mathbf x^\top\boldsymbol\beta,\qquad OR=e^{\beta_j}\]</div><h3>Intervalo de confiança de 95% (quando aplicável)</h3><div class="math-display" role="group" aria-label="Intervalo de confiança">\[IC_{95\%}(OR_j)\approx\exp\!\left[\widehat\beta_j\pm1{,}96\operatorname{EP}(\widehat\beta_j)\right]\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p><span class="math-inline">\(p&lt;0{,}05\)</span> evidencia associação do preditor; <span class="math-inline">\(\exp(\widehat\beta)\)</span> é razão de chances, não razão de probabilidades. <span class="math-inline">\(IC_{95\%}\)</span> deve ser interpretado na escala OR.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Classificação do tipo de transmissão (manual/automática) com peso e potência em mtcars.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-logistica">Copiar código</button></div><pre id="code-logistica"><code>ajuste &lt;- glm(am ~ wt + hp, data = mtcars, family = binomial())
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Regressão logística binária: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Regressão logística binária | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Aprendizado supervisionado
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Regressão logística binária
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Aprendizado supervisionado · 03 · MODELOS ESTATÍSTICOS
+    </span>
+<h1>
+     Regressão logística binária
+    </h1>
+<p class="detail-lead">
+     Estima a probabilidade de um evento com dois resultados possíveis, como falha ou funcionamento.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/logistica.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Estima a probabilidade de um evento com dois resultados possíveis, como falha ou funcionamento.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Observações independentes (confira o delineamento amostral; se houver medidas repetidas, modele a dependência).</li><li>Relação aproximadamente linear entre cada preditor contínuo e o logito da probabilidade (examine splines ou gráficos de resíduos parciais).</li><li>Ausência de separação completa ou quase completa (verifique advertências de convergência e coeficientes excessivamente grandes).</li><li>Quantidade suficiente de eventos e não eventos (inspecione frequências por classe e a precisão dos intervalos de confiança).</li><li>Ausência de multicolinearidade excessiva (examine correlações e fatores de inflação da variância).</li><li>Calibração e capacidade discriminativa avaliadas em dados de validação (curvas de calibração e medidas de classificação).</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \beta_j=0\\ H_1&amp;:\ \beta_j\neq0\end{aligned}\right.\]
+      </div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[\log\frac{\pi(\mathbf x)}{1-\pi(\mathbf x)}=\beta_0+\mathbf x^\top\boldsymbol\beta,\qquad OR=e^{\beta_j}\]
+      </div>
+<div aria-label="Intervalo de confiança" class="math-display" role="group">
+       \[IC_{95\%}(OR_j)\approx\exp\!\left[\widehat\beta_j\pm1{,}96\operatorname{EP}(\widehat\beta_j)\right]\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(\pi(\mathbf x)\)
+        </dt>
+<dd>
+         probabilidade de ocorrência da classe 1 para as covariáveis x
+        </dd>
+</div>
+<div>
+<dt>
+         \(\beta_0\)
+        </dt>
+<dd>
+         intercepto
+        </dd>
+</div>
+<div>
+<dt>
+         \(\boldsymbol\beta\)
+        </dt>
+<dd>
+         coeficientes de regressão
+        </dd>
+</div>
+<div>
+<dt>
+         \(\mathbf x\)
+        </dt>
+<dd>
+         vetor de preditores
+        </dd>
+</div>
+<div>
+<dt>
+         \(\operatorname{logit}(p)\)
+        </dt>
+<dd>
+         logaritmo da razão p/(1-p)
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       \(p&lt;0{,}05\) evidencia associação do preditor; \(\exp(\widehat\beta)\) é razão de chances, não razão de probabilidades. \(IC_{95\%}\) deve ser interpretado na escala OR.
+      </p>
+<p>
+       Além da decisão ao nível de 5%, examine a direção e a magnitude do efeito, seu intervalo de confiança e a adequação dos pressupostos. Um valor-p não quantifica a importância prática do resultado.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        Em mtcars, am indica transmissão manual (1) ou automática (0); wt e hp são características explicativas.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Estimar a probabilidade de transmissão manual com base nas características do veículo.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-logistica" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-logistica"><code># Regressão logística binária ----
+
+# Ajuste e resultados ----
+ajuste &lt;- glm(am ~ wt + hp, data = mtcars, family = binomial())
 print(summary(ajuste))
-print(exp(cbind(OR = coef(ajuste), confint.default(ajuste))))
-prob &lt;- predict(ajuste, type = &quot;response&quot;)
-print(table(real = mtcars$am, previsto = as.integer(prob &gt;= 0.5)))</code></pre>
-<h3>Interpretação do exemplo</h3><p>A estimativa OR compara chances de transmissão manual (am=1), ajustadas pelos demais fatores; desempenho da classificação depende do limiar 0,5 e da amostra.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Aprendizado supervisionado</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="linear-multipla.html"><span>← ANTERIOR</span>Regressão linear múltipla</a><a href="multinomial.html"><span>PRÓXIMO →</span>Regressão logística multinomial</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+print(exp(cbind(Razao_de_chances = coef(ajuste), confint.default(ajuste))))
+prob &lt;- predict(ajuste, type = "response")
+print(table(real = mtcars$am, previsto = as.integer(prob &gt;= 0.5)))
+
+# Visualização e diagnóstico ----
+plot(mtcars$wt, prob, pch = 19, col = ifelse(mtcars$am == 1, "#12372A", "#C68A3B"),
+     xlab = "Massa (mil libras)", ylab = "Probabilidade estimada de transmissão manual")
+abline(h = 0.5, lty = 2)
+</code></pre><div class="verified-example"><h3>Saída numérica para conferência</h3><p class="verification-source">Valores recalculados independentemente com os mesmos dados; a formatação da saída pode diferir da apresentada pelo R.</p><pre class="output-r">==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     18.8663      7.444      2.535      0.011       4.277      33.455
+wt            -8.0835      3.069     -2.634      0.008     -14.098      -2.069
+hp             0.0363      0.018      2.044      0.041       0.001       0.071
+==============================================================================
+
+Razões de chances (OR = odds ratio):
+Intercept    1.561455e+08
+wt           3.085967e-04
+hp           1.036921e+00</pre><h3>Gráfico dos dados</h3><img alt="Visualização dos dados do exemplo: Regressão logística binária" class="result-figure" loading="lazy" src="../assets/resultados/logistica.png"/><p>A razão de chances (odds ratio, OR) é exp(β). Ela multiplica as chances do evento por unidade adicional do preditor, mantendo os demais constantes; não representa diretamente uma razão de probabilidades.</p></div>
+<h3>Resultados e interpretação</h3>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Aprendizado supervisionado
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="linear-multipla.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Regressão linear múltipla
+    </a>
+<a href="multinomial.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Regressão logística multinomial
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>
