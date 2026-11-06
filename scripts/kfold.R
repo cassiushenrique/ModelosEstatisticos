@@ -1,7 +1,6 @@
-# Validação cruzada k-fold
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Validação cruzada k-fold ----
 
+# Ajuste e resultados ----
 set.seed(2026)
 n <- nrow(mtcars); k <- 5
 fold <- sample(rep(seq_len(k), length.out = n))
@@ -12,3 +11,7 @@ for (j in seq_len(k)) {
 }
 print(c(RMSE_CV = sqrt(mean((mtcars$mpg - pred)^2)),
         MAE_CV = mean(abs(mtcars$mpg - pred))))
+
+# Visualização e diagnóstico ----
+plot(mpg ~ wt, data = mtcars, pch = 19, xlab = "Massa (mil libras)", ylab = "Autonomia (mpg)")
+lines(lowess(mtcars$wt, mtcars$mpg), col = "red", lwd = 2)

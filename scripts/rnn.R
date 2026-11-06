@@ -1,9 +1,6 @@
-# Redes neurais recorrentes (RNN)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Redes neurais recorrentes (RNN) ----
 
-# Requer Python/TensorFlow configurados: uma vez,
-# antes da primeira utilização: keras3::install_keras()
+# Ajuste e resultados ----
 if (!requireNamespace("keras3", quietly = TRUE)) install.packages("keras3")
 library(keras3)
 set.seed(2026)
@@ -26,3 +23,6 @@ modelo |> fit(X[tr,,,drop=FALSE], Y[tr], epochs = 25,
               batch_size = 16, verbose = 0)
 pred <- as.numeric(modelo |> predict(X[te,,,drop=FALSE], verbose = 0))
 print(c(RMSE_log_padronizado = sqrt(mean((Y[te] - pred)^2))))
+
+# Visualização e diagnóstico ----
+plot(AirPassengers, xlab = "Ano", ylab = "Passageiros", main = "Série mensal")

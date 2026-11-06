@@ -1,7 +1,6 @@
-# Rede sem camada oculta (classificador logístico)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# Rede sem camada oculta (classificador logístico) ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("nnet", quietly = TRUE)) install.packages("nnet")
 library(nnet)
 set.seed(2026)
@@ -14,3 +13,6 @@ ajuste <- nnet(am ~ wt + hp, data = d, size = 0,
               trace = FALSE)
 print(table(real = d$am,
             previsto = predict(ajuste, type = "class")))
+
+# Visualização e diagnóstico ----
+plot(mtcars$wt, mtcars$hp, col = factor(mtcars$cyl), pch = 19, xlab = "Massa (mil libras)", ylab = "Potência", main = "Características e classes de veículos")

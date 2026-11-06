@@ -1,7 +1,6 @@
-# Regressão de Cox
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Regressão de Cox ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("survival", quietly = TRUE)) install.packages("survival")
 library(survival)
 d <- na.omit(lung[, c("time", "status", "age", "sex")])

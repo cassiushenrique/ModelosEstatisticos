@@ -1,7 +1,6 @@
-# Teste log-rank
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Teste log-rank ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("survival", quietly = TRUE)) install.packages("survival")
 library(survival)
 resultado <- survdiff(Surv(time, status == 2) ~ sex,
