@@ -1,9 +1,6 @@
-# Redes neurais convolucionais (CNN)
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Redes neurais convolucionais (CNN) ----
 
-# Requer Python/TensorFlow configurados: executar UMA VEZ,
-# antes da primeira utilização: keras3::install_keras()
+# Ajuste e resultados ----
 if (!requireNamespace("keras3", quietly = TRUE)) install.packages("keras3")
 library(keras3)
 set.seed(2026)
@@ -28,3 +25,6 @@ modelo |> compile(optimizer = "adam", loss = "binary_crossentropy",
 modelo |> fit(x[i,,, , drop = FALSE], y[i], epochs = 12,
               batch_size = 32, verbose = 0)
 print(modelo |> evaluate(x[-i,,, , drop = FALSE], y[-i], verbose = 0))
+
+# Visualização e diagnóstico ----
+image(volcano, main = "Mapa de elevações")

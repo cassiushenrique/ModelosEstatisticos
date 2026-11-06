@@ -1,7 +1,6 @@
-# Bayesian additive regression trees (BART)
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Bayesian additive regression trees (BART) ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("BART", quietly = TRUE)) install.packages("BART")
 library(BART)
 set.seed(2026)
@@ -11,3 +10,7 @@ ajuste <- wbart(x.train = X, y.train = y, x.test = X[1:5, ],
                 printevery = 1000)
 print(ajuste$yhat.test.mean)
 print(apply(ajuste$yhat.test, 2, quantile, c(0.025, 0.975)))
+
+# Visualização e diagnóstico ----
+plot(mpg ~ wt, data = mtcars, pch = 19, xlab = "Massa (mil libras)", ylab = "Autonomia (mpg)")
+lines(lowess(mtcars$wt, mtcars$mpg), col = "red", lwd = 2)

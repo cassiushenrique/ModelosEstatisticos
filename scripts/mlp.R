@@ -1,7 +1,6 @@
-# Rede neural multicamadas (MLP)
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Rede neural multicamadas (MLP) ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("nnet", quietly = TRUE)) install.packages("nnet")
 library(nnet)
 set.seed(2026)
@@ -13,3 +12,6 @@ ajuste <- nnet(mpg ~ wt + hp + disp, data = d[i, ],
               maxit = 800, trace = FALSE)
 pred <- as.numeric(predict(ajuste, d[-i, ]))
 print(sqrt(mean((d$mpg[-i] - pred)^2)))
+
+# Visualização e diagnóstico ----
+plot(mtcars$wt, mtcars$hp, col = factor(mtcars$cyl), pch = 19, xlab = "Massa (mil libras)", ylab = "Potência", main = "Características e classes de veículos")

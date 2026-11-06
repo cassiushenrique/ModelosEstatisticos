@@ -1,7 +1,6 @@
-# SVM com kernel radial (RBF)
-# Material didático — Estatística e Ciência de Dados — ICTIN/UFLA
-# Fonte: James et al. (2021)
+# SVM com kernel radial (RBF) ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("e1071", quietly = TRUE)) install.packages("e1071")
 library(e1071)
 set.seed(2026)
@@ -13,3 +12,6 @@ ajuste <- svm(classe ~ wt + hp, data = d[i, ],
               scale = TRUE)
 print(table(real = d$classe[-i],
             previsto = predict(ajuste, d[-i, ])))
+
+# Visualização e diagnóstico ----
+plot(mtcars$wt, mtcars$hp, col = factor(mtcars$cyl), pch = 19, xlab = "Massa (mil libras)", ylab = "Potência", main = "Características e classes de veículos")

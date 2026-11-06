@@ -1,7 +1,6 @@
-# Gradient boosting de árvores
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Gradient boosting de árvores ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("gbm", quietly = TRUE)) install.packages("gbm")
 library(gbm)
 set.seed(2026)
@@ -12,3 +11,7 @@ ajuste <- gbm(mpg ~ wt + hp + disp, data = mtcars,
 melhor <- gbm.perf(ajuste, method = "cv", plot.it = FALSE)
 print(c(arvores_selecionadas = melhor))
 print(summary(ajuste, n.trees = melhor, plotit = FALSE))
+
+# Visualização e diagnóstico ----
+plot(mpg ~ wt, data = mtcars, pch = 19, xlab = "Massa (mil libras)", ylab = "Autonomia (mpg)")
+lines(lowess(mtcars$wt, mtcars$mpg), col = "red", lwd = 2)

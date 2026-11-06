@@ -1,7 +1,6 @@
-# Regressão lasso
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Regressão lasso ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("glmnet", quietly = TRUE)) install.packages("glmnet")
 library(glmnet)
 set.seed(2026)
@@ -10,3 +9,7 @@ y <- mtcars$mpg
 ajuste <- cv.glmnet(x, y, alpha = 1, nfolds = 5)
 print(coef(ajuste, s = "lambda.min"))
 plot(ajuste)
+
+# Visualização e diagnóstico ----
+plot(mpg ~ wt, data = mtcars, pch = 19, xlab = "Massa (mil libras)", ylab = "Autonomia (mpg)")
+lines(lowess(mtcars$wt, mtcars$mpg), col = "red", lwd = 2)

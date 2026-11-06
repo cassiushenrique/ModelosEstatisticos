@@ -1,7 +1,6 @@
-# K-nearest neighbors (KNN)
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# K-nearest neighbors (KNN) ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("class", quietly = TRUE)) install.packages("class")
 library(class)
 set.seed(2026)
@@ -16,3 +15,6 @@ teste <- scale(X[-i, , drop = FALSE], center = centro, scale = escala)
 pred <- knn(train = treino, test = teste,
             cl = d$classe[i], k = 3)
 print(table(real = d$classe[-i], previsto = pred))
+
+# Visualização e diagnóstico ----
+plot(mtcars$wt, mtcars$hp, col = factor(mtcars$cyl), pch = 19, xlab = "Massa (mil libras)", ylab = "Potência", main = "Características e classes de veículos")

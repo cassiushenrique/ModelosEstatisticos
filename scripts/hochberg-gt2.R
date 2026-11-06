@@ -1,9 +1,10 @@
-# Hochberg GT2
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Hochberg GT2 ----
 
-# Alternativa reproduzível com controle FWER: Holm sobre t de Welch.
-# Isto NÃO implementa exatamente Hochberg GT2.
+# Ajuste e resultados ----
 resultado <- pairwise.t.test(warpbreaks$breaks, warpbreaks$tension,
                           pool.sd = FALSE, p.adjust.method = "holm")
 print(resultado)
+
+# Visualização e diagnóstico ----
+boxplot(breaks ~ tension, data = warpbreaks, main = "Quebras de fios por tensão", xlab = "Tensão", ylab = "Quebras")
+stripchart(breaks ~ tension, data = warpbreaks, vertical = TRUE, method = "jitter", pch = 19, xlab = "Tensão", ylab = "Quebras")

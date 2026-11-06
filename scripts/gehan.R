@@ -1,7 +1,6 @@
-# Teste generalizado de Wilcoxon–Gehan
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Teste generalizado de Wilcoxon–Gehan ----
 
+# Ajuste e resultados ----
 if (!requireNamespace("survival", quietly = TRUE)) install.packages("survival")
 library(survival)
 d <- subset(lung, !is.na(time) & !is.na(status) & !is.na(sex))

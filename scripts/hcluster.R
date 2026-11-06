@@ -1,7 +1,6 @@
-# Agrupamento hierárquico
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Agrupamento hierárquico ----
 
+# Ajuste e resultados ----
 X <- scale(mtcars[, c("mpg", "wt", "hp", "qsec")])
 ajuste <- hclust(dist(X), method = "ward.D2")
 plot(ajuste, labels = FALSE, main = "Veículos: dendrograma")

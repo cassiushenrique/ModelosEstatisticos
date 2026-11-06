@@ -1,7 +1,6 @@
-# Compromisso viés–variância
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# Compromisso viés–variância ----
 
+# Ajuste e resultados ----
 set.seed(2026)
 k <- 5; fold <- sample(rep(1:k, length.out = nrow(cars)))
 erros <- sapply(1:6, function(grau) {
@@ -14,3 +13,7 @@ erros <- sapply(1:6, function(grau) {
   sqrt(mean((cars$dist - pred)^2))
 })
 print(data.frame(grau = 1:6, RMSE_CV = erros))
+
+# Visualização e diagnóstico ----
+plot(dist ~ speed, data = cars, pch = 19, xlab = "Velocidade (mph)", ylab = "Distância de parada (pés)")
+lines(lowess(cars$speed, cars$dist), col = "red", lwd = 2)

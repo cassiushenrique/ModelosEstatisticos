@@ -1,8 +1,10 @@
-# ANOVA de Welch
-# Estatística e Ciência de Dados — ICTIN/UFLA
-# Exemplo reproduzível com dados de R ou dos pacotes indicados.
+# ANOVA de Welch ----
 
+# Ajuste e resultados ----
 resultado <- oneway.test(breaks ~ tension, data = warpbreaks,
                        var.equal = FALSE)
 print(resultado)
 boxplot(breaks ~ tension, data = warpbreaks)
+
+# Visualização e diagnóstico ----
+boxplot(breaks ~ tension, warpbreaks, main = "Quebras por tensão", ylab = "Quebras")
