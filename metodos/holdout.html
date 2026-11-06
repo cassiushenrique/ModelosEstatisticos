@@ -1,19 +1,318 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Separação treino–teste (holdout): definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Separação treino–teste (holdout) | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Aprendizado supervisionado</span><span>›</span><span>Separação treino–teste (holdout)</span></div>
-<section class="detail-intro"><span class="eyebrow">Aprendizado supervisionado · 13 · APRENDIZADO SUPERVISIONADO</span><h1>Separação treino–teste (holdout)</h1>
-<p class="detail-lead">Estima desempenho fora da amostra reservando dados não usados para ajuste ou escolha de hiperparâmetros.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/holdout.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Estima desempenho fora da amostra reservando dados não usados para ajuste ou escolha de hiperparâmetros.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Independência ou divisão por grupos/tempo conforme o processo gerador; evitar vazamento de dados; pré-processamento aprendido apenas no treino.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p>Não existe <span class="math-inline">\(H_0\)</span> inerente ao holdout; hipóteses entre modelos exigem desenho específico.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[\operatorname{RMSE}=\sqrt{\frac1{n_{\mathrm{teste}}}\sum_{i\in\mathrm{teste}}(y_i-\widehat y_i)^2}\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>A decisão não usa automaticamente 5%: menor erro em teste sugere melhor predição, com incerteza e amostra de teste consideradas.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Predição de autonomia de veículos (mtcars) a partir de massa e potência.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-holdout">Copiar código</button></div><pre id="code-holdout"><code>set.seed(2026)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Separação treino–teste (holdout): conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Separação treino–teste (holdout) | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Aprendizado supervisionado
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Separação treino–teste (holdout)
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Aprendizado supervisionado · 13 · APRENDIZADO SUPERVISIONADO
+    </span>
+<h1>
+     Separação treino–teste (holdout)
+    </h1>
+<p class="detail-lead">
+     Verifica a capacidade de previsão do modelo em dados separados daqueles usados no ajuste.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/holdout.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Verifica a capacidade de previsão do modelo em dados separados daqueles usados no ajuste.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Independência ou divisão por grupos/tempo conforme o processo gerador.</li><li>Evitar vazamento de dados.</li><li>Pré-processamento aprendido apenas no treino.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<p>
+       Não há teste de hipótese nula intrínseco a este procedimento. A avaliação deve considerar o objetivo de estimação, a incerteza apropriada ou o desempenho em dados não utilizados no ajuste.
+      </p>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[\operatorname{RMSE}=\sqrt{\frac1{n_{\mathrm{teste}}}\sum_{i\in\mathrm{teste}}(y_i-\widehat y_i)^2}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(n_{\mathrm{teste}}\)
+        </dt>
+<dd>
+         número de observações reservadas para teste
+        </dd>
+</div>
+<div>
+<dt>
+         \(y_i\)
+        </dt>
+<dd>
+         valor observado da resposta
+        </dd>
+</div>
+<div>
+<dt>
+         \(\widehat y_i\)
+        </dt>
+<dd>
+         predição gerada por modelo que não utilizou a observação i no ajuste
+        </dd>
+</div>
+<div>
+<dt>
+         \(RMSE\)
+        </dt>
+<dd>
+         raiz do erro quadrático médio no conjunto de teste
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       A decisão não usa automaticamente 5%: menor erro em teste sugere melhor predição, com incerteza e amostra de teste consideradas.
+      </p>
+<p>
+       Compare as medidas obtidas em observações não usadas no treinamento. Uma estimativa baixa do erro em treino não demonstra capacidade de generalização.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto mtcars reúne atributos de 32 modelos de automóveis, incluindo consumo, potência e massa.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Predição de autonomia de veículos (mtcars) a partir de massa e potência.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-holdout" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-holdout"><code># Separação treino–teste (holdout) ----
+
+# Ajuste e resultados ----
+set.seed(2026)
 i &lt;- sample(seq_len(nrow(mtcars)), size = 22)
 treino &lt;- mtcars[i, ]; teste &lt;- mtcars[-i, ]
 ajuste &lt;- lm(mpg ~ wt + hp, data = treino)
 pred &lt;- predict(ajuste, newdata = teste)
 print(c(RMSE_teste = sqrt(mean((teste$mpg - pred)^2)),
-        MAE_teste = mean(abs(teste$mpg - pred))))</code></pre>
-<h3>Interpretação do exemplo</h3><p>O erro de teste quantifica desempenho em veículos não usados no ajuste. Um único split de 32 veículos apresenta alta variabilidade; prefira validação repetida.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Aprendizado supervisionado</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="gwet.html"><span>← ANTERIOR</span>Coeficiente AC1 de Gwet</a><a href="kfold.html"><span>PRÓXIMO →</span>Validação cruzada k-fold</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+        MAE_teste = mean(abs(teste$mpg - pred))))
+
+# Visualização e diagnóstico ----
+plot(mpg ~ wt, data = mtcars, pch = 19, xlab = "Massa (mil libras)", ylab = "Autonomia (mpg)")
+lines(lowess(mtcars$wt, mtcars$mpg), col = "red", lwd = 2)
+</code></pre><p class="pending-execution">A saída numérica e os gráficos deste exemplo devem ser conferidos na execução do script R; não foram reproduzidos neste ambiente.</p>
+<h3>Resultados e interpretação</h3>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Aprendizado supervisionado
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="gwet.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Coeficiente AC1 de Gwet
+    </a>
+<a href="kfold.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Validação cruzada k-fold
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

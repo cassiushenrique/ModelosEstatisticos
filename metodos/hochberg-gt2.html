@@ -1,17 +1,333 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Hochberg GT2: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Hochberg GT2 | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Estatística clássica</span><span>›</span><span>Hochberg GT2</span></div>
-<section class="detail-intro"><span class="eyebrow">Estatística clássica · 06 · COMPARAÇÕES MÚLTIPLAS</span><h1>Hochberg GT2</h1>
-<p class="detail-lead">Procedimento de comparações múltiplas para tamanhos amostrais desiguais sob homocedasticidade; baseado na distribuição do módulo máximo studentizado.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/hochberg-gt2.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Procedimento de comparações múltiplas para tamanhos amostrais desiguais sob homocedasticidade; baseado na distribuição do módulo máximo studentizado.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Independência, normalidade e variância residual comum; tamanhos desiguais podem motivar GT2, sem justificar ignorar heterocedasticidade.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_{0,ij}\)</span>: <span class="math-inline">\(\mu_{i}=\mu_{j}\)</span> para todos os pares.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[T_{ij}=\frac{\bar Y_i-\bar Y_j}{S_p\sqrt{1/n_i+1/n_j}}\quad\text{(crítico do máximo studentizado)}\]</div><p class="formula-caption">Estatísticas t padronizadas e distribuição crítica do módulo máximo studentizado, com ajuste para os n dos grupos.</p></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>Diferença detectada quando contraste excede crítico simultâneo. GT2 não é equivalente ao ajuste step-up de Hochberg para p-valores.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Tensões de fiação em warpbreaks. É mostrado um método substituto implementado diretamente, não o GT2 exato.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-hochberg-gt2">Copiar código</button></div><pre id="code-hochberg-gt2"><code># Alternativa reproduzível com controle FWER: Holm sobre t de Welch.
-# Isto NÃO implementa exatamente Hochberg GT2.
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Hochberg GT2: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Hochberg GT2 | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Estatística clássica
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Hochberg GT2
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Estatística clássica · 06 · COMPARAÇÕES MÚLTIPLAS
+    </span>
+<h1>
+     Hochberg GT2
+    </h1>
+<p class="detail-lead">
+     Compara médias de grupos com tamanhos diferentes, supondo variâncias iguais.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/hochberg-gt2.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Compara médias de grupos com tamanhos diferentes, supondo variâncias iguais.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Independência, normalidade e variância residual comum.</li><li>Tamanhos desiguais podem motivar GT2, sem justificar ignorar heterocedasticidade.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \mu_i=\mu_j\\H_1&amp;:\ \mu_i\neq\mu_j\end{aligned}\right.\]
+      </div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[T_{ij}=\frac{\bar Y_i-\bar Y_j}{S_p\sqrt{1/n_i+1/n_j}}\quad\text{(crítico do máximo studentizado)}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(i,j\)
+        </dt>
+<dd>
+         índices dos grupos comparados
+        </dd>
+</div>
+<div>
+<dt>
+         \(\bar Y_i\)
+        </dt>
+<dd>
+         média amostral do grupo i
+        </dd>
+</div>
+<div>
+<dt>
+         \(n_i\)
+        </dt>
+<dd>
+         tamanho do grupo i
+        </dd>
+</div>
+<div>
+<dt>
+         \(\alpha\)
+        </dt>
+<dd>
+         nível de significância por família ou contraste, conforme o procedimento
+        </dd>
+</div>
+</dl>
+<p>
+       Estatísticas t padronizadas e distribuição crítica do módulo máximo studentizado, com ajuste para os n dos grupos.
+      </p>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       Diferença detectada quando contraste excede crítico simultâneo. GT2 não é equivalente ao ajuste step-up de Hochberg para p-valores.
+      </p>
+<p>
+       Examine as comparações específicas, as diferenças estimadas e o ajuste de multiplicidade. Um teste global significativo não identifica, sozinho, os pares distintos.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto warpbreaks reúne contagens de quebras de fios sob diferentes tensões e tipos de lã. É usado para estudar condições de produção têxtil.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Tensões de fiação em warpbreaks. É mostrado um método substituto implementado diretamente, não o GT2 exato.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-hochberg-gt2" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-hochberg-gt2"><code># Hochberg GT2 ----
+
+# Ajuste e resultados ----
 resultado &lt;- pairwise.t.test(warpbreaks$breaks, warpbreaks$tension,
-                          pool.sd = FALSE, p.adjust.method = &quot;holm&quot;)
-print(resultado)</code></pre>
-<h3>Interpretação do exemplo</h3><p>Use Holm como alternativa para comparações pareadas quando não dispuser de implementação GT2 confiável. O p-valor produzido não deve ser publicado como “GT2”.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section><aside class="technical-note"><strong>Nota metodológica</strong><p>Não foi identificada implementação R/CRAN do GT2 exato suficientemente validada nesta elaboração. O exemplo implementa e identifica uma alternativa, sem equiparação indevida.</p></aside><aside class="technical-note"><strong>Nota metodológica</strong><p>O exemplo utiliza aproximação computacional explicitada no script; não a interprete como implementação exata de Hochberg GT2.</p></aside></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Estatística clássica</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="duncan.html"><span>← ANTERIOR</span>Duncan</a><a href="dunnett-c.html"><span>PRÓXIMO →</span>Dunnett C</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+                          pool.sd = FALSE, p.adjust.method = "holm")
+print(resultado)
+
+# Visualização e diagnóstico ----
+boxplot(breaks ~ tension, data = warpbreaks, main = "Quebras de fios por tensão", xlab = "Tensão", ylab = "Quebras")
+stripchart(breaks ~ tension, data = warpbreaks, vertical = TRUE, method = "jitter", pch = 19, xlab = "Tensão", ylab = "Quebras")
+</code></pre><p class="pending-execution">A saída numérica e os gráficos deste exemplo devem ser conferidos na execução do script R; não foram reproduzidos neste ambiente.</p>
+<h3>Resultados e interpretação</h3>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+<aside class="technical-note">
+<strong>
+       Nota metodológica
+      </strong>
+<p>
+       Não foi identificada implementação R/CRAN do GT2 exato suficientemente validada nesta elaboração. O exemplo implementa e identifica uma alternativa, sem equiparação indevida.
+      </p>
+</aside>
+<aside class="technical-note">
+<strong>
+       Nota metodológica
+      </strong>
+<p>
+       O exemplo utiliza aproximação computacional explicitada no script; não a interprete como implementação exata de Hochberg GT2.
+      </p>
+</aside>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Estatística clássica
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="duncan.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Duncan
+    </a>
+<a href="dunnett-c.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Dunnett C
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

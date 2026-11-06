@@ -1,18 +1,333 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Regressão linear múltipla: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Regressão linear múltipla | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Aprendizado supervisionado</span><span>›</span><span>Regressão linear múltipla</span></div>
-<section class="detail-intro"><span class="eyebrow">Aprendizado supervisionado · 03 · MODELOS ESTATÍSTICOS</span><h1>Regressão linear múltipla</h1>
-<p class="detail-lead">Estima efeitos condicionais de vários preditores sobre uma resposta quantitativa sob um modelo linear na média.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/linear-multipla.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Estima efeitos condicionais de vários preditores sobre uma resposta quantitativa sob um modelo linear na média.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Independência, especificação da média, colinearidade aceitável, observações influentes e heterocedasticidade; gráficos de diagnóstico e VIF são úteis.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span> global: <span class="math-inline">\(\beta_{1}\)</span> = ··· = <span class="math-inline">\(\beta\)</span>ₚ = 0; para cada preditor <span class="math-inline">\(H_{0,j}\)</span>: <span class="math-inline">\(\beta_{j}=0\)</span>.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[\mathbf Y=\mathbf X\boldsymbol\beta+\boldsymbol\varepsilon,\qquad F=\frac{SQ_{\mathrm{reg}}/p}{SQ_{\mathrm{res}}/(n-p-1)}\]</div><h3>Intervalo de confiança de 95% (quando aplicável)</h3><div class="math-display" role="group" aria-label="Intervalo de confiança">\[IC_{95\%}(\beta_j)=\widehat\beta_j\pm t_{0{,}975;n-p-1}\operatorname{EP}(\widehat\beta_j)\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>Use F e p globais para existência de associação; <span class="math-inline">\(IC_{95\%}\)</span> e p para efeitos condicionais. <span class="math-inline">\(R^2\)</span> não implica validade preditiva externa.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Autonomia (mpg) explicada por peso e potência dos veículos (mtcars).</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-linear-multipla">Copiar código</button></div><pre id="code-linear-multipla"><code>ajuste &lt;- lm(mpg ~ wt + hp, data = mtcars)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Regressão linear múltipla: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Regressão linear múltipla | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Aprendizado supervisionado
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Regressão linear múltipla
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Aprendizado supervisionado · 03 · MODELOS ESTATÍSTICOS
+    </span>
+<h1>
+     Regressão linear múltipla
+    </h1>
+<p class="detail-lead">
+     Estima ou prevê uma medida considerando simultaneamente diversos fatores.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/linear-multipla.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Estima ou prevê uma medida considerando simultaneamente diversos fatores.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Observações independentes (verifique o delineamento e eventual dependência temporal).</li><li>Especificação adequada da média condicional (resíduos × ajustados e gráficos parciais).</li><li>Variância residual aproximadamente constante (resíduos × ajustados).</li><li>Normalidade dos erros para a inferência t/F exata sob o modelo usual (gráfico Q–Q dos resíduos).</li><li>Ausência de multicolinearidade excessiva (correlações e fatores de inflação da variância).</li><li>Ausência de pontos excessivamente influentes (distâncias de Cook e alavancagem).</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \beta_1=\cdots=\beta_p=0\\ H_1&amp;:\ \exists\,j:\beta_j\neq0\end{aligned}\right.\]
+      </div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[\mathbf Y=\mathbf X\boldsymbol\beta+\boldsymbol\varepsilon,\qquad F=\frac{SQ_{\mathrm{reg}}/p}{SQ_{\mathrm{res}}/(n-p-1)}\]
+      </div>
+<div aria-label="Intervalo de confiança" class="math-display" role="group">
+       \[IC_{95\%}(\beta_j)=\widehat\beta_j\pm t_{0{,}975;n-p-1}\operatorname{EP}(\widehat\beta_j)\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(\mathbf Y\)
+        </dt>
+<dd>
+         vetor das respostas
+        </dd>
+</div>
+<div>
+<dt>
+         \(\mathbf X\)
+        </dt>
+<dd>
+         matriz de delineamento, incluindo intercepto
+        </dd>
+</div>
+<div>
+<dt>
+         \(\boldsymbol\beta\)
+        </dt>
+<dd>
+         vetor dos coeficientes
+        </dd>
+</div>
+<div>
+<dt>
+         \(\boldsymbol\varepsilon\)
+        </dt>
+<dd>
+         vetor dos erros
+        </dd>
+</div>
+<div>
+<dt>
+         \(F\)
+        </dt>
+<dd>
+         estatística global de comparação do modelo com o modelo contendo apenas intercepto
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       Use F e p globais para existência de associação; \(IC_{95\%}\) e p para efeitos condicionais. \(R^2\) não implica validade preditiva externa.
+      </p>
+<p>
+       Além da decisão ao nível de 5%, examine a direção e a magnitude do efeito, seu intervalo de confiança e a adequação dos pressupostos. Um valor-p não quantifica a importância prática do resultado.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto mtcars reúne autonomia (mpg), massa (wt) e potência (hp) de 32 automóveis.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Avaliar a associação entre autonomia e massa após controlar a potência, distinguindo efeitos condicionais de correlações isoladas.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-linear-multipla" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-linear-multipla"><code># Regressão linear múltipla ----
+
+# Ajuste e resultados ----
+ajuste &lt;- lm(mpg ~ wt + hp, data = mtcars)
 print(summary(ajuste))
 print(confint(ajuste))
 par(mfrow = c(2, 2)); plot(ajuste); par(mfrow = c(1, 1))
 print(predict(ajuste, data.frame(wt = 3, hp = 120),
-              interval = &quot;prediction&quot;))</code></pre>
-<h3>Interpretação do exemplo</h3><p>Cada coeficiente representa associação mantendo o outro preditor constante. Examine magnitude e <span class="math-inline">\(IC_{95\%}\)</span>, além da adequação dos resíduos; não interprete como efeito causal.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Aprendizado supervisionado</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="linear-simples.html"><span>← ANTERIOR</span>Regressão linear simples</a><a href="logistica.html"><span>PRÓXIMO →</span>Regressão logística binária</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+              interval = "prediction"))
+
+# Visualização e diagnóstico ----
+plot(mpg ~ wt, data = mtcars, pch = 19, xlab = "Massa (mil libras)", ylab = "Autonomia (mpg)")
+lines(lowess(mtcars$wt, mtcars$mpg), col = "red", lwd = 2)
+</code></pre><div class="verified-example"><h3>Saída numérica para conferência</h3><p class="verification-source">Valores recalculados independentemente com os mesmos dados; a formatação da saída pode diferir da apresentada pelo R.</p><pre class="output-r">==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     37.2273      1.599     23.285      0.000      33.957      40.497
+wt            -3.8778      0.633     -6.129      0.000      -5.172      -2.584
+hp            -0.0318      0.009     -3.519      0.001      -0.050      -0.013
+==============================================================================
+R-squared = 0.8268; adjusted R-squared = 0.8148; residual standard error = 2.5934</pre><h3>Gráfico dos dados</h3><img alt="Visualização dos dados do exemplo: Regressão linear múltipla" class="result-figure" loading="lazy" src="../assets/resultados/linear-multipla.png"/><p>O modelo explica aproximadamente 82.7% da variabilidade observada de mpg (R² amostral). Os coeficientes devem ser interpretados condicionando às demais variáveis do modelo.</p></div>
+<h3>Resultados e interpretação</h3>
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Aprendizado supervisionado
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="linear-simples.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Regressão linear simples
+    </a>
+<a href="logistica.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Regressão logística binária
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

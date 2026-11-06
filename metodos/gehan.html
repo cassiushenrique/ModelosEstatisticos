@@ -1,14 +1,211 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Teste generalizado de Wilcoxon–Gehan: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Teste generalizado de Wilcoxon–Gehan | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Estatística clássica</span><span>›</span><span>Teste generalizado de Wilcoxon–Gehan</span></div>
-<section class="detail-intro"><span class="eyebrow">Estatística clássica · 10 · SOBREVIVÊNCIA</span><h1>Teste generalizado de Wilcoxon–Gehan</h1>
-<p class="detail-lead">Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/gehan.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Compara grupos com tempos censurados usando ponderação pelo número de indivíduos em risco, dando mais peso a tempos iniciais.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Unidades independentes, censura não informativa, tempos e status corretos; ponderação previamente escolhida.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span>: distribuições de sobrevivência iguais; <span class="math-inline">\(H_1\)</span>: diferentes.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[U=\sum_jn(t_j)[O_1(t_j)-E_1(t_j)],\qquad X^2=\frac{U^2}{\operatorname{Var}(U)}\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p><span class="math-inline">\(p&lt;0{,}05\)</span>: evidência de diferença ponderada nas curvas; comparação com log-rank depende do padrão temporal de efeitos.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Pacotes adicionais: <strong>survival</strong>. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Tempos clínicos censurados survival::lung usados como ilustração metodológica da comparação de lotes de vida útil.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-gehan">Copiar código</button></div><pre id="code-gehan"><code>if (!requireNamespace(&quot;survival&quot;, quietly = TRUE)) install.packages(&quot;survival&quot;)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Teste generalizado de Wilcoxon–Gehan: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Teste generalizado de Wilcoxon–Gehan | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Estatística clássica
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Teste generalizado de Wilcoxon–Gehan
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Estatística clássica · 10 · SOBREVIVÊNCIA
+    </span>
+<h1>
+     Teste generalizado de Wilcoxon–Gehan
+    </h1>
+<p class="detail-lead">
+     Compara curvas de sobrevivência, atribuindo maior peso às diferenças em tempos iniciais.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/gehan.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Compara curvas de sobrevivência, atribuindo maior peso às diferenças em tempos iniciais.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Unidades independentes, censura não informativa, tempos e status corretos.</li><li>Ponderação previamente escolhida.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ S_1(t)=S_2(t)\quad\forall t\\ H_1&amp;:\ \exists\,t:S_1(t)\neq S_2(t)\end{aligned}\right.\]
+      </div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[U=\sum_jn(t_j)[O_1(t_j)-E_1(t_j)],\qquad X^2=\frac{U^2}{\operatorname{Var}(U)}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(t\)
+        </dt>
+<dd>
+         tempo de acompanhamento
+        </dd>
+</div>
+<div>
+<dt>
+         \(S(t)\)
+        </dt>
+<dd>
+         função de sobrevivência
+        </dd>
+</div>
+<div>
+<dt>
+         \(n_j\)
+        </dt>
+<dd>
+         número de unidades sob risco no instante j
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       \(p&lt;0{,}05\) : evidência de diferença ponderada nas curvas; comparação com log-rank depende do padrão temporal de efeitos.
+      </p>
+<p>
+       Considere a censura, a quantidade de unidades sob risco e a precisão das estimativas ao longo do tempo. Em regressão de Cox, interprete razões de taxas instantâneas, não razões de probabilidades.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        Os dados survival::lung registram tempos de evento e censura.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Comparar distribuições de tempos entre grupos dando peso relativamente maior a eventos mais precoces.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-gehan" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-gehan"><code># Teste generalizado de Wilcoxon–Gehan ----
+
+# Ajuste e resultados ----
+if (!requireNamespace("survival", quietly = TRUE)) install.packages("survival")
 library(survival)
 d &lt;- subset(lung, !is.na(time) &amp; !is.na(status) &amp; !is.na(sex))
 d$evento &lt;- as.integer(d$status == 2)
@@ -27,6 +224,104 @@ for (t in sort(unique(d$time[d$evento == 1]))) {
 }
 qui &lt;- U^2 / V
 print(c(qui_quadrado = qui, gl = 1,
-        p_valor = pchisq(qui, df = 1, lower.tail = FALSE)))</code></pre>
-<h3>Interpretação do exemplo</h3><p>Este código implementa a ponderação Gehan–Breslow n(t), distinta do rho=1 de survdiff, que usa pesos do tipo Peto–Peto. A comparação enfatiza eventos iniciais.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section><aside class="technical-note"><strong>Nota metodológica</strong><p>Implementação didática direta para dois grupos com censura à direita; não utilizar survdiff(rho=1) como sinônimo exato de Gehan–Breslow.</p></aside></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Estatística clássica</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="logrank.html"><span>← ANTERIOR</span>Teste log-rank</a><a href="mann-whitney.html"><span>PRÓXIMO →</span>Mann–Whitney / Wilcoxon rank-sum</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+        p_valor = pchisq(qui, df = 1, lower.tail = FALSE)))
+</code></pre><p class="pending-execution">A saída numérica e os gráficos deste exemplo devem ser conferidos na execução do script R; não foram reproduzidos neste ambiente.</p>
+<h3>Resultados e interpretação</h3>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+<aside class="technical-note">
+<strong>
+       Nota metodológica
+      </strong>
+<p>
+       Implementação didática direta para dois grupos com censura à direita; não utilizar survdiff(rho=1) como sinônimo exato de Gehan–Breslow.
+      </p>
+</aside>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Estatística clássica
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="logrank.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Teste log-rank
+    </a>
+<a href="kappa.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Kappa de Cohen
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

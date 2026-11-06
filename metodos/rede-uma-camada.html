@@ -1,14 +1,219 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Rede sem camada oculta (classificador logístico): definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Rede sem camada oculta (classificador logístico) | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Aprendizado supervisionado</span><span>›</span><span>Rede sem camada oculta (classificador logístico)</span></div>
-<section class="detail-intro"><span class="eyebrow">Aprendizado supervisionado · 18 · APRENDIZADO SUPERVISIONADO</span><h1>Rede sem camada oculta (classificador logístico)</h1>
-<p class="detail-lead">Rede com entradas conectadas diretamente à saída sigmoide. Sem camadas ocultas, é equivalente à regressão logística para resposta binária e perda logarítmica.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/rede-uma-camada.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Rede com entradas conectadas diretamente à saída sigmoide. Sem camadas ocultas, é equivalente à regressão logística para resposta binária e perda logarítmica.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Codificação adequada da resposta, escalonamento/estabilidade numérica, amostras representativas e validação; para inferência, considerar interpretação como GLM.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p>Se formulada como GLM logístico, <span class="math-inline">\(H_0\)</span>: <span class="math-inline">\(\beta_{j}=0\)</span> é testável; o treinamento da rede isoladamente não produz teste inferencial convencional.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[\sigma(z)=\frac1{1+e^{-z}},\qquad\widehat p=\sigma(\beta_0+\mathbf x^\top\boldsymbol\beta)\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p>A 5% a inferência deve usar procedimento inferencial separado. Como rede, avalie log-loss e erro de classificação em teste.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Pacotes adicionais: <strong>nnet</strong>. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Classificar transmissão manual de veículos (mtcars) usando atributos normalizados.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-rede-uma-camada">Copiar código</button></div><pre id="code-rede-uma-camada"><code>if (!requireNamespace(&quot;nnet&quot;, quietly = TRUE)) install.packages(&quot;nnet&quot;)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Rede sem camada oculta (classificador logístico): conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Rede sem camada oculta (classificador logístico) | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Aprendizado supervisionado
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Rede sem camada oculta (classificador logístico)
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Aprendizado supervisionado · 18 · APRENDIZADO SUPERVISIONADO
+    </span>
+<h1>
+     Rede sem camada oculta (classificador logístico)
+    </h1>
+<p class="detail-lead">
+     Estima a probabilidade de uma resposta binária usando as características observadas.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/rede-uma-camada.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Estima a probabilidade de uma resposta binária usando as características observadas.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Codificação adequada da resposta, escalonamento/estabilidade numérica, amostras representativas e validação.</li><li>Para inferência, considerar interpretação como GLM.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \beta_j=0\\H_1&amp;:\ \beta_j\neq0\end{aligned}\right.\]
+      </div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[\sigma(z)=\frac1{1+e^{-z}},\qquad\widehat p=\sigma(\beta_0+\mathbf x^\top\boldsymbol\beta)\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(\mathbf x\)
+        </dt>
+<dd>
+         vetor de entradas
+        </dd>
+</div>
+<div>
+<dt>
+         \(\mathbf W\)
+        </dt>
+<dd>
+         matriz de pesos ajustáveis
+        </dd>
+</div>
+<div>
+<dt>
+         \(\phi\)
+        </dt>
+<dd>
+         função de ativação
+        </dd>
+</div>
+<div>
+<dt>
+         \(\widehat y\)
+        </dt>
+<dd>
+         saída predita pela rede
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       A 5% a inferência deve usar procedimento inferencial separado. Como rede, avalie log-loss e erro de classificação em teste.
+      </p>
+<p>
+       Priorize o desempenho preditivo ou a estabilidade do ajuste. Quando não houver teste intrínseco, não interprete a métrica como valor-p nem aplique automaticamente o nível de 5%.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto mtcars reúne atributos de 32 modelos de automóveis, incluindo consumo, potência e massa.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Classificar transmissão manual de veículos (mtcars) usando atributos normalizados.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-rede-uma-camada" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-rede-uma-camada"><code># Rede sem camada oculta (classificador logístico) ----
+
+# Ajuste e resultados ----
+if (!requireNamespace("nnet", quietly = TRUE)) install.packages("nnet")
 library(nnet)
 set.seed(2026)
 d &lt;- mtcars
@@ -19,6 +224,99 @@ ajuste &lt;- nnet(am ~ wt + hp, data = d, size = 0,
               skip = TRUE, entropy = TRUE, maxit = 500,
               trace = FALSE)
 print(table(real = d$am,
-            previsto = predict(ajuste, type = &quot;class&quot;)))</code></pre>
-<h3>Interpretação do exemplo</h3><p>Com size=0 e skip=TRUE não há camada oculta; este exemplo mostra a relação entre modelos logísticos e redes neurais de uma camada.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Aprendizado supervisionado</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="svm-rbf.html"><span>← ANTERIOR</span>SVM com kernel radial (RBF)</a><a href="mlp.html"><span>PRÓXIMO →</span>Rede neural multicamadas (MLP)</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+            previsto = predict(ajuste, type = "class")))
+
+# Visualização e diagnóstico ----
+plot(mtcars$wt, mtcars$hp, col = factor(mtcars$cyl), pch = 19, xlab = "Massa (mil libras)", ylab = "Potência", main = "Características e classes de veículos")
+</code></pre><p class="pending-execution">A saída numérica e os gráficos deste exemplo devem ser conferidos na execução do script R; não foram reproduzidos neste ambiente.</p>
+<h3>Resultados e interpretação</h3>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Aprendizado supervisionado
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="svm-rbf.html">
+<span>
+      ← ANTERIOR
+     </span>
+     SVM com kernel radial (RBF)
+    </a>
+<a href="mlp.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Rede neural multicamadas (MLP)
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

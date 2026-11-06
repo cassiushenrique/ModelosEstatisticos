@@ -1,15 +1,369 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Teste exato de Fisher: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Teste exato de Fisher | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Estatística clássica</span><span>›</span><span>Teste exato de Fisher</span></div>
-<section class="detail-intro"><span class="eyebrow">Estatística clássica · 07 · DADOS CATEGÓRICOS</span><h1>Teste exato de Fisher</h1>
-<p class="detail-lead">Avalia associação em tabela <span class="math-inline">\(2\times2\)</span> condicionada às margens, útil com contagens pequenas.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/fisher.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Avalia associação em tabela <span class="math-inline">\(2\times2\)</span> condicionada às margens, útil com contagens pequenas.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Dados categóricos independentes; margens fixadas pelo desenho ou condicionamento matemático; evita a aproximação <span class="math-inline">\(\chi^2\)</span>.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span>: odds ratio = 1 (independência em <span class="math-inline">\(2\times2\)</span>); <span class="math-inline">\(H_1\)</span>: odds ratio diferente de 1.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[\Pr(A=a\mid\text{margens})=\frac{\binom{a+b}{a}\binom{c+d}{c}}{\binom{n}{a+c}}\]</div><p class="formula-caption">Probabilidade hipergeométrica condicional das tabelas; p exato bilateral segundo definição do teste.</p></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p><span class="math-inline">\(p&lt;0{,}05\)</span>: evidência de associação; <span class="math-inline">\(IC_{95\%}\)</span> do odds ratio condicional.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Associação entre configuração de motor (vs) e transmissão (am) em mtcars.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-fisher">Copiar código</button></div><pre id="code-fisher"><code>tab &lt;- table(mtcars$vs, mtcars$am)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Teste exato de Fisher: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Teste exato de Fisher | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Estatística clássica
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Teste exato de Fisher
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Estatística clássica · 07 · DADOS CATEGÓRICOS
+    </span>
+<h1>
+     Teste exato de Fisher
+    </h1>
+<p class="detail-lead">
+     Verifica a associação entre duas variáveis binárias, inclusive com amostras pequenas.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/fisher.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Verifica a associação entre duas variáveis binárias, inclusive com amostras pequenas.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Dados categóricos independentes.</li><li>Margens fixadas pelo desenho ou condicionamento matemático.</li><li>Evita a aproximação.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \theta=1\\ H_1&amp;:\ \theta\neq1\end{aligned}\right.\]
+      </div>
+<h3>
+       Alternativas bilateral e unilaterais
+      </h3>
+<div class="tail-cases">
+<p>
+<strong>
+         Bilateral:
+        </strong>
+        \(\theta\neq 1\). Detecta desvios em qualquer direção.
+       </p>
+<p>
+<strong>
+         Unilateral à direita:
+        </strong>
+        \(\theta&gt;1\). Investiga aumento ou associação positiva.
+       </p>
+<p>
+<strong>
+         Unilateral à esquerda:
+        </strong>
+        \(\theta&lt;1\). Investiga redução ou associação negativa.
+       </p>
+<p>
+        A direção deve ser escolhida antes de observar os resultados. Para o teste t e os testes de associação, use
+        <code>
+         alternative = "two.sided"
+        </code>
+        ,
+        <code>
+         "greater"
+        </code>
+        ou
+        <code>
+         "less"
+        </code>
+        . Em testes com grupos ou pares, a interpretação da direção depende da ordem dos grupos ou da subtração.
+       </p>
+</div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[\Pr(A=a\mid\text{margens})=\frac{\binom{a+b}{a}\binom{c+d}{c}}{\binom{n}{a+c}}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(a,b,c,d\)
+        </dt>
+<dd>
+         frequências observadas nas quatro células da tabela 2×2
+        </dd>
+</div>
+<div>
+<dt>
+         \(n\)
+        </dt>
+<dd>
+         total de observações
+        </dd>
+</div>
+<div>
+<dt>
+         \(\binom{m}{j}\)
+        </dt>
+<dd>
+         coeficiente binomial que conta subconjuntos de tamanho j em m elementos
+        </dd>
+</div>
+</dl>
+<p>
+       Probabilidade hipergeométrica condicional das tabelas; p exato bilateral segundo definição do teste.
+      </p>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       \(p&lt;0{,}05\) : evidência de associação; \(IC_{95\%}\) do odds ratio condicional.
+      </p>
+<p>
+       Além da decisão ao nível de 5%, examine a direção e a magnitude do efeito, seu intervalo de confiança e a adequação dos pressupostos. Um valor-p não quantifica a importância prática do resultado.
+      </p>
+<p>
+       Em um teste unilateral, a rejeição só sustenta a direção previamente definida. Um resultado de sinal contrário não autoriza inverter a hipótese após examinar os dados.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto mtcars reúne atributos de 32 modelos de automóveis, incluindo consumo, potência e massa.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Associação entre configuração de motor (vs) e transmissão (am) em mtcars.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-fisher" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-fisher"><code># Teste exato de Fisher ----
+
+# Ajuste e resultados ----
+tab &lt;- table(mtcars$vs, mtcars$am)
 resultado &lt;- fisher.test(tab, conf.level = 0.95)
-print(tab); print(resultado)</code></pre>
-<h3>Interpretação do exemplo</h3><p>O odds ratio compara chances de uma categoria do motor entre transmissões, conforme ordem da tabela. Um <span class="math-inline">\(IC_{95\%}\)</span> que inclua 1 não rejeita OR=1 no teste bilateral correspondente.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Estatística clássica</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="qui-independencia.html"><span>← ANTERIOR</span>Qui-quadrado de independência</a><a href="mcnemar.html"><span>PRÓXIMO →</span>Teste de McNemar</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+print(tab); print(resultado)
+
+# Visualização e diagnóstico ----
+mosaicplot(tab, main = "Configuração do motor × transmissão", xlab = "Configuração do motor", ylab = "Transmissão", color = TRUE)
+
+
+# Análises unilaterais: use somente a direção definida antes da análise ----
+# H1: odds ratio &gt; 1 (na orientação da tabela tab)
+print(fisher.test(tab, alternative = "greater"))
+# H1: odds ratio &lt; 1
+print(fisher.test(tab, alternative = "less"))
+</code></pre><div class="verified-example"><h3>Saída numérica para conferência</h3><p class="verification-source">Valores recalculados independentemente com os mesmos dados; a formatação da saída pode diferir da apresentada pelo R.</p><pre class="output-r">Fisher Exact Test for Count Data
+Odds ratio (amostral) = 2.00000
+p-value = 0.472697
+Tabela:
+am   0  1
+vs       
+0   12  6
+1    7  7</pre><h3>Gráfico dos dados</h3><img alt="Visualização dos dados do exemplo: Teste exato de Fisher" class="result-figure" loading="lazy" src="../assets/resultados/fisher.png"/><p>O teste exato fornece valor-p = 0.4727. A interpretação considera a associação entre configuração do motor e transmissão; a razão de chances calculada por scipy é amostral e pode diferir do estimador condicional apresentado por fisher.test() no R.</p></div>
+<h3>Resultados e interpretação</h3>
+<p class="observed-result">
+<strong>
+        Resultado para estes dados:
+       </strong>
+       o teste exato bilateral fornece valor-p ≈ 0,4727. Não se rejeita a hipótese de independência entre configuração do motor e tipo de transmissão ao nível de 5%.
+      </p>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Estatística clássica
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="qui-independencia.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Qui-quadrado de independência
+    </a>
+<a href="mcnemar.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Teste de McNemar
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

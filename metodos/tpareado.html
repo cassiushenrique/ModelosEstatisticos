@@ -1,19 +1,387 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Teste t pareado: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Teste t pareado | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Estatística clássica</span><span>›</span><span>Teste t pareado</span></div>
-<section class="detail-intro"><span class="eyebrow">Estatística clássica · 04 · COMPARAÇÃO DE MÉDIAS</span><h1>Teste t pareado</h1>
-<p class="detail-lead">Compara a média das diferenças <span class="math-inline">\(D_i=Y_{i,\mathrm{depois}}-Y_{i,\mathrm{antes}}\)</span> em pares correspondentes.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/tpareado.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Compara a média das diferenças <span class="math-inline">\(D_i=Y_{i,\mathrm{depois}}-Y_{i,\mathrm{antes}}\)</span> em pares correspondentes.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Pares corretamente identificados; pares independentes entre si; distribuição aproximadamente normal das diferenças em amostras pequenas. Não é necessário que cada condição isolada seja normal.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span>: <span class="math-inline">\(\mu_{D}=0\)</span>; <span class="math-inline">\(H_1\)</span>: <span class="math-inline">\(\mu_{D}\neq0\)</span>.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[D_i=Y_{i,\mathrm{depois}}-Y_{i,\mathrm{antes}},\qquad t=\frac{\bar D}{S_D/\sqrt n},\quad gl=n-1\]</div><h3>Intervalo de confiança de 95% (quando aplicável)</h3><div class="math-display" role="group" aria-label="Intervalo de confiança">\[IC_{95\%}(\mu_D)=\bar D\pm t_{0{,}975;n-1}\frac{S_D}{\sqrt n}\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p><span class="math-inline">\(p&lt;0{,}05\)</span>: evidência de diferença média; <span class="math-inline">\(IC_{95\%}\)</span> para <span class="math-inline">\(\mu_{D}\)</span> exclui 0.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Comparar a absorção de <span class="math-inline">\(CO_{2}\)</span> da mesma planta em duas concentrações (dados CO2; bioprocessos).</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-tpareado">Copiar código</button></div><pre id="code-tpareado"><code>d &lt;- subset(CO2, conc %in% c(95, 175))
-wide &lt;- reshape(d[, c(&quot;Plant&quot;, &quot;conc&quot;, &quot;uptake&quot;)], idvar = &quot;Plant&quot;,
-                timevar = &quot;conc&quot;, direction = &quot;wide&quot;)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Teste t pareado: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Teste t pareado | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Estatística clássica
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Teste t pareado
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Estatística clássica · 04 · COMPARAÇÃO DE MÉDIAS
+    </span>
+<h1>
+     Teste t pareado
+    </h1>
+<p class="detail-lead">
+     Verifica se a média mudou após uma intervenção nas mesmas unidades, como antes e depois de um ajuste.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/tpareado.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Verifica se a média mudou após uma intervenção nas mesmas unidades, como antes e depois de um ajuste.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Pareamento definido por unidade e ocasião de medida (confira identificadores e registros correspondentes).</li><li>Diferenças entre pares independentes (verifique o delineamento).</li><li>Diferenças aproximadamente normais em amostras pequenas (histograma e gráfico Q–Q das diferenças).</li><li>Ausência de diferenças extremamente influentes (boxplot das diferenças).</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \mu_D=0\\ H_1&amp;:\ \mu_D\neq0\end{aligned}\right.\]
+      </div>
+<h3>
+       Alternativas bilateral e unilaterais
+      </h3>
+<div class="tail-cases">
+<p>
+<strong>
+         Bilateral:
+        </strong>
+        \(\mu_D\neq 0\). Detecta desvios em qualquer direção.
+       </p>
+<p>
+<strong>
+         Unilateral à direita:
+        </strong>
+        \(\mu_D&gt;0\). Investiga aumento ou associação positiva.
+       </p>
+<p>
+<strong>
+         Unilateral à esquerda:
+        </strong>
+        \(\mu_D&lt;0\). Investiga redução ou associação negativa.
+       </p>
+<p>
+        A direção deve ser escolhida antes de observar os resultados. Para o teste t e os testes de associação, use
+        <code>
+         alternative = "two.sided"
+        </code>
+        ,
+        <code>
+         "greater"
+        </code>
+        ou
+        <code>
+         "less"
+        </code>
+        . Em testes com grupos ou pares, a interpretação da direção depende da ordem dos grupos ou da subtração.
+       </p>
+</div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[D_i=Y_{i,\mathrm{depois}}-Y_{i,\mathrm{antes}},\qquad t=\frac{\bar D}{S_D/\sqrt n},\quad gl=n-1\]
+      </div>
+<div aria-label="Intervalo de confiança" class="math-display" role="group">
+       \[IC_{95\%}(\mu_D)=\bar D\pm t_{0{,}975;n-1}\frac{S_D}{\sqrt n}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(D_i\)
+        </dt>
+<dd>
+         diferença entre as duas medidas da unidade i, na ordem depois menos antes
+        </dd>
+</div>
+<div>
+<dt>
+         \(\bar D\)
+        </dt>
+<dd>
+         média amostral das diferenças
+        </dd>
+</div>
+<div>
+<dt>
+         \(S_D\)
+        </dt>
+<dd>
+         desvio-padrão amostral das diferenças
+        </dd>
+</div>
+<div>
+<dt>
+         \(n\)
+        </dt>
+<dd>
+         número de pares independentes
+        </dd>
+</div>
+<div>
+<dt>
+         \(t\)
+        </dt>
+<dd>
+         estatística que, sob a hipótese nula e normalidade das diferenças, segue t de Student com n-1 graus de liberdade
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       \(p&lt;0{,}05\) : evidência de diferença média; \(IC_{95\%}\) para \(\mu_{D}\) exclui 0.
+      </p>
+<p>
+       Além da decisão ao nível de 5%, examine a direção e a magnitude do efeito, seu intervalo de confiança e a adequação dos pressupostos. Um valor-p não quantifica a importância prática do resultado.
+      </p>
+<p>
+       Em um teste unilateral, a rejeição só sustenta a direção previamente definida. Um resultado de sinal contrário não autoriza inverter a hipótese após examinar os dados.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto CO2 contém medidas de absorção para cada planta em diferentes concentrações de CO2. As mesmas plantas são observadas nas duas condições selecionadas.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Determinar se a mudança de concentração altera a absorção média, analisando a diferença dentro de cada planta.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-tpareado" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-tpareado"><code># Teste t pareado ----
+
+# Ajuste e resultados ----
+d &lt;- subset(CO2, conc %in% c(95, 175))
+wide &lt;- reshape(d[, c("Plant", "conc", "uptake")], idvar = "Plant",
+                timevar = "conc", direction = "wide")
 resultado &lt;- t.test(wide$uptake.175, wide$uptake.95,
                     paired = TRUE, conf.level = 0.95)
 print(resultado)
-qqnorm(wide$uptake.175 - wide$uptake.95); qqline(wide$uptake.175 - wide$uptake.95)</code></pre>
-<h3>Interpretação do exemplo</h3><p>O <span class="math-inline">\(IC_{95\%}\)</span> refere-se à média da variação de absorção <span class="math-inline">\(175-95\)</span> para a mesma planta. A dependência dentro da planta é preservada no pareamento.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section><aside class="technical-note"><strong>Nota metodológica</strong><p>A unidade amostral é o par. O teste é aplicado às diferenças, não a duas amostras independentes. O intervalo de confiança de 95% refere-se à média dessas diferenças.</p></aside></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Estatística clássica</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="t2.html"><span>← ANTERIOR</span>Teste t de Student (dois grupos)</a><a href="twelch.html"><span>PRÓXIMO →</span>Teste t de Welch (dois grupos)</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+qqnorm(wide$uptake.175 - wide$uptake.95); qqline(wide$uptake.175 - wide$uptake.95)
+
+# Visualização e diagnóstico ----
+dif &lt;- wide$uptake.175 - wide$uptake.95
+plot(wide$uptake.95, wide$uptake.175, pch = 19, xlab = "Absorção a 95", ylab = "Absorção a 175", main = "Medidas pareadas")
+abline(0, 1, col = "red", lwd = 2, lty = 2)
+qqnorm(dif, main = "Normalidade das diferenças")
+qqline(dif, col = "red", lwd = 2)
+
+
+# Análises unilaterais: use somente a direção definida antes da análise ----
+# Ordem da diferença: absorção a 175 menos absorção a 95
+# H1: diferenca media &gt; 0
+print(t.test(wide$uptake.175, wide$uptake.95, paired = TRUE, alternative = "greater"))
+# H1: diferenca media &lt; 0
+print(t.test(wide$uptake.175, wide$uptake.95, paired = TRUE, alternative = "less"))
+</code></pre><p class="pending-execution">A saída numérica e os gráficos deste exemplo devem ser conferidos na execução do script R; não foram reproduzidos neste ambiente.</p>
+<h3>Resultados e interpretação</h3>
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+<aside class="technical-note">
+<strong>
+       Nota metodológica
+      </strong>
+<p>
+       A unidade amostral é o par. O teste é aplicado às diferenças, não a duas amostras independentes. O intervalo de confiança de 95% refere-se à média dessas diferenças.
+      </p>
+</aside>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Estatística clássica
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="t2.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Teste t de Student (dois grupos)
+    </a>
+<a href="twelch.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Teste t de Welch (dois grupos)
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

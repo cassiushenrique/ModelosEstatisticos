@@ -1,16 +1,374 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Teste t de Student (dois grupos): definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Teste t de Student (dois grupos) | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Estatística clássica</span><span>›</span><span>Teste t de Student (dois grupos)</span></div>
-<section class="detail-intro"><span class="eyebrow">Estatística clássica · 04 · COMPARAÇÃO DE MÉDIAS</span><h1>Teste t de Student (dois grupos)</h1>
-<p class="detail-lead">Compara médias de duas populações independentes assumindo variâncias populacionais iguais.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/t2.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Compara médias de duas populações independentes assumindo variâncias populacionais iguais.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Amostras independentes, distribuição aproximadamente normal em cada grupo para amostras pequenas, variâncias homogêneas. Use diagnóstico gráfico; se desigualdade plausível, prefira Welch.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span>: <span class="math-inline">\(\mu_{1}=\mu_{2}\)</span>; <span class="math-inline">\(H_1\)</span>: <span class="math-inline">\(\mu_{1}\neq\mu_{2}\)</span>.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[t=\frac{\bar Y_1-\bar Y_2}{S_p\sqrt{1/n_1+1/n_2}},\qquad gl=n_1+n_2-2\]</div><h3>Intervalo de confiança de 95% (quando aplicável)</h3><div class="math-display" role="group" aria-label="Intervalo de confiança">\[IC_{95\%}(\mu_1-\mu_2)=(\bar Y_1-\bar Y_2)\pm t_{0{,}975;n_1+n_2-2}S_p\sqrt{\frac1{n_1}+\frac1{n_2}}\]</div></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p><span class="math-inline">\(p&lt;0{,}05\)</span>: rejeite igualdade de médias; <span class="math-inline">\(IC_{95\%}\)</span> para diferença exclui 0.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Autonomia de automóveis com transmissões manual e automática (mtcars).</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-t2">Copiar código</button></div><pre id="code-t2"><code>resultado &lt;- t.test(mpg ~ am, data = mtcars,
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Teste t de Student (dois grupos): conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Teste t de Student (dois grupos) | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Estatística clássica
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Teste t de Student (dois grupos)
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Estatística clássica · 04 · COMPARAÇÃO DE MÉDIAS
+    </span>
+<h1>
+     Teste t de Student (dois grupos)
+    </h1>
+<p class="detail-lead">
+     Verifica se as médias de dois grupos independentes diferem, supondo variâncias iguais.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/t2.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Verifica se as médias de dois grupos independentes diferem, supondo variâncias iguais.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Amostras independentes, distribuição aproximadamente normal em cada grupo para amostras pequenas, variâncias homogêneas.</li><li>Use diagnóstico gráfico.</li><li>Se desigualdade plausível, prefira Welch.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ \mu_1-\mu_2=0\\ H_1&amp;:\ \mu_1-\mu_2\neq0\end{aligned}\right.\]
+      </div>
+<h3>
+       Alternativas bilateral e unilaterais
+      </h3>
+<div class="tail-cases">
+<p>
+<strong>
+         Bilateral:
+        </strong>
+        \(\mu_1\neq \mu_2\). Detecta desvios em qualquer direção.
+       </p>
+<p>
+<strong>
+         Unilateral à direita:
+        </strong>
+        \(\mu_1&gt;\mu_2\). Investiga aumento ou associação positiva.
+       </p>
+<p>
+<strong>
+         Unilateral à esquerda:
+        </strong>
+        \(\mu_1&lt;\mu_2\). Investiga redução ou associação negativa.
+       </p>
+<p>
+        A direção deve ser escolhida antes de observar os resultados. Para o teste t e os testes de associação, use
+        <code>
+         alternative = "two.sided"
+        </code>
+        ,
+        <code>
+         "greater"
+        </code>
+        ou
+        <code>
+         "less"
+        </code>
+        . Em testes com grupos ou pares, a interpretação da direção depende da ordem dos grupos ou da subtração.
+       </p>
+</div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[t=\frac{\bar Y_1-\bar Y_2}{S_p\sqrt{1/n_1+1/n_2}},\qquad gl=n_1+n_2-2\]
+      </div>
+<div aria-label="Intervalo de confiança" class="math-display" role="group">
+       \[IC_{95\%}(\mu_1-\mu_2)=(\bar Y_1-\bar Y_2)\pm t_{0{,}975;n_1+n_2-2}S_p\sqrt{\frac1{n_1}+\frac1{n_2}}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(\bar Y_1,\bar Y_2\)
+        </dt>
+<dd>
+         médias amostrais dos grupos
+        </dd>
+</div>
+<div>
+<dt>
+         \(S_p^2\)
+        </dt>
+<dd>
+         variância agrupada, [(n1-1)S1²+(n2-1)S2²]/(n1+n2-2)
+        </dd>
+</div>
+<div>
+<dt>
+         \(n_1,n_2\)
+        </dt>
+<dd>
+         tamanhos dos grupos independentes
+        </dd>
+</div>
+<div>
+<dt>
+         \(gl\)
+        </dt>
+<dd>
+         graus de liberdade da distribuição t
+        </dd>
+</div>
+</dl>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       \(p&lt;0{,}05\) : rejeite igualdade de médias; \(IC_{95\%}\) para diferença exclui 0.
+      </p>
+<p>
+       Além da decisão ao nível de 5%, examine a direção e a magnitude do efeito, seu intervalo de confiança e a adequação dos pressupostos. Um valor-p não quantifica a importância prática do resultado.
+      </p>
+<p>
+       Em um teste unilateral, a rejeição só sustenta a direção previamente definida. Um resultado de sinal contrário não autoriza inverter a hipótese após examinar os dados.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        Em mtcars, am identifica transmissão automática ou manual; mpg representa autonomia.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Comparar a autonomia média entre dois grupos independentes sob a hipótese de variâncias populacionais iguais.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-t2" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-t2"><code># Teste t de Student (dois grupos) ----
+
+# Ajuste e resultados ----
+aggregate(mpg ~ am, mtcars, function(x) c(n = length(x), media = mean(x), dp = sd(x)))
+resultado &lt;- t.test(mpg ~ am, data = mtcars,
                     var.equal = TRUE, conf.level = 0.95)
 print(resultado)
-boxplot(mpg ~ am, data = mtcars, names = c(&quot;Automática&quot;, &quot;Manual&quot;))</code></pre>
-<h3>Interpretação do exemplo</h3><p>A diferença de médias é definida na ordem dos fatores 0 e 1. Confirme a homogeneidade de variâncias antes de adotar erros-padrão combinados.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Estatística clássica</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><a href="t1.html"><span>← ANTERIOR</span>Teste t para uma amostra</a><a href="tpareado.html"><span>PRÓXIMO →</span>Teste t pareado</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+boxplot(mpg ~ am, data = mtcars, names = c("Automática", "Manual"))
+
+# Visualização e diagnóstico ----
+boxplot(mpg ~ factor(am), mtcars, names = c("Automática", "Manual"), xlab = "Transmissão", ylab = "Autonomia (mpg)")
+
+
+# Análises unilaterais: use somente a direção definida antes da análise ----
+# Ordenação dos grupos: am = 0 (automática) menos am = 1 (manual)
+# H1: media_automatica &gt; media_manual
+print(t.test(mpg ~ am, data = mtcars, var.equal = TRUE, alternative = "greater"))
+# H1: media_automatica &lt; media_manual
+print(t.test(mpg ~ am, data = mtcars, var.equal = TRUE, alternative = "less"))
+</code></pre><div class="verified-example"><h3>Saída numérica para conferência</h3><p class="verification-source">Valores recalculados independentemente com os mesmos dados; a formatação da saída pode diferir da apresentada pelo R.</p><pre class="output-r">Two Sample t-test (Student)
+t = -4.10613, df = 30, p-value = 0.000285021
+95 percent confidence interval: [-10.84837, -3.64151]
+mean automatic = 17.14737; mean manual = 24.39231</pre><h3>Gráfico dos dados</h3><img alt="Visualização dos dados do exemplo: Teste t de Student (dois grupos)" class="result-figure" loading="lazy" src="../assets/resultados/t2.png"/><p>A diferença média automática − manual é -7.24 mpg (IC de 95%: -10.85 a -3.64). O teste bilateral fornece p = 0.000285, indicando médias distintas a 5%. A direção da diferença depende da ordem dos grupos.</p></div>
+<h3>Resultados e interpretação</h3>
+<p class="observed-result">
+<strong>
+        Resultado para estes dados:
+       </strong>
+       média de 17,15 mpg nos veículos automáticos (n = 19) e 24,39 mpg nos manuais (n = 13); t ≈ −4,1061 (30 graus de liberdade) e valor-p ≈ 0,000285 no teste bilateral com variâncias iguais. A diferença observada é estatisticamente significativa, condicionada à adequação dos pressupostos.
+      </p>
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Estatística clássica
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<a href="t1.html">
+<span>
+      ← ANTERIOR
+     </span>
+     Teste t para uma amostra
+    </a>
+<a href="tpareado.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Teste t pareado
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>

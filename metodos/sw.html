@@ -1,18 +1,341 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12372A">
-<meta name="description" content="Shapiro–Wilk: definição, hipóteses, pressupostos, fórmulas em LaTeX e exemplo em R."><title>Shapiro–Wilk | Estatística e Ciência de Dados</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-</head><body><header class="topbar"><a class="brand" href="../index.html#inicio" aria-label="Página inicial"><span class="brand-mark">Σ</span><span><strong>Estatística &amp; Ciência de Dados</strong><small>Modelos, inferência e aplicações em R · UFLA</small></span></a><button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button><nav class="nav" aria-label="Navegação principal"><a href="../index.html#catalogo">Modelos</a><a href="../index.html#orientacoes">Como utilizar</a><a href="../index.html#referencias">Referências</a><a href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer">Professor ↗</a></nav></header><main class="detail-main"><div class="breadcrumbs"><a href="../index.html#catalogo">Catálogo de modelos</a><span>›</span><span>Estatística clássica</span><span>›</span><span>Shapiro–Wilk</span></div>
-<section class="detail-intro"><span class="eyebrow">Estatística clássica · 01 · DIAGNÓSTICOS</span><h1>Shapiro–Wilk</h1>
-<p class="detail-lead">Avalia a compatibilidade de uma amostra com a distribuição normal; é sensível a desvios da forma da distribuição.</p><div class="quick-actions"><a class="btn primary" href="#exemplo">Ver exemplo em R ↓</a><a class="btn secondary" href="../scripts/sw.R" download>Baixar script .R ↓</a></div></section><div class="detail-grid"><div class="detail-body"><section class="detail-panel"><h2>01 · O que é?</h2><p>Avalia a compatibilidade de uma amostra com a distribuição normal; é sensível a desvios da forma da distribuição.</p></section><section class="detail-panel"><h2>02 · Quais são os pressupostos e como verificá-los?</h2><p>Dados quantitativos; observações independentes; amostra sem replicações artificiais. Verifique o desenho amostral e um gráfico Q–Q. A normalidade relevante em regressão/ANOVA costuma ser a dos erros, não a dos preditores.</p></section><section class="detail-panel"><h2>03 · Qual a estatística de teste?</h2><h3>Hipóteses ou objetivo inferencial</h3><p><span class="math-inline">\(H_0\)</span>: a distribuição populacional é normal; <span class="math-inline">\(H_1\)</span>: não é normal.</p><h3>Estatística de teste, estimador ou critério de otimização</h3><div class="math-display" role="group" aria-label="Expressão matemática do procedimento">\[W=\frac{\left(\sum_{i=1}^{n}a_iX_{(i)}\right)^2}{\sum_{i=1}^{n}(X_i-\bar X)^2}\]</div><p class="formula-caption">Estatística W de Shapiro–Wilk, obtida dos quadrados das combinações ordenadas das observações, com distribuição nula calibrada numericamente.</p></section><section class="detail-panel"><h2>04 · Como interpretar o resultado, supondo 5% de significância?</h2><p><span class="math-inline">\(p&lt;0{,}05\)</span>: rejeite normalidade; <span class="math-inline">\(p\geq0{,}05\)</span>: não rejeite, sem concluir que os dados são normais. Não há IC usual para W.</p></section><section class="detail-panel"><h2>05 · Como executar no R?</h2><p>Usa funções da instalação padrão do R. O exemplo abaixo é completo e inclui as chamadas de <code>library()</code> quando necessárias. Execute os comandos na sequência e confira os diagnósticos antes de interpretar inferências.</p><p>Use o botão <strong>Copiar código</strong> ou baixe o script <code>.R</code>. Para os métodos que exigem bibliotecas adicionais, a primeira execução pode realizar a instalação por <code>install.packages()</code>.</p></section><section class="detail-panel example-panel" id="exemplo"><h2>06 · Exemplo de aplicação na engenharia</h2><p class="example-context">Controle dimensional de veículos: verificar a distribuição da cilindrada em mtcars.</p>
-<div class="code-toolbar"><span>R · executar o bloco completo</span><button type="button" class="copy-code" data-copy="code-sw">Copiar código</button></div><pre id="code-sw"><code>x &lt;- mtcars$disp
-qqnorm(x); qqline(x, col = &quot;red&quot;)
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#12372A" name="theme-color"/>
+<meta content="Shapiro–Wilk: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<title>
+   Shapiro–Wilk | Estatística e Ciência de Dados
+  </title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css" rel="stylesheet"/>
+<script>
+   window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+</head>
+<body>
+<header class="topbar">
+<a aria-label="Página inicial" class="brand" href="../index.html#inicio">
+<span class="brand-mark">
+     Σ
+    </span>
+<span>
+<strong>
+      Estatística &amp; Ciência de Dados
+     </strong>
+<small>
+      Modelos, inferência e aplicações em R · UFLA
+     </small>
+</span>
+</a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu-btn" type="button">
+    ☰
+   </button>
+<nav aria-label="Navegação principal" class="nav">
+<a href="../index.html#catalogo">
+     Modelos
+    </a>
+<a href="../index.html#catalogo">
+     Catálogo
+    </a>
+<a href="../index.html#referencias">
+     Referências
+    </a>
+<a href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+     Professor ↗
+    </a>
+</nav>
+</header>
+<main class="detail-main">
+<div class="breadcrumbs">
+<a href="../index.html#catalogo">
+     Catálogo de modelos
+    </a>
+<span>
+     ›
+    </span>
+<span>
+     Estatística clássica
+    </span>
+<span>
+     ›
+    </span>
+<span>
+     Shapiro–Wilk
+    </span>
+</div>
+<section class="detail-intro">
+<span class="eyebrow">
+     Estatística clássica · 01 · DIAGNÓSTICOS
+    </span>
+<h1>
+     Shapiro–Wilk
+    </h1>
+<p class="detail-lead">
+     Verifica se os dados apresentam desvios significativos da distribuição normal.
+    </p>
+<div class="quick-actions">
+<a class="btn primary" href="#exemplo">
+      Ver exemplo em R ↓
+     </a>
+<a class="btn secondary" download="" href="../scripts/sw.R">
+      Baixar script .R ↓
+     </a>
+</div>
+</section>
+<div class="detail-grid">
+<div class="detail-body">
+<section class="detail-panel">
+<h2>
+       01 · O que é?
+      </h2>
+<p>
+       Verifica se os dados apresentam desvios significativos da distribuição normal.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       02 · Pressupostos e como verificá-los
+      </h2>
+<ul class="checklist"><li>Dados quantitativos.</li><li>Observações independentes.</li><li>Amostra sem replicações artificiais.</li><li>Verifique o desenho amostral e um gráfico Q–Q.</li><li>A normalidade relevante em regressão/ANOVA costuma ser a dos erros, não a dos preditores.</li></ul>
+<p>
+       Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       03 · Hipóteses e estatística de teste
+      </h2>
+<h3>
+       Hipóteses
+      </h3>
+<div class="hypothesis-block">
+       \[\left\{\begin{aligned}H_0&amp;:\ X_1,\ldots,X_n\sim\mathcal N(\mu,\sigma^2)\\ H_1&amp;:\ \text{a distribuição populacional não é normal}\end{aligned}\right.\]
+      </div>
+<h3>
+       Estatística, estimador ou critério de ajuste
+      </h3>
+<div aria-label="Expressão matemática do procedimento" class="math-display" role="group">
+       \[W=\frac{\left(\sum_{i=1}^{n}a_iX_{(i)}\right)^2}{\sum_{i=1}^{n}(X_i-\bar X)^2}\]
+      </div>
+<p class="formula-caption">
+<strong>
+        Em que:
+       </strong>
+</p>
+<dl class="formula-terms">
+<div>
+<dt>
+         \(W\)
+        </dt>
+<dd>
+         estatística do teste de Shapiro–Wilk
+        </dd>
+</div>
+<div>
+<dt>
+         \(n\)
+        </dt>
+<dd>
+         número de observações independentes
+        </dd>
+</div>
+<div>
+<dt>
+         \(X_{(i)}\)
+        </dt>
+<dd>
+         i-ésima observação em ordem crescente
+        </dd>
+</div>
+<div>
+<dt>
+         \(X_i\)
+        </dt>
+<dd>
+         i-ésima observação original
+        </dd>
+</div>
+<div>
+<dt>
+         \(\bar X\)
+        </dt>
+<dd>
+         média amostral
+        </dd>
+</div>
+<div>
+<dt>
+         \(a_i\)
+        </dt>
+<dd>
+         coeficiente tabulado/computado para cada posição ordenada a partir dos momentos e da matriz de covariâncias de estatísticas de ordem de uma amostra normal de tamanho n; calculado internamente por shapiro.test()
+        </dd>
+</div>
+</dl>
+<p>
+       Estatística W de Shapiro–Wilk, obtida dos quadrados das combinações ordenadas das observações, com distribuição nula calibrada numericamente.
+      </p>
+<p>
+       Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       04 · Como interpretar os resultados?
+      </h2>
+<p>
+       \(p&lt;0{,}05\) : rejeite normalidade; \(p\geq0{,}05\) : não rejeite, sem concluir que os dados são normais. Não há IC usual para W.
+      </p>
+<p>
+       Interprete a decisão em conjunto com o gráfico Q–Q e o tamanho da amostra. A não rejeição não demonstra normalidade; a rejeição não mede, por si só, a relevância prática do desvio.
+      </p>
+</section>
+<section class="detail-panel">
+<h2>
+       05 · Como executar no R?
+      </h2>
+<p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
+<p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+</section>
+<section class="detail-panel example-panel" id="exemplo">
+<h2>
+       06 · Exemplo de aplicação
+      </h2>
+<div class="example-context-rich">
+<h3>
+        Contexto dos dados
+       </h3>
+<p>
+        O conjunto mtcars reúne características de 32 modelos de automóveis. A variável disp representa a cilindrada do motor, em polegadas cúbicas.
+       </p>
+<h3>
+        Objetivo da análise
+       </h3>
+<p>
+        Investigar se é razoável representar a distribuição da cilindrada por uma normal. Um histograma e um gráfico Q–Q ajudam a avaliar assimetria e observações extremas.
+       </p>
+</div>
+<div class="code-toolbar">
+<span>
+        R · executar o bloco completo
+       </span>
+<button class="copy-code" data-copy="code-sw" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-sw"><code># Shapiro–Wilk ----
+
+# Ajuste e resultados ----
+x &lt;- mtcars$disp
+qqnorm(x); qqline(x, col = "red")
+summary(x)
+sd(x)
 resultado &lt;- shapiro.test(x)
 print(resultado)
-cat(ifelse(resultado$p.value &lt; 0.05, &quot;Evidência contra normalidade&quot;, &quot;Sem evidência suficiente contra normalidade&quot;), &quot;
-&quot;)</code></pre>
-<h3>Interpretação do exemplo</h3><p>Valores pequenos de W e <span class="math-inline">\(p&lt;0{,}05\)</span> indicam que a distribuição de cilindradas não é adequadamente descrita como normal. A decisão sobre modelagem depende do objetivo e da distribuição dos resíduos.</p>
-<p class="r-fallback">Os dados são carregados de bases incluídas no R ou nos pacotes indicados. A instalação de pacotes requer conexão à internet. O exemplo usa os dados originais como aplicação, referência ou analogia de engenharia, conforme explicitado acima.</p></section></div><aside class="detail-aside"><div class="aside-card"><span class="aside-label">TIPO DE MÉTODO</span><p>Estatística clássica</p><a href="../index.html#referencias">Referências científicas →</a></div><div class="aside-card"><span class="aside-label">CRITÉRIO DE DECISÃO</span><p><span class="math-inline">\(p\geq0{,}05\)</span> não prova a hipótese nula. Para modelos sem teste intrínseco, avalie o erro de predição e a estabilidade com dados não utilizados no ajuste.</p></div><div class="aside-card"><span class="aside-label">NAVEGAÇÃO</span><a href="../index.html#catalogo">Ver todos os 103 métodos →</a></div></aside></div><nav class="method-pager" aria-label="Navegação entre métodos"><span></span><a href="ks.html"><span>PRÓXIMO →</span>Kolmogorov–Smirnov (uma amostra)</a></nav><section class="profile-section"><a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" target="_blank" rel="noopener noreferrer"><img src="../assets/img/cassius.jpg" alt="Retrato do professor"><div><span>SOBRE O PROFESSOR</span><h2>Prof. Dr. Cássius Henrique Xavier Oliveira</h2><p>Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.</p><b>Conheça minha trajetória e projetos →</b></div></a></section></main><footer class="site-footer"><div><strong>Estatística &amp; Ciência de Dados</strong><div>Material acadêmico de consulta · ICTIN/UFLA</div></div><div>Prof. Dr. Cássius Henrique Xavier Oliveira<br>© <span class="year">2026</span></div></footer><script defer src="../assets/script.js"></script></body></html>
+cat(ifelse(resultado$p.value &lt; 0.05, "Evidência contra normalidade", "Sem evidência suficiente contra normalidade"), "\n")
+
+# Visualização e diagnóstico ----
+hist(x, breaks = "FD", col = "gray85", border = "white", main = "Distribuição da cilindrada", xlab = "Cilindrada (pol³)")
+qqnorm(x, pch = 19, main = "Gráfico Q-Q da cilindrada")
+qqline(x, col = "red", lwd = 2)
+</code></pre><div class="verified-example"><h3>Saída numérica para conferência</h3><p class="verification-source">Valores recalculados independentemente com os mesmos dados; a formatação da saída pode diferir da apresentada pelo R.</p><pre class="output-r">Shapiro-Wilk normality test
+W = 0.92001, p-value = 0.02081</pre><h3>Gráfico dos dados</h3><img alt="Visualização dos dados do exemplo: Shapiro–Wilk" class="result-figure" loading="lazy" src="../assets/resultados/sw.png"/><p>Como p = 0.0208 &lt; 0,05, rejeita-se a hipótese de normalidade da cilindrada.</p></div>
+<h3>Resultados e interpretação</h3>
+<p class="observed-result">
+<strong>
+        Resultado para estes dados:
+       </strong>
+       W ≈ 0,9200 e valor-p ≈ 0,0208. Ao nível de 5%, rejeita-se a hipótese de normalidade da cilindrada. O gráfico Q–Q permite identificar em que regiões ocorrem os desvios.
+      </p>
+
+
+<p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+</div>
+<aside class="detail-aside">
+<div class="aside-card">
+<span class="aside-label">
+       TIPO DE MÉTODO
+      </span>
+<p>
+       Estatística clássica
+      </p>
+<a href="../index.html#referencias">
+       Referências científicas →
+      </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       CRITÉRIO DE DECISÃO
+      </span>
+<p>
+       Interprete os resultados conforme o objetivo: teste de hipóteses, estimativa ou predição. A decisão depende do delineamento, dos pressupostos e da relevância prática.
+      </p>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       NAVEGAÇÃO
+      </span>
+<a href="../index.html#catalogo">
+       Ver todos os 97 métodos →
+      </a>
+</div>
+</aside>
+</div>
+<nav aria-label="Navegação entre métodos" class="method-pager">
+<span>
+</span>
+<a href="ks.html">
+<span>
+      PRÓXIMO →
+     </span>
+     Kolmogorov–Smirnov (uma amostra)
+    </a>
+</nav>
+<section class="profile-section">
+<a class="profile-card" href="https://cassiushenrique.github.io/sitePessoal/#inicio" rel="noopener noreferrer" target="_blank">
+<img alt="Retrato do professor" src="../assets/img/cassius.jpg"/>
+<div>
+<span>
+       SOBRE O PROFESSOR
+      </span>
+<h2>
+       Prof. Dr. Cássius Henrique Xavier Oliveira
+      </h2>
+<p>
+       Professor · ICTIN/UFLA · Estatística, Confiabilidade e Ciência de Dados.
+      </p>
+<b>
+       Conheça minha trajetória e projetos →
+      </b>
+</div>
+</a>
+</section>
+</main>
+<footer class="site-footer">
+<div>
+<strong>
+     Estatística &amp; Ciência de Dados
+    </strong>
+<div>
+     Material acadêmico de consulta · ICTIN/UFLA
+    </div>
+</div>
+<div>
+    Prof. Dr. Cássius Henrique Xavier Oliveira
+    <br/>
+    ©
+    <span class="year">
+     2026
+    </span>
+</div>
+</footer>
+<script defer="" src="../assets/script.js">
+</script>
+</body>
+</html>
