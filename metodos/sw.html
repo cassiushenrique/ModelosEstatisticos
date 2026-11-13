@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="#12372A" name="theme-color"/>
-<meta content="Shapiro–Wilk: conceitos, pressupostos, hipóteses, resultados e exemplo prático em R." name="description"/>
+<meta content="Shapiro–Wilk: conceito, pressupostos, hipóteses, estatística W, obtenção do valor-p, interpretação, erros comuns, comparação entre testes e exemplo prático em R." name="description"/>
 <title>
    Shapiro–Wilk | Estatística e Ciência de Dados
   </title>
@@ -12,6 +12,19 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../assets/style.css" rel="stylesheet"/>
+<style>
+  /* Tabelas comparativas: o style.css global não define regras para tabelas.
+     Escopo restrito a esta página; pode ser movido para ../assets/style.css. */
+  .detail-panel .table-wrap{overflow-x:auto;margin:1.1rem 0 1.3rem;-webkit-overflow-scrolling:touch}
+  .detail-panel .method-table{width:100%;min-width:540px;border-collapse:collapse;font-size:.88rem;white-space:normal}
+  .detail-panel .method-table caption{caption-side:top;text-align:left;font-size:11px;letter-spacing:.13em;font-weight:800;color:#1f5b43;text-transform:uppercase;padding-bottom:.5rem}
+  .detail-panel .method-table th,.detail-panel .method-table td{border:1px solid #dce5dc;padding:.55rem .65rem;text-align:left;vertical-align:top;line-height:1.55;color:#3d5042}
+  .detail-panel .method-table thead th{background:#edf2ec;color:#12372a;font-weight:700}
+  .detail-panel .method-table tbody tr:nth-child(even){background:#fafbf9}
+  .detail-panel .method-table td:first-child{font-weight:600;color:#12372a;white-space:nowrap}
+  .detail-panel ol.steps{padding-left:1.35rem;margin:.75rem 0 1.1rem}
+  .detail-panel ol.steps li{line-height:1.72;margin:.5rem 0;font-size:14px;color:#3d5042}
+</style>
 <script>
    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},svg:{fontCache:'global'},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
   </script>
@@ -25,10 +38,7 @@
      Σ
     </span>
 <span>
-<strong>
-      Estatística &amp; Ciência de Dados
-     </strong>
-<small>
+<strong>Estatística &amp; Ciência de Dados</strong> <small>
       Modelos, inferência e aplicações em R · UFLA
      </small>
 </span>
@@ -95,17 +105,51 @@
        01 · O que é?
       </h2>
 <p>
-       Verifica se os dados apresentam desvios significativos da distribuição normal.
+       O teste de Shapiro–Wilk é um teste de hipóteses de aderência (<em>goodness-of-fit</em>) proposto por Samuel S. Shapiro e Martin B. Wilk em 1965, na <em>Biometrika</em>. Ele responde a uma única pergunta: é razoável supor que esta amostra foi extraída de uma população com distribuição normal?
       </p>
+<p>
+       A lógica é comparar os dados ordenados com os valores esperados de uma normal padrão na mesma posição. Se os pontos acompanharem bem essa referência, a estatística fica próxima de 1; se houver assimetria, caudas pesadas, truncamento ou observações extremas, ela cai. Em essência, o teste mede numericamente aquilo que se enxerga em um gráfico Q–Q.
+      </p>
+<p>
+       O título original do artigo fala em “análise de variância” porque a estatística pode ser derivada de uma decomposição da variância da amostra ordenada: o numerador representa a variabilidade explicada pela reta normal e o denominador, a variabilidade total. Daí a forma de razão entre somas de quadrados apresentada na seção 03.
+      </p>
+<div class="tail-cases">
+<p>
+<strong>O que o teste não faz:</strong> não prova normalidade, não identifica a distribuição correta quando rejeita, não avalia independência e não substitui a inspeção gráfica. É um diagnóstico entre vários, e a decisão final depende do objetivo da análise e do desenho do estudo.
+       </p>
+</div>
 </section>
 <section class="detail-panel">
 <h2>
        02 · Pressupostos e como verificá-los
       </h2>
-<ul class="checklist"><li>Dados quantitativos.</li><li>Observações independentes.</li><li>Amostra sem replicações artificiais.</li><li>Verifique o desenho amostral e um gráfico Q–Q.</li><li>A normalidade relevante em regressão/ANOVA costuma ser a dos erros, não a dos preditores.</li></ul>
+<ul class="checklist"><li>Dados quantitativos contínuos ou aproximadamente contínuos.</li><li>Observações independentes entre si.</li><li>Amostra sem replicações artificiais nem empates excessivos.</li><li>Tamanho amostral dentro da faixa de validade da implementação: 3 ≤ n ≤ 5000 no R.</li><li>Verifique o desenho amostral e um gráfico Q–Q.</li><li>A normalidade relevante em regressão/ANOVA costuma ser a dos erros, não a dos preditores.</li></ul>
 <p>
        Confira o delineamento da pesquisa e os gráficos exploratórios. A validade inferencial depende dos pressupostos do modelo, não apenas do resultado de um teste diagnóstico.
       </p>
+<h3>
+       Continuidade e empates
+      </h3>
+<p>
+       A distribuição nula de \(W\) foi construída para variáveis contínuas. Escalas Likert (1 a 5), contagens, variáveis binárias ou valores muito arredondados geram empates que distorcem a calibração do valor-p; o próprio R emite o aviso <code>may not be accurate</code>. Nesses casos, a pergunta “esses dados são normais?” está mal formulada: trate a variável como ordinal ou discreta e use métodos compatíveis.
+      </p>
+<h3>
+       Independência
+      </h3>
+<p>
+       É o pressuposto mais frequentemente violado e o mais grave. Em dados longitudinais, medidas repetidas, observações agrupadas ou séries temporais, a dependência altera a variabilidade real e produz rejeições que não têm relação com a forma da distribuição. Nenhuma correção no teste resolve isso: o problema é do delineamento, não do diagnóstico.
+      </p>
+<h3>
+       Qual variável testar
+      </h3>
+<p>
+       Em modelos de regressão e em ANOVA, o pressuposto recai sobre os erros do modelo. Na prática, aproxima-se isso pelos resíduos: ajuste o modelo e teste <code>residuals(modelo)</code>. Testar a variável resposta bruta ou cada preditora isoladamente e concluir algo sobre o modelo é um erro conceitual comum, porque a normalidade dos resíduos depende do conjunto de termos incluídos.
+      </p>
+<div class="tail-cases">
+<p>
+<strong>Antes do teste, o gráfico:</strong> histograma com densidade sobreposta e, sobretudo, gráfico Q–Q. O Q–Q mostra onde o desvio ocorre — assimetria na diagonal, caudas pesadas nas extremidades, degraus em dados discretos. O valor-p diz que existe desvio; o gráfico diz qual desvio, e é isso que orienta a decisão prática.
+       </p>
+</div>
 </section>
 <section class="detail-panel">
 <h2>
@@ -117,6 +161,9 @@
 <div class="hypothesis-block">
        \[\left\{\begin{aligned}H_0&amp;:\ X_1,\ldots,X_n\sim\mathcal N(\mu,\sigma^2)\\ H_1&amp;:\ \text{a distribuição populacional não é normal}\end{aligned}\right.\]
       </div>
+<p>
+       Note que \(H_0\) não fixa \(\mu\) nem \(\sigma^2\): é uma hipótese composta, com dois parâmetros desconhecidos estimados pela amostra. Isso é o que torna a distribuição nula de \(W\) dependente de \(n\) e sem forma fechada.
+      </p>
 <h3>
        Estatística, estimador ou critério de ajuste
       </h3>
@@ -124,10 +171,7 @@
        \[W=\frac{\left(\sum_{i=1}^{n}a_iX_{(i)}\right)^2}{\sum_{i=1}^{n}(X_i-\bar X)^2}\]
       </div>
 <p class="formula-caption">
-<strong>
-        Em que:
-       </strong>
-</p>
+<strong>Em que:</strong> </p>
 <dl class="formula-terms">
 <div>
 <dt>
@@ -184,6 +228,27 @@
 <p>
        Os valores amostrais são obtidos diretamente dos dados; os estimadores, pesos ou coeficientes específicos são calculados pelas funções do R indicadas no exemplo. Não substitua parâmetros desconhecidos por valores arbitrários.
       </p>
+<h3>
+       Propriedades de W
+      </h3>
+<ul class="checklist"><li>0 &lt; W ≤ 1: W = 1 corresponde a ajuste perfeito a uma reta normal.</li><li>Valores menores de W indicam afastamento da normal, por caudas pesadas, assimetria, truncamento ou outliers.</li><li>Os pesos satisfazem \(\sum a_i^2 = 1\) e são antissimétricos: \(a_i = -a_{n+1-i}\). Por construção, W é invariante a mudanças de escala e de locação.</li><li>A distribuição nula depende de n, não de \(\mu\) ou \(\sigma\).</li></ul>
+<h3>
+       Como o valor-p é obtido
+      </h3>
+<p>
+       Shapiro e Wilk tabularam pontos críticos exatos para 3 ≤ n ≤ 50. Royston (1982, 1995) estendeu o procedimento até n = 5000 usando uma normalização: a transformação \(Y = \ln(1-W)\) é aproximadamente normal, com média e variância modeladas por polinômios em \(\ln n\). Padroniza-se
+      </p>
+<div aria-label="Normalização da estatística W" class="math-display" role="group">
+       \[Z=\frac{\ln(1-W)-\mu_n}{\sigma_n},\qquad p = 1-\Phi(Z)\]
+      </div>
+<p>
+       e obtém-se o valor-p pela normal padrão. É esse algoritmo (AS R94) que está por baixo de <code>shapiro.test()</code> no R e de <code>scipy.stats.shapiro()</code> no Python, o que explica resultados praticamente idênticos nas duas linguagens. Não existe intervalo de confiança usual para \(W\): ele é uma estatística de ordem, não um parâmetro populacional.
+      </p>
+<div class="tail-cases">
+<p>
+<strong>Limite de implementação:</strong> no R, <code>shapiro.test()</code> aceita de 3 a 5000 observações e recusa o restante. Isso não é uma propriedade do teste, e sim da aproximação disponível. Acima desse tamanho, prefira Anderson–Darling ou avalie apenas a magnitude do desvio.
+       </p>
+</div>
 </section>
 <section class="detail-panel">
 <h2>
@@ -195,6 +260,43 @@
 <p>
        Interprete a decisão em conjunto com o gráfico Q–Q e o tamanho da amostra. A não rejeição não demonstra normalidade; a rejeição não mede, por si só, a relevância prática do desvio.
       </p>
+<h3>
+       O que reportar
+      </h3>
+<p>
+       Sempre os três elementos juntos: tamanho da amostra, W e valor-p — por exemplo, “n = 32, W = 0,920, p = 0,021”. O valor-p isolado não conta a história, porque não informa nem o quanto o desvio é grande nem a precisão com que foi estimado. Complemente com assimetria, curtose e o gráfico Q–Q.
+      </p>
+<h3>
+       O efeito do tamanho amostral
+      </h3>
+<div class="table-wrap"><table class="method-table">
+<caption>Comportamento do teste em função de n</caption>
+<thead>
+<tr><th scope="col">Situação</th><th scope="col">O que acontece</th><th scope="col">Conduta recomendada</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>n pequeno (aprox. &lt; 20)</td>
+<td>Poder baixo: quase nunca rejeita, mesmo com dados claramente assimétricos. Não rejeitar é o resultado esperado e pouco informativo.</td>
+<td>Não use o valor-p como atestado de normalidade. Decida pelo desenho e pelo gráfico; considere métodos não paramétricos por precaução.</td>
+</tr>
+<tr>
+<td>n moderado (20 a 200)</td>
+<td>Faixa em que o teste é mais potente e mais útil como diagnóstico.</td>
+<td>Reporte W e p com o Q–Q; avalie também assimetria e curtose amostrais.</td>
+</tr>
+<tr>
+<td>n grande (aprox. &gt; 1000)</td>
+<td>Detecta desvios irrelevantes: W = 0,998 com p = 0,003 leva à rejeição por um desvio que não afeta nenhuma inferência.</td>
+<td>Priorize a magnitude (W, assimetria, curtose) e o gráfico. Pelo teorema central do limite, a inferência sobre médias já é robusta.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tail-cases">
+<p>
+<strong>Não rejeitar não é ser normal:</strong> o resultado “p = 0,42” significa apenas que a amostra não trouxe evidência suficiente contra \(H_0\). É ausência de evidência, não evidência de ausência — e, com n pequeno, essa distinção é decisiva.
+       </p>
+</div>
 </section>
 <section class="detail-panel">
 <h2>
@@ -202,6 +304,54 @@
       </h2>
 <p>Examine os dados, execute a análise e compare os resultados com os valores e gráficos apresentados a seguir.</p>
 <p>Copie o código para o RStudio ou baixe o arquivo .R para executar o exemplo completo.</p>
+<h3>
+       Diagnóstico de uma variável
+      </h3>
+<p>
+       O teste está na base do R, no pacote <code>stats</code>, sem dependências. Ele deve vir depois do exame gráfico, nunca no lugar dele.
+      </p>
+<div class="code-toolbar">
+<span>
+        R · bloco mínimo
+       </span>
+<button class="copy-code" data-copy="code-min" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-min"><code># Bloco mínimo ----
+x &lt;- c(2.1, 3.4, 2.8, 4.0, 3.1, 2.5, 3.9, 2.2, 3.6, 3.0)
+
+hist(x, breaks = "FD", col = "gray85", border = "white")
+qqnorm(x, pch = 19); qqline(x, col = "red", lwd = 2)
+
+shapiro.test(x)
+</code></pre>
+<h3>
+       Resíduos de um modelo
+      </h3>
+<p>
+       Em regressão linear ou ANOVA, o que precisa ser normal são os erros. Ajuste o modelo primeiro e teste os resíduos, não a variável resposta.
+      </p>
+<div class="code-toolbar">
+<span>
+        R · resíduos do modelo
+       </span>
+<button class="copy-code" data-copy="code-resid" type="button">
+        Copiar código
+       </button>
+</div>
+<pre id="code-resid"><code># Normalidade dos resíduos ----
+modelo &lt;- lm(mpg ~ wt + hp, data = mtcars)
+
+shapiro.test(residuals(modelo))
+
+plot(modelo, which = 2)   # Q-Q dos resíduos padronizados
+</code></pre>
+<div class="tail-cases">
+<p>
+<strong>Leia os avisos do R:</strong> se aparecer <code>may not be accurate</code>, há empates nos dados (escala discreta ou arredondamento); se aparecer erro de tamanho, o vetor está fora de 3 ≤ n ≤ 5000. Ambos são informação sobre a validade do teste, não detalhes técnicos a ignorar.
+       </p>
+</div>
 </section>
 <section class="detail-panel example-panel" id="exemplo">
 <h2>
@@ -231,31 +381,148 @@
 </div>
 <pre id="code-sw"><code># Shapiro–Wilk ----
 
-# Ajuste e resultados ----
+# Dados ----
 x &lt;- mtcars$disp
-qqnorm(x); qqline(x, col = "red")
+
+# Descritivas ----
 summary(x)
 sd(x)
-resultado &lt;- shapiro.test(x)
-print(resultado)
-cat(ifelse(resultado$p.value &lt; 0.05, "Evidência contra normalidade", "Sem evidência suficiente contra normalidade"), "\n")
+length(x)
 
 # Visualização e diagnóstico ----
-hist(x, breaks = "FD", col = "gray85", border = "white", main = "Distribuição da cilindrada", xlab = "Cilindrada (pol³)")
+hist(x, breaks = "FD", col = "gray85", border = "white",
+     main = "Distribuição da cilindrada", xlab = "Cilindrada (pol³)")
+
 qqnorm(x, pch = 19, main = "Gráfico Q-Q da cilindrada")
 qqline(x, col = "red", lwd = 2)
+
+# Teste ----
+resultado &lt;- shapiro.test(x)
+print(resultado)
+
+# Decisão ----
+cat(ifelse(resultado$p.value &lt; 0.05,
+           "Evidência contra normalidade",
+           "Sem evidência suficiente contra normalidade"), "\n")
 </code></pre><div class="verified-example"><h3>Saída numérica para conferência</h3><p class="verification-source">Valores recalculados independentemente com os mesmos dados; a formatação da saída pode diferir da apresentada pelo R.</p><pre class="output-r">Shapiro-Wilk normality test
 W = 0.92001, p-value = 0.02081</pre><h3>Gráfico dos dados</h3><img alt="Visualização dos dados do exemplo: Shapiro–Wilk" class="result-figure" loading="lazy" src="../assets/resultados/sw.png"/><p>Como p = 0.0208 &lt; 0,05, rejeita-se a hipótese de normalidade da cilindrada.</p></div>
 <h3>Resultados e interpretação</h3>
 <p class="observed-result">
-<strong>
-        Resultado para estes dados:
-       </strong>
-       W ≈ 0,9200 e valor-p ≈ 0,0208. Ao nível de 5%, rejeita-se a hipótese de normalidade da cilindrada. O gráfico Q–Q permite identificar em que regiões ocorrem os desvios.
+<strong>Resultado para estes dados:</strong> W ≈ 0,9200 e valor-p ≈ 0,0208. Ao nível de 5%, rejeita-se a hipótese de normalidade da cilindrada. O gráfico Q–Q permite identificar em que regiões ocorrem os desvios.
       </p>
-
-
+<h3>
+       Leitura detalhada
+      </h3>
+<p>
+       Com n = 32, o teste está na faixa em que é confiável e potente. W ≈ 0,92 representa um afastamento moderado, não extremo: a rejeição é real, mas o desvio não é dramático. O Q–Q mostra o padrão típico da variável — valores centrais próximos da reta e uma cauda superior esticada, puxada pelos motores de maior cilindrada (Cadillac Fleetwood, Lincoln Continental e Chrysler Imperial, com valores acima de 400 pol³). É assimetria à direita, não uma violação generalizada.
+      </p>
+<p>
+       A consequência prática depende do uso. Para descrever a distribuição, o histograma já basta; para comparar médias de cilindrada entre grupos com esses mesmos dados, uma transformação logarítmica ou um teste não paramétrico é a escolha mais defensável — não porque o valor-p mandou, mas porque a assimetria e os pontos influentes foram identificados no gráfico.
+      </p>
 <p class="application-note">O código apresenta uma sugestão de aplicação; a análise deve ser adaptada aos dados e ao objetivo do estudo.</p></section>
+<section class="detail-panel">
+<h2>
+       07 · Erros comuns, alternativas e fluxo de trabalho
+      </h2>
+<h3>
+       Erros comuns e armadilhas
+      </h3>
+<p>
+       A maior parte dos problemas com Shapiro–Wilk não está no cálculo, e sim no uso que se faz do resultado. Os casos abaixo concentram os erros mais frequentes em relatórios e artigos.
+      </p>
+<div class="tail-cases">
+<p>
+<strong>Porteiro automático:</strong> “se p &gt; 0,05, uso o teste t; senão, uso Mann–Whitney” escolhe o procedimento pelos dados, o que altera a hipótese testada e infla a taxa de erro tipo I. A escolha deve vir do desenho do estudo e do que se quer estimar.
+       </p>
+<p>
+<strong>Ignorar a magnitude:</strong> rejeitar com W = 0,998 não é o mesmo que rejeitar com W = 0,85. O primeiro caso costuma não ter consequência alguma; o segundo pede mudança de estratégia.
+       </p>
+<p>
+<strong>Tratar a não rejeição como prova:</strong> com n = 8, p = 0,40 é o resultado esperado mesmo para dados claramente assimétricos, porque o poder é baixo.
+       </p>
+<p>
+<strong>Testar dados discretos:</strong> Likert, contagens e proporções violam a continuidade assumida; o valor-p fica mal calibrado e o teste perde sentido conceitual.
+       </p>
+<p>
+<strong>Deixar um outlier decidir:</strong> um único ponto pode derrubar W. Investigue o ponto, verifique se é erro de registro e avalie o resultado com e sem ele antes de concluir sobre a forma da distribuição.
+       </p>
+<p>
+<strong>Desconsiderar a dependência:</strong> medidas repetidas, dados agrupados e séries temporais invalidam o teste, mesmo que a amostra “pareça” não normal.
+       </p>
+<p>
+<strong>Testar a variável errada no modelo:</strong> em regressão e ANOVA, a normalidade relevante é a dos resíduos, não a da resposta nem a de cada preditora.
+       </p>
+<p>
+<strong>Esquecer o gráfico:</strong> nenhum valor-p informa onde o desvio ocorre. Sem Q–Q, a interpretação fica incompleta.
+       </p>
+</div>
+<h3>
+       Shapiro–Wilk e os demais testes de normalidade
+      </h3>
+<p>
+       Em estudos comparativos de poder, o Shapiro–Wilk figura consistentemente entre os mais potentes para detectar não normalidade em amostras pequenas e médias, tipicamente entre 10 e 200 observações. Por isso é o padrão de fato; os demais testes têm nichos específicos.
+      </p>
+<div class="table-wrap"><table class="method-table">
+<caption>Alternativas e quando cada uma é preferível</caption>
+<thead>
+<tr><th scope="col">Teste</th><th scope="col">Base</th><th scope="col">Quando preferir</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Shapiro–Wilk</td>
+<td>Combinação linear das estatísticas de ordem</td>
+<td>Padrão para n pequeno e médio; maior poder geral. Evite acima de cerca de 2000 observações.</td>
+</tr>
+<tr>
+<td>Shapiro–Francia</td>
+<td>Versão simplificada, por correlação de probabilidades normais</td>
+<td>Alternativa leve para 5 ≤ n ≤ 5000, sobretudo ao varrer muitas variáveis.</td>
+</tr>
+<tr>
+<td>Anderson–Darling</td>
+<td>Distância entre funções de distribuição, com peso nas caudas</td>
+<td>Quando o interesse está nas caudas (risco, valores extremos) e para n grande. Já tem ficha própria no catálogo.</td>
+</tr>
+<tr>
+<td>Kolmogorov–Smirnov (Lilliefors)</td>
+<td>Distância máxima entre funções de distribuição</td>
+<td>Quando os parâmetros são estimados da amostra; o KS clássico é conservador demais nesse cenário.</td>
+</tr>
+<tr>
+<td>D'Agostino–Pearson (\(K^2\))</td>
+<td>Combinação de assimetria e curtose</td>
+<td>Amostras médias a grandes, com interpretação direta em termos de forma.</td>
+</tr>
+<tr>
+<td>Jarque–Bera</td>
+<td>Assimetria e curtose, assintótico</td>
+<td>Contexto econométrico, com n grande e séries de resíduos.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>
+       Fluxo de trabalho recomendado
+      </h3>
+<ol class="steps">
+<li><strong>Decida antes se a normalidade importa</strong> para o que você vai fazer. Para estimar uma média com n grande, o teorema central do limite resolve; para previsão intervalar com n pequeno, o pressuposto pesa.</li>
+<li><strong>Faça o diagnóstico gráfico primeiro:</strong> histograma com densidade, boxplot e gráfico Q–Q. Identifique assimetria, caudas e pontos influentes.</li>
+<li><strong>Rode o teste</strong> e reporte n, W e p — os três juntos.</li>
+<li><strong>Julgue a magnitude do desvio:</strong> assimetria e curtose amostrais, distância dos pontos à reta no Q–Q.</li>
+<li><strong>Se rejeitar, decida a consequência:</strong> transformação (log, raiz, Box–Cox), método não paramétrico (Mann–Whitney, Wilcoxon, Kruskal–Wallis), <em>bootstrap</em> ou um modelo com outra distribuição (gama, t, Poisson, binomial negativa).</li>
+<li><strong>Se não rejeitar com n pequeno, seja honesto:</strong> diga que o poder era limitado e que a ausência de evidência não confirma o pressuposto.</li>
+</ol>
+<div class="example-reading">
+<p>
+<strong>Regra de bolso:</strong> trate o Shapiro–Wilk como um segundo par de olhos sobre o gráfico Q–Q, não como um juiz que decide qual teste você pode usar.
+       </p>
+</div>
+<p>
+       Leituras de referência: Shapiro e Wilk (1965), <em>Biometrika</em> 52, 591–611; Royston (1995), <em>JRSS Series C</em> 44, 547–551, com o algoritmo AS R94; Razali e Wah (2011), <em>Journal of Statistical Modeling and Analytics</em> 2, 21–33, para a comparação de poder entre os testes de normalidade.
+      </p>
+<p>
+       Consulte também a ficha de <a href="ks.html">Kolmogorov–Smirnov (uma amostra)</a>, para a comparação direta entre as duas abordagens de aderência, e a de <a href="ad.html">Anderson–Darling</a>, para o caso em que as caudas são o foco.
+      </p>
+</section>
 </div>
 <aside class="detail-aside">
 <div class="aside-card">
@@ -268,6 +535,14 @@ W = 0.92001, p-value = 0.02081</pre><h3>Gráfico dos dados</h3><img alt="Visuali
 <a href="../index.html#referencias">
        Referências científicas →
       </a>
+</div>
+<div class="aside-card">
+<span class="aside-label">
+       REQUISITOS
+      </span>
+<p>
+       Variável quantitativa contínua, observações independentes, sem empates excessivos e 3 ≤ n ≤ 5000 na implementação do R.
+      </p>
 </div>
 <div class="aside-card">
 <span class="aside-label">
@@ -319,15 +594,12 @@ W = 0.92001, p-value = 0.02081</pre><h3>Gráfico dos dados</h3><img alt="Visuali
 </main>
 <footer class="site-footer">
 <div>
-<strong>
-     Estatística &amp; Ciência de Dados
-    </strong>
-<div>
+<strong>Estatística &amp; Ciência de Dados</strong> <div>
      Material acadêmico de consulta · ICTIN/UFLA
     </div>
 </div>
 <div>
-    Prof. Dr. Cássius Henrique Xavier Oliveira
+    Prof. Dr. Cassius Henrique Xavier Oliveira
     <br/>
     ©
     <span class="year">
@@ -339,3 +611,4 @@ W = 0.92001, p-value = 0.02081</pre><h3>Gráfico dos dados</h3><img alt="Visuali
 </script>
 </body>
 </html>
+
